@@ -16,7 +16,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # Checks out a copy of your repository on the ubuntu-latest machine
       - uses: actions/checkout@v3
-
+        with:
+          token: ${{ secrets.GIT_PAT }}
+          submodules: recursive
+          fetch-depth: 0
       - name: Install nix
         uses: cachix/install-nix-action@v27
         with:

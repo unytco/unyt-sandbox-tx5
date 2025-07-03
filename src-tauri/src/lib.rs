@@ -9,7 +9,10 @@ use tauri_plugin_dialog::{DialogExt, MessageDialogButtons};
 use tauri::menu::{Menu, MenuItem, PredefinedMenuItem, Submenu};
 
 const APP_ID: &'static str = "domino";
-const NETWORK_SEED: &'static str = "domino-sandbox";
+
+fn get_network_seed() -> String {
+    std::env::var("NETWORK_SEED").unwrap_or_else(|_| "domino-sandbox".to_string())
+}
 
 pub fn happ_bundle() -> AppBundle {
     let bytes = include_bytes!("../../domino/workdir/domino.happ");
@@ -142,7 +145,7 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
                 happ_bundle(),
                 None,
                 None,
-                Some(String::from(NETWORK_SEED)),
+                Some(get_network_seed()),
             )
             .await?;
 
