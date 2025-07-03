@@ -1,0 +1,3 @@
+[submodule "domino"]
+	path = domino
+	url = git@github.com:unytco/domino.git
