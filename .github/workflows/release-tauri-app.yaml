@@ -104,6 +104,9 @@ jobs:
         if: matrix.args == '--target x86_64-apple-darwin'
         run: rustup target add x86_64-apple-darwin
 
+      - name: install wasm32-unknown-unknown target
+        run: rustup target add wasm32-unknown-unknown
+
       - name: install Go stable
         uses: actions/setup-go@v4
         with:
