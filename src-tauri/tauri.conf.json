@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "identifier": "co.unyt.domino",
   "build": {
-    "beforeBuildCommand": "cd ./domino && make package-ci",
+    "beforeBuildCommand": "cd ./domino && make ci-build-ui",
     "devUrl": "http://localhost:1420",
     "frontendDist": "./domino/ui/dev-hub/dist"
   },
