@@ -3,15 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "license": "CAL-1.0",
-  "workspaces": [  ],
+  "workspaces": [
+    "domino",
+    "domino/ui/dev-hub"
+  ],
   "scripts": {
+    "network:tauri": "concurrently \"cd domino && yarn network:tauri\" \"yarn launch\"",
+    "launch": "concurrently-repeat \"yarn tauri dev --no-watch\" $AGENTS",
     "launch:android": "yarn tauri android dev",
     "tauri": "tauri"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.0.0"
+    "concurrently": "^8.2.2",
+    "concurrently-repeat": "^0.0.1",
+    "@tauri-apps/cli": "^2.0.0",
+    "get-port-cli": "3.0.0"
   },
-  "resolutions": { },
+  "resolutions": {},
   "engines": {
     "node": ">=16.0.0"
   }

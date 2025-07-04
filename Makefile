@@ -6,7 +6,7 @@ setup:
 	git sudmodule update --init
 
 launch:
-	cd domino && make start
+	yarn network:tauri
 
 launch-android: install
 	yarn launch:android
