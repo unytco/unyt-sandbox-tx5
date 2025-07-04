@@ -15,7 +15,7 @@ fn get_network_seed() -> String {
 }
 
 pub fn happ_bundle() -> AppBundle {
-    let bytes = include_bytes!("../../domino/workdir/domino.happ");
+    let bytes = include_bytes!("../../workdir/domino.happ");
     AppBundle::decode(bytes).expect("Failed to decode domino happ")
 }
 
