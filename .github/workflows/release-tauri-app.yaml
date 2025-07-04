@@ -136,7 +136,7 @@ jobs:
       - name: Download release of the .happ
         uses: robinraju/release-downloader@v1.10
         env:
-          GIT_PAT: ${{ secrets.GIT_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
         with:
           token: ${{ secrets.GIT_PAT }}
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
@@ -146,7 +146,7 @@ jobs:
       - name: build the app
         uses: tauri-apps/tauri-action@v0
         env:
-          GIT_PAT: ${{ secrets.GIT_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
         with:
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
           releaseDraft: true
@@ -193,7 +193,7 @@ jobs:
       - name: Download release of the .happ
         uses: robinraju/release-downloader@v1.10
         env:
-          GIT_PAT: ${{ secrets.GIT_PAT }}
+          GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
         with:
           token: ${{ secrets.GIT_PAT }}
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
