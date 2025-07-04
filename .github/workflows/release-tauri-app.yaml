@@ -23,7 +23,7 @@ jobs:
       - name: Install nix
         uses: cachix/install-nix-action@v27
         with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          github_access_token: ${{ secrets.GIT_PAT }}
           nix_path: nixpkgs=channel:nixos-24.05
 
       - uses: cachix/cachix-action@v15
@@ -130,9 +130,9 @@ jobs:
       - name: Download release of the .happ
         uses: robinraju/release-downloader@v1.10
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_PAT: ${{ secrets.GIT_PAT }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GIT_PAT }}
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
           fileName: "domino.happ"
           out-file-path: "workdir/"
@@ -140,7 +140,7 @@ jobs:
       - name: build the app
         uses: tauri-apps/tauri-action@v0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_PAT: ${{ secrets.GIT_PAT }}
         with:
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
           releaseDraft: true
@@ -169,7 +169,7 @@ jobs:
       - name: Install nix
         uses: cachix/install-nix-action@v27
         with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          github_access_token: ${{ secrets.GIT_PAT }}
           nix_path: nixpkgs=channel:nixos-24.05
 
       - uses: cachix/cachix-action@v15
@@ -183,9 +183,9 @@ jobs:
       - name: Download release of the .happ
         uses: robinraju/release-downloader@v1.10
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_PAT: ${{ secrets.GIT_PAT }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GIT_PAT }}
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
           fileName: "domino.happ"
           out-file-path: "."
@@ -205,5 +205,5 @@ jobs:
       - uses: AButler/upload-release-assets@v3.0
         with:
           files: "src-tauri/gen/android/app/build/outputs/bundle/**/*.aab"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ secrets.GIT_PAT }}
           release-id: ${{ needs.publish-happ.outputs.releaseId }}
