@@ -2421,11 +2421,11 @@
         "tauri-plugin-holochain": "tauri-plugin-holochain"
       },
       "locked": {
-        "lastModified": 1751898075,
-        "narHash": "sha256-23qQjPiWnfmygYOPNSG+OaWbTzTjdDQwzAAQ9NROmUg=",
+        "lastModified": 1751898930,
+        "narHash": "sha256-8N9dZKjWceWslcdNXy4vYjgiZxcLgCgOAS/ewHbXTJA=",
         "owner": "darksoil-studio",
         "repo": "holochain-playground",
-        "rev": "15a7d86f657a36c2e4daaefd69ca5e1c6af7f753",
+        "rev": "240bf9bb7ad3f23ccd1a18092b74ff4a7983d3f0",
         "type": "github"
       },
       "original": {
