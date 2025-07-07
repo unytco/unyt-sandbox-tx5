@@ -207,7 +207,7 @@ jobs:
           token: ${{ secrets.GIT_PAT }}
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
           fileName: "domino.happ"
-          out-file-path: "."
+          out-file-path: "workdir/"
 
       - name: setup Android signing
         run: |
