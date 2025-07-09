@@ -157,6 +157,8 @@ jobs:
         with:
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
           releaseDraft: true
+          includeUpdaterJson: true
+          updaterJsonPreferNsis: true
           prerelease: true
           args: ${{ matrix.args }}
 
