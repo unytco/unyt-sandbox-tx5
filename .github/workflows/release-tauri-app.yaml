@@ -70,11 +70,12 @@ jobs:
           - platform: "macos-latest" # for Intel based macs.
             args: "--target x86_64-apple-darwin"
           - platform: "ubuntu-22.04" # for Tauri v1 you could replace this with ubuntu-20.04.
-            args: ""
+            args: " -b appimage"
           - platform: "windows-latest"
             args: ""
     env:
       MACOSX_DEPLOYMENT_TARGET: 10.13
+    permissions: write-all
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -84,7 +85,7 @@ jobs:
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # Checks out a copy of your repository on the ubuntu-latest machine
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GIT_PAT }}
           submodules: recursive
@@ -98,7 +99,7 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           override: true
-          toolchain: stable
+          toolchain: 1.85.0
 
       - name: install x86_64 target
         if: matrix.args == '--target x86_64-apple-darwin'
