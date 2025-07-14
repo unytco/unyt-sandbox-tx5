@@ -1,7 +1,7 @@
 {
-  "productName": "domino",
-  "version": "0.0.1",
-  "identifier": "co.unyt.domino",
+  "productName": "Domino",
+  "version": "0.18.0",
+  "identifier": "co.unyt.domino.sandbox",
   "build": {
     "beforeBuildCommand": "cd ./domino && make ci-build-ui",
     "devUrl": "http://localhost:1420",
