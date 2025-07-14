@@ -44,6 +44,19 @@ jobs:
           echo "APP_VERSION=$(cat src-tauri/tauri.conf.json | grep -oP '(?<="version": ")[^"]*')" >> $GITHUB_OUTPUT
         id: version
 
+      - name: Get Changelog Content
+        id: changelog
+        run: |
+          VERSION="${{ steps.version.outputs.APP_VERSION }}"
+          awk -v ver="$VERSION" '
+            $0 ~ "^## \\[" ver "\\]" {p=1; next}
+            p && /^## \[/ {exit}
+            p {print}
+          ' CHANGELOG.md > release_notes.txt
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          cat release_notes.txt >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - id: create-release
         uses: ncipollo/release-action@v1
         with:
@@ -53,7 +66,7 @@ jobs:
             domino/workdir/domino.webhapp
             domino/dnas/alliance/workdir/alliance.dna
             domino/dnas/agent_details/workdir/agent_details.dna
-          body: "See assets below to download and install this version."
+          body: ${{ steps.changelog.outputs.notes }}
           name: Domino v${{ steps.version.outputs.APP_VERSION }}
           tag: v${{ steps.version.outputs.APP_VERSION }}
           prerelease: true
