@@ -1,36 +1,54 @@
 use holochain_types::prelude::AppBundle;
 use std::path::PathBuf;
 use tauri_plugin_holochain::{HolochainPluginConfig, HolochainExt, NetworkConfig, vec_to_locked};
-use tauri_plugin_opener::OpenerExt;
+// use tauri_plugin_opener::OpenerExt;
 use tauri::{AppHandle, Manager};
+use anyhow::anyhow;
 #[cfg(not(mobile))]
 use tauri_plugin_dialog::{DialogExt, MessageDialogButtons};
 #[cfg(not(mobile))]
 use tauri::menu::{Menu, MenuItem, PredefinedMenuItem, Submenu};
+mod utils;
+mod tauri_config_reader;
+use tauri_config_reader::AppConfig;
 
-const APP_ID: &'static str = "domino";
+const APP_ID_FOR_HOLOCHAIN_DIR: &'static str = "domino-sandbox";
 
-fn get_network_seed() -> String {
-    std::env::var("NETWORK_SEED").unwrap_or_else(|_| "domino-sandbox".to_string())
-}
+// const DNA_HASH: &'static str = "domino-dna_hashes";
+// const DNA_HASH: &'static str = include_str!("../../workdir/dash-chat-dna_hashes");
 
 pub fn happ_bundle() -> AppBundle {
     let bytes = include_bytes!("../../workdir/domino.happ");
-    AppBundle::decode(bytes).expect("Failed to decode domino happ")
+    AppBundle::decode(bytes).expect(&"Failed to decode domino.happ")
 }
+
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    // std::env::set_var("WASM_LOG", "debug");
+    // Get the config from the generated context
+    
     tauri::Builder::default()
         .plugin(
             tauri_plugin_log::Builder::default()
-                .level(log::LevelFilter::Warn)
-                .build(),
-        )
+            .level(if tauri::is_dev() {
+                log::LevelFilter::Info
+            } else {
+                log::LevelFilter::Warn
+            })
+            .level_for("tracing::span", log::LevelFilter::Off)
+            .level_for("iroh", log::LevelFilter::Warn)
+            .level_for("holochain", log::LevelFilter::Warn)
+            .level_for("kitsune2", log::LevelFilter::Warn)
+            .level_for("kitsune2_gossip", log::LevelFilter::Warn)
+            .level_for("holochain_runtime", log::LevelFilter::Warn)
+            .level_for("domino", log::LevelFilter::Warn)
+            .build(),
+  )
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_holochain::init(
-            vec_to_locked(vec![]),
+            vec_to_locked(vec![]), // TODO: path to add password on startup
             HolochainPluginConfig::new(holochain_dir(), network_config())
         ))
         .setup(|app| {
@@ -40,13 +58,13 @@ pub fn run() {
 
                 // After set up we can be sure our app is installed and up to date, so we can just open it
                 let mut window_builder = app.holochain()?
-                    .main_window_builder(String::from("main"), false, Some(String::from("domino")), None)
-                    .await?;
-
-                #[cfg(not(mobile))]
+                .main_window_builder(String::from("main"), false, Some(AppConfig::new(handle.clone()).app_id), None)
+                .await?;
+            
+               #[cfg(not(mobile))]
                 {
                     window_builder = window_builder
-                        .title(String::from("Domino"))
+                        .title(String::from(AppConfig::new(handle.clone()).product_name))
                         .inner_size(1200.0, 800.0)
                         .menu(
                             Menu::with_items(
@@ -63,19 +81,19 @@ pub fn run() {
                                             true,
                                             None::<&str>,
                                         )?,
-                                        &MenuItem::with_id(
-                                           & handle,
-                                            "factory-reset",
-                                            "Factory Reset",
-                                            true,
-                                            None::<&str>,
-                                        )?,
+                                        // &MenuItem::with_id(
+                                        //    & handle,
+                                        //     "factory-reset",
+                                        //     "Factory Reset",
+                                        //     true,
+                                        //     None::<&str>,
+                                        // )?,
                                         &PredefinedMenuItem::close_window(&handle, None)?,
                                     ],
                                 )?],
                             )?
                         )
-                        .on_menu_event(|window, menu_event| match menu_event.id().as_ref() {
+                        .on_menu_event(move |window, menu_event| match menu_event.id().as_ref() {
                             "open-logs-folder" => {
                                 let log_folder = window.app_handle()
                                     .path()
@@ -131,33 +149,62 @@ pub fn run() {
 // You can modify this function to suit your needs if they become more complex
 async fn setup(handle: AppHandle) -> anyhow::Result<()> {
     let admin_ws = handle.holochain()?.admin_websocket().await?;
-
     let installed_apps = admin_ws
         .list_apps(None)
         .await
         .map_err(|err| tauri_plugin_holochain::Error::ConductorApiError(err))?;
 
-    if installed_apps.iter().find(|app| app.installed_app_id.as_str().eq(APP_ID)).is_none() {
-        handle
-            .holochain()?
-            .install_app(
-                String::from(APP_ID),
-                happ_bundle(),
-                None,
-                None,
-                Some(get_network_seed()),
-            )
-            .await?;
+        let app_is_already_installed = installed_apps
+        .iter()
+        .find(|app| app.installed_app_id.as_str().eq(&AppConfig::new(handle.clone()).app_id))
+        .is_some();
 
-        Ok(())
-    } else {
-        handle.holochain()?.update_app_if_necessary(
-            String::from(APP_ID),
-            happ_bundle()
-        ).await?;
-
-        Ok(())
-    }
+        if !app_is_already_installed {
+            let previous_app = installed_apps
+                .iter()
+                .filter(|app| app.installed_app_id.as_str().starts_with(AppConfig::new(handle.clone()).app_id.as_str()))
+                .min_by_key(|app_info| app_info.installed_at);
+    
+            
+    
+            if let Some(previous_app) = previous_app {
+            
+               utils::migrate_app(
+                    &handle.holochain()?.holochain_runtime,
+                    previous_app.installed_app_id.clone(),
+                    AppConfig::new(handle.clone()).app_id,
+                    happ_bundle(),
+                    None,
+                    Some(AppConfig::new(handle.clone()).network_seed),
+                )
+                .await?;
+    
+                admin_ws
+                    .disable_app(previous_app.installed_app_id.clone())
+                    .await
+                    .map_err(|err| anyhow!("{err:?}"))?;
+            } else {
+                handle
+                    .holochain()?
+                    .install_app(
+                        String::from(AppConfig::new(handle.clone()).app_id),
+                        happ_bundle(),
+                        None,
+                        None,
+                        Some(AppConfig::new(handle.clone()).network_seed),
+                    )
+                    .await?;
+            }
+    
+            Ok(())
+        } else {
+            handle
+                .holochain()?
+                .update_app_if_necessary(String::from(AppConfig::new(handle.clone()).app_id), happ_bundle())
+                .await?;
+    
+            Ok(())
+        }
 }
 
 fn network_config() -> NetworkConfig {
@@ -166,6 +213,8 @@ fn network_config() -> NetworkConfig {
     // Don't use the bootstrap service on tauri dev mode
     if tauri::is_dev() {
         network_config.bootstrap_url = url2::Url2::parse("http://0.0.0.0:8888");
+    } else {
+        network_config.bootstrap_url = url2::Url2::parse("https://dev-test-bootstrap2.holochain.org/");
     }
 
     // Don't hold any slice of the DHT in mobile
@@ -191,7 +240,7 @@ fn holochain_dir() -> PathBuf {
         #[cfg(not(target_os = "android"))]
         {
             let tmp_dir =
-                tempdir::TempDir::new("domino").expect("Could not create temporary directory");
+                tempdir::TempDir::new(APP_ID_FOR_HOLOCHAIN_DIR).expect("Could not create temporary directory");
 
             // Convert `tmp_dir` into a `Path`, destroying the `TempDir`
             // without deleting the directory.
@@ -202,7 +251,7 @@ fn holochain_dir() -> PathBuf {
         app_dirs2::app_root(
             app_dirs2::AppDataType::UserData,
             &app_dirs2::AppInfo {
-                name: "domino",
+                name: APP_ID_FOR_HOLOCHAIN_DIR,
                 author: std::env!("CARGO_PKG_AUTHORS"),
             },
         )

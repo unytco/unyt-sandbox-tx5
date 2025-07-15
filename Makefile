@@ -3,9 +3,13 @@ install:
 	cd domino && ( [ -d  node_modules ] || yarn install )
 
 setup: 
-	git sudmodule update --init
+	git submodule update --init
+	cd domino && git submodule update --init
 
 launch:
+	cd domino && make build
+	mkdir -p workdir
+	cp -r domino/workdir/domino.happ workdir/domino.happ
 	yarn network:tauri
 
 launch-android: install
