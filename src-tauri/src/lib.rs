@@ -1,20 +1,19 @@
+mod menu;
 use holochain_types::prelude::AppBundle;
 use std::path::PathBuf;
-use tauri_plugin_holochain::{HolochainPluginConfig, HolochainExt, NetworkConfig, vec_to_locked};
+use tauri_plugin_holochain::{vec_to_locked, HolochainExt, HolochainPluginConfig, NetworkConfig};
 // use tauri_plugin_opener::OpenerExt;
-use tauri::{AppHandle, Manager};
 use anyhow::anyhow;
 #[cfg(not(mobile))]
-use tauri_plugin_dialog::{DialogExt, MessageDialogButtons};
-#[cfg(not(mobile))]
 use tauri::menu::{Menu, MenuItem, PredefinedMenuItem, Submenu};
-#[cfg(all(desktop, feature = "tray-icon"))]
-use tauri::{
-    tray::{TrayIconBuilder, TrayIconEvent, ClickType},
-    image::Image,
-};
-mod utils;
+// #[cfg(all(desktop))]
+// use tauri::tray::{TrayIconBuilder, TrayIconEvent};
+use tauri::{AppHandle, Manager};
+
+#[cfg(not(mobile))]
+use tauri_plugin_dialog::{DialogExt, MessageDialogButtons};
 mod tauri_config_reader;
+mod utils;
 use tauri_config_reader::AppConfig;
 
 const APP_ID_FOR_HOLOCHAIN_DIR: &'static str = "domino-sandbox";
@@ -27,12 +26,11 @@ pub fn happ_bundle() -> AppBundle {
     AppBundle::decode(bytes).expect(&"Failed to decode domino.happ")
 }
 
-
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // std::env::set_var("WASM_LOG", "debug");
     // Get the config from the generated context
-    
+
     tauri::Builder::default()
         .plugin(
             tauri_plugin_log::Builder::default()
@@ -65,7 +63,6 @@ pub fn run() {
                 let mut window_builder = app.holochain()?
                 .main_window_builder(String::from("main"), false, Some(AppConfig::new(handle.clone()).app_id), None)
                 .await?;
-            
                #[cfg(not(mobile))]
                 {
                     window_builder = window_builder
@@ -74,28 +71,42 @@ pub fn run() {
                         .menu(
                             Menu::with_items(
                                 &handle,
-                                &[&Submenu::with_items(
-                                    &handle,
-                                    "File",
-                                    true,
-                                    &[
-                                        &MenuItem::with_id(
-                                           & handle,
-                                            "open-logs-folder",
-                                            "Open Logs Folder",
+                                &[
+                                    &Submenu::with_items(
+                                        &handle,
+                                        "File",
+                                        true,
+                                        &[
+                                            &MenuItem::with_id(
+                                               & handle,
+                                                "open-logs-folder",
+                                                "Open Logs Folder",
+                                                true,
+                                                None::<&str>,
+                                            )?,
+                                            // &MenuItem::with_id(
+                                            //    & handle,
+                                            //     "factory-reset",
+                                            //     "Factory Reset",
+                                            //     true,
+                                            //     None::<&str>,
+                                            // )?,
+                                            &PredefinedMenuItem::close_window(&handle, None)?,
+                                        ],
+                                    )?,
+                                    &Submenu::with_items(
+                                        &handle,
+                                        "Help",
+                                        true,
+                                        &[&MenuItem::with_id(
+                                            &handle,
+                                            "about",
+                                            "About",
                                             true,
                                             None::<&str>,
-                                        )?,
-                                        // &MenuItem::with_id(
-                                        //    & handle,
-                                        //     "factory-reset",
-                                        //     "Factory Reset",
-                                        //     true,
-                                        //     None::<&str>,
-                                        // )?,
-                                        &PredefinedMenuItem::close_window(&handle, None)?,
-                                    ],
-                                )?],
+                                        )?],
+                                    )?,
+                                ],
                             )?
                         )
                         .on_menu_event(move |window, menu_event| match menu_event.id().as_ref() {
@@ -124,9 +135,15 @@ pub fn run() {
                                                 }
                                             }
                                             false => {
-        
+                                                log::info!("Factory reset cancelled");
                                             }
                                         });
+                            }
+                            "about" => {
+                                let h = window.app_handle().clone();
+                                tauri::async_runtime::spawn(async move {
+                                    menu::about_menu(&h).await
+                                });
                             }
                             _ => {}
                         });
@@ -134,9 +151,9 @@ pub fn run() {
 
                 window_builder.build()?;
 
-                // Setup system tray
-                #[cfg(all(desktop, feature = "tray-icon"))]
-                setup_tray(&handle)?;
+                // // Setup system tray
+                // #[cfg(all(desktop))]
+                // setup_tray(&handle)?;
 
                 Ok(())
             });
@@ -163,118 +180,123 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
         .await
         .map_err(|err| tauri_plugin_holochain::Error::ConductorApiError(err))?;
 
-        let app_is_already_installed = installed_apps
+    let app_is_already_installed = installed_apps
         .iter()
-        .find(|app| app.installed_app_id.as_str().eq(&AppConfig::new(handle.clone()).app_id))
+        .find(|app| {
+            app.installed_app_id
+                .as_str()
+                .eq(&AppConfig::new(handle.clone()).app_id)
+        })
         .is_some();
 
-        if !app_is_already_installed {
-            let previous_app = installed_apps
-                .iter()
-                .filter(|app| app.installed_app_id.as_str().starts_with(AppConfig::new(handle.clone()).app_id.as_str()))
-                .min_by_key(|app_info| app_info.installed_at);
-    
-            
-    
-            if let Some(previous_app) = previous_app {
-            
-               utils::migrate_app(
-                    &handle.holochain()?.holochain_runtime,
-                    previous_app.installed_app_id.clone(),
-                    AppConfig::new(handle.clone()).app_id,
+    if !app_is_already_installed {
+        let previous_app = installed_apps
+            .iter()
+            .filter(|app| {
+                app.installed_app_id
+                    .as_str()
+                    .starts_with(AppConfig::new(handle.clone()).app_id.as_str())
+            })
+            .min_by_key(|app_info| app_info.installed_at);
+
+        if let Some(previous_app) = previous_app {
+            utils::migrate_app(
+                &handle.holochain()?.holochain_runtime,
+                previous_app.installed_app_id.clone(),
+                AppConfig::new(handle.clone()).app_id,
+                happ_bundle(),
+                None,
+                Some(AppConfig::new(handle.clone()).network_seed),
+            )
+            .await?;
+
+            admin_ws
+                .disable_app(previous_app.installed_app_id.clone())
+                .await
+                .map_err(|err| anyhow!("{err:?}"))?;
+        } else {
+            handle
+                .holochain()?
+                .install_app(
+                    String::from(AppConfig::new(handle.clone()).app_id),
                     happ_bundle(),
+                    None,
                     None,
                     Some(AppConfig::new(handle.clone()).network_seed),
                 )
                 .await?;
-    
-                admin_ws
-                    .disable_app(previous_app.installed_app_id.clone())
-                    .await
-                    .map_err(|err| anyhow!("{err:?}"))?;
-            } else {
-                handle
-                    .holochain()?
-                    .install_app(
-                        String::from(AppConfig::new(handle.clone()).app_id),
-                        happ_bundle(),
-                        None,
-                        None,
-                        Some(AppConfig::new(handle.clone()).network_seed),
-                    )
-                    .await?;
-            }
-    
-            Ok(())
-        } else {
-            handle
-                .holochain()?
-                .update_app_if_necessary(String::from(AppConfig::new(handle.clone()).app_id), happ_bundle())
-                .await?;
-    
-            Ok(())
         }
+
+        Ok(())
+    } else {
+        handle
+            .holochain()?
+            .update_app_if_necessary(
+                String::from(AppConfig::new(handle.clone()).app_id),
+                happ_bundle(),
+            )
+            .await?;
+
+        Ok(())
+    }
 }
 
-#[cfg(all(desktop, feature = "tray-icon"))]
-fn setup_tray(app: &AppHandle) -> tauri::Result<()> {
-    let tray_menu = Menu::with_items(
-        app,
-        &[
-            &MenuItem::with_id(app, "show", "Show", true, None::<&str>)?,
-            &MenuItem::with_id(app, "hide", "Hide", true, None::<&str>)?,
-            &PredefinedMenuItem::separator(app)?,
-            &MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?,
-        ],
-    )?;
+// #[cfg(all(desktop))]
+// fn setup_tray(app: &AppHandle) -> tauri::Result<()> {
+//     let tray_menu = Menu::with_items(
+//         app,
+//         &[
+//             &MenuItem::with_id(app, "show", "Show", true, None::<&str>)?,
+//             &MenuItem::with_id(app, "hide", "Hide", true, None::<&str>)?,
+//             &PredefinedMenuItem::separator(app)?,
+//             &MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?,
+//         ],
+//     )?;
 
-    let _tray = TrayIconBuilder::new()
-        .icon(app.default_window_icon().unwrap().clone())
-        .menu(&tray_menu)
-        .menu_on_left_click(false)
-        .tooltip("Domino")
-        .on_menu_event(move |app, event| match event.id().as_ref() {
-            "show" => {
-                if let Some(window) = app.get_webview_window("main") {
-                    let _ = window.show();
-                    let _ = window.set_focus();
-                }
-            }
-            "hide" => {
-                if let Some(window) = app.get_webview_window("main") {
-                    let _ = window.hide();
-                }
-            }
-            "quit" => {
-                app.exit(0);
-            }
-            _ => {}
-        })
-        .on_tray_icon_event(|tray, event| {
-            match event {
-                TrayIconEvent::Click {
-                    button: tauri::tray::MouseButton::Left,
-                    button_state: tauri::tray::MouseButtonState::Up,
-                    ..
-                } => {
-                    let app = tray.app_handle();
-                    if let Some(window) = app.get_webview_window("main") {
-                        let _ = if window.is_visible().unwrap_or(false) {
-                            window.hide()
-                        } else {
-                            window.show();
-                            window.set_focus()
-                        };
-                    }
-                }
-                _ => {}
-            }
-        })
-        .build(app)?;
+//     let _tray = TrayIconBuilder::new()
+//         .icon(app.default_window_icon().unwrap().clone())
+//         .menu(&tray_menu)
+//         .menu_on_left_click(false)
+//         .tooltip("Domino")
+//         .on_menu_event(move |app, event| match event.id().as_ref() {
+//             "show" => {
+//                 if let Some(window) = app.get_webview_window("main") {
+//                     let _ = window.show();
+//                     let _ = window.set_focus();
+//                 }
+//             }
+//             "hide" => {
+//                 if let Some(window) = app.get_webview_window("main") {
+//                     let _ = window.hide();
+//                 }
+//             }
+//             "quit" => {
+//                 app.exit(0);
+//             }
+//             _ => {}
+//         })
+//         .on_tray_icon_event(|tray, event| match event {
+//             TrayIconEvent::Click {
+//                 button: tauri::tray::MouseButton::Left,
+//                 button_state: tauri::tray::MouseButtonState::Up,
+//                 ..
+//             } => {
+//                 let app = tray.app_handle();
+//                 if let Some(window) = app.get_webview_window("main") {
+//                     let _ = if window.is_visible().unwrap_or(false) {
+//                         window.hide()
+//                     } else {
+//                         window.show();
+//                         window.set_focus()
+//                     };
+//                 }
+//             }
+//             _ => {}
+//         })
+//         .build(app)?;
 
-    Ok(())
-}
-
+//     Ok(())
+// }
 
 fn network_config() -> NetworkConfig {
     let mut network_config = NetworkConfig::default();
@@ -283,7 +305,8 @@ fn network_config() -> NetworkConfig {
     if tauri::is_dev() {
         network_config.bootstrap_url = url2::Url2::parse("http://0.0.0.0:8888");
     } else {
-        network_config.bootstrap_url = url2::Url2::parse("https://dev-test-bootstrap2.holochain.org/");
+        network_config.bootstrap_url =
+            url2::Url2::parse("https://dev-test-bootstrap2.holochain.org/");
     }
 
     // Don't hold any slice of the DHT in mobile
@@ -304,12 +327,13 @@ fn holochain_dir() -> PathBuf {
                     name: "domino",
                     author: std::env!("CARGO_PKG_AUTHORS"),
                 },
-            ).expect("Could not get the UserCache directory")
+            )
+            .expect("Could not get the UserCache directory")
         }
         #[cfg(not(target_os = "android"))]
         {
-            let tmp_dir =
-                tempdir::TempDir::new(APP_ID_FOR_HOLOCHAIN_DIR).expect("Could not create temporary directory");
+            let tmp_dir = tempdir::TempDir::new(APP_ID_FOR_HOLOCHAIN_DIR)
+                .expect("Could not create temporary directory");
 
             // Convert `tmp_dir` into a `Path`, destroying the `TempDir`
             // without deleting the directory.
@@ -328,4 +352,3 @@ fn holochain_dir() -> PathBuf {
         .join("holochain")
     }
 }
-

@@ -11,13 +11,6 @@
     "withGlobalTauri": false,
     "security": {
       "csp": null
-    },
-    "trayIcon": {
-      "id": "main",
-      "iconPath": "icons/32x32.png",
-      "tooltip": "Domino",
-      "menuOnLeftClick": false,
-      "showMenuOnLeftClick": true
     }
   },
   "bundle": {

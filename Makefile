@@ -7,7 +7,7 @@ setup:
 	cd domino && git submodule update --init
 
 launch:
-	cd domino && make build
+	cd domino && yarn build:happ
 	mkdir -p workdir
 	cp -r domino/workdir/domino.happ workdir/domino.happ
 	yarn network:tauri
