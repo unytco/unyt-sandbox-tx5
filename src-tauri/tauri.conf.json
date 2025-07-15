@@ -1,6 +1,6 @@
 {
-  "productName": "Domino",
   "version": "0.19.0",
+  "productName": "Domino",
   "identifier": "co.unyt.domino.sandbox",
   "build": {
     "beforeBuildCommand": "cd ./domino && make ci-build-ui",
@@ -11,6 +11,13 @@
     "withGlobalTauri": false,
     "security": {
       "csp": null
+    },
+    "trayIcon": {
+      "id": "main",
+      "iconPath": "icons/32x32.png",
+      "tooltip": "Domino",
+      "menuOnLeftClick": false,
+      "showMenuOnLeftClick": true
     }
   },
   "bundle": {
