@@ -199,7 +199,7 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
     
     log::info!("📋 Listing installed apps...");
     let installed_apps = admin_ws
-        .list_apps(None)
+        .list_apps(AppStatusFilter::Running)
         .await
         .map_err(|err| {
             log::error!("Failed to list apps: {:?}", err);
@@ -230,6 +230,7 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
             .filter(|app| {
                 app.installed_app_id
                     .as_str()
+                    // check for the app prefix
                     .starts_with(app_config.identifier.as_str())
             })
             .min_by_key(|app_info| app_info.installed_at);
