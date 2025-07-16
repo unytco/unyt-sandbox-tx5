@@ -1,4 +1,4 @@
-// mod menu;
+mod menu;
 mod utils;
 use holochain_types::prelude::AppBundle;
 use std::path::PathBuf;
@@ -17,7 +17,7 @@ mod tauri_config_reader;
 use tauri_config_reader::AppConfig;
 use holochain_client::AppStatusFilter;
 
-const APP_ID_FOR_HOLOCHAIN_DIR: &'static str = "domino-sandbox";
+const FOR_HOLOCHAIN_DIR: &'static str = "co.unyt.domino.sandbox";
 
 // const DNA_HASH: &'static str = "domino-dna_hashes";
 // const DNA_HASH: &'static str = include_str!("../../workdir/dash-chat-dna_hashes");
@@ -27,6 +27,12 @@ pub fn happ_bundle() -> AppBundle {
     AppBundle::decode(bytes).expect(&"Failed to decode domino.happ")
 }
 
+macro_rules! log {
+    ($($arg:tt)*) => {
+        println!("🟦 {}", format!($($arg)*))
+    };
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // Enhanced environment variables for debugging
@@ -34,9 +40,9 @@ pub fn run() {
     // std::env::set_var("RUST_LOG", "debug"); // Add general Rust logging
     
     // Log startup information
-    println!("🚀 Starting Domino application...");
-    println!("App version: {}", env!("CARGO_PKG_VERSION"));
-    println!("Build mode: {}", if tauri::is_dev() { "development" } else { "production" });
+    log!("🚀 Starting Domino application...");
+    log!("App version: {}", env!("CARGO_PKG_VERSION"));
+    log!("Build mode: {}", if tauri::is_dev() { "development" } else { "production" });
 
     tauri::Builder::default()
         .plugin(
@@ -73,25 +79,25 @@ pub fn run() {
             HolochainPluginConfig::new(holochain_dir(), network_config())
         ))
         .setup(|app| {
-            println!("🔧 Starting application setup...");
+            log!("🔧 Starting application setup...");
             let handle = app.handle().clone();
             
             // NOW we can log - logger is initialized
-            println!("App config: {:?}", AppConfig::new(handle.clone()));
-            println!("Holochain directory: {:?}", holochain_dir());
+            log!("App config: {:?}", AppConfig::new(handle.clone()));
+            log!("Holochain directory: {:?}", holochain_dir());
             
             // Log file locations for easy debugging
             if let Ok(log_dir) = handle.path().app_log_dir() {
-                println!("📁 Log files location: {:?}", log_dir);
+                log!("📁 Log files location: {:?}", log_dir);
             }
             
             let result: anyhow::Result<()> = tauri::async_runtime::block_on(async move {
-                println!("📦 Calling setup function...");
+                log!("📦 Calling setup function...");
                 setup(handle.clone()).await?;
-                println!("✅ Setup completed successfully");
+                log!("✅ Setup completed successfully");
 
                 // After set up we can be sure our app is installed and up to date, so we can just open it
-                println!("🪟 Creating main window...");
+                log!("🪟 Creating main window...");
                 let mut window_builder = app.holochain()?
                 .main_window_builder(String::from("main"), false, Some(AppConfig::new(handle.clone()).app_id), None)
                 .await?;
@@ -126,18 +132,18 @@ pub fn run() {
                                             &PredefinedMenuItem::close_window(&handle, None)?,
                                         ],
                                     )?,
-                                    // &Submenu::with_items(
-                                    //     &handle,
-                                    //     "Help",
-                                    //     true,
-                                    //     &[&MenuItem::with_id(
-                                    //         &handle,
-                                    //         "about",
-                                    //         "About",
-                                    //         true,
-                                    //         None::<&str>,
-                                    //     )?],
-                                    // )?,
+                                    &Submenu::with_items(
+                                        &handle,
+                                        "Help",
+                                        true,
+                                        &[&MenuItem::with_id(
+                                            &handle,
+                                            "about",
+                                            "About",
+                                            true,
+                                            None::<&str>,
+                                        )?],
+                                    )?,
                                 ],
                             )?
                         )
@@ -148,7 +154,7 @@ pub fn run() {
                                     .app_log_dir()
                                     .expect("Could not get app log dir");
                                 if let Err(err) = tauri_plugin_opener::reveal_item_in_dir(log_folder.clone()) {
-                                    println!("Failed to open log dir at {log_folder:?}: {err:?}");
+                                    log!("Failed to open log dir at {log_folder:?}: {err:?}");
                                 }
                             }
                             "factory-reset" => {
@@ -161,29 +167,29 @@ pub fn run() {
                                         .show(move |result| match result {
                                             true => {
                                                 if let Err(err) = std::fs::remove_dir_all(holochain_dir()) {
-                                                    println!("Failed to perform factory reset: {err:?}");
+                                                    log!("Failed to perform factory reset: {err:?}");
                                                 } else {
                                                     h.restart();
                                                 }
                                             }
                                             false => {
-                                                println!("Factory reset cancelled");
+                                                log!("Factory reset cancelled");
                                             }
                                         });
                             }
-                            // "about" => {
-                            //     let h = window.app_handle().clone();
-                            //     tauri::async_runtime::spawn(async move {
-                            //         menu::about_menu(&h).await
-                            //     });
-                            // }
+                            "about" => {
+                                let h = window.app_handle().clone();
+                                tauri::async_runtime::spawn(async move {
+                                    menu::about_menu(&h).await
+                                });
+                            }
                             _ => {}
                         });
                 }
 
-                println!("🎯 Building window...");
+                log!("🎯 Building window...");
                 window_builder.build()?;
-                println!("✅ Window built successfully");
+                log!("✅ Window built successfully");
 
                 // // Setup system tray
                 // #[cfg(all(desktop))]
@@ -193,8 +199,8 @@ pub fn run() {
             });
 
             match &result {
-                Ok(_) => println!("🎉 Application startup completed successfully"),
-                Err(e) => println!("❌ Application startup failed: {:?}", e),
+                Ok(_) => log!("🎉 Application startup completed successfully"),
+                Err(e) => log!("❌ Application startup failed: {:?}", e),
             }
 
             result?;
@@ -207,21 +213,21 @@ pub fn run() {
 
 // Enhanced setup function with detailed logging
 async fn setup(handle: AppHandle) -> anyhow::Result<()> {
-    println!("🔌 Connecting to Holochain admin websocket...");
+    log!("🔌 Connecting to Holochain admin websocket...");
     let admin_ws = handle.holochain()?.admin_websocket().await?;
     
-    println!("📋 Listing installed apps...");
+    log!("📋 Listing installed apps...");
     let installed_apps = admin_ws
         .list_apps(Some(AppStatusFilter::Running))
         .await
         .map_err(|err| {
-            println!("Failed to list apps: {:?}", err);
+            log!("Failed to list apps: {:?}", err);
             tauri_plugin_holochain::Error::ConductorApiError(err)
         })?;
     
-    println!("Found {} installed apps", installed_apps.len());
+    log!("Found {} installed apps", installed_apps.len());
     for app in &installed_apps {
-        println!("Installed app: {} (status: {:?})", app.installed_app_id, app.status);
+        log!("Installed app: {} (status: {:?})", app.installed_app_id, app.status);
     }
 
     let app_config = AppConfig::new(handle.clone());
@@ -234,10 +240,10 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
         })
         .is_some();
 
-    println!("App '{}' already installed: {}", app_config.app_id, app_is_already_installed);
+    log!("App '{}' already installed: {}", app_config.app_id, app_is_already_installed);
 
     if !app_is_already_installed {
-        println!("🔍 Looking for previous app versions to migrate...");
+        log!("🔍 Looking for previous app versions to migrate...");
         let previous_app = installed_apps
             .iter()
             .filter(|app| {
@@ -249,7 +255,7 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
             .min_by_key(|app_info| app_info.installed_at);
 
         if let Some(previous_app) = previous_app {
-            println!("🔄 Migrating from previous app: {}", previous_app.installed_app_id);
+            log!("🔄 Migrating from previous app: {}", previous_app.installed_app_id);
             utils::migrate_app(
                 &handle.holochain()?.holochain_runtime,
                 previous_app.installed_app_id.clone(),
@@ -260,16 +266,16 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
             )
             .await?;
 
-            println!("🔌 Disabling previous app: {}", previous_app.installed_app_id);
+            log!("🔌 Disabling previous app: {}", previous_app.installed_app_id);
             admin_ws
                 .disable_app(previous_app.installed_app_id.clone())
                 .await
                 .map_err(|err| {
-                    println!("Failed to disable previous app: {:?}", err);
+                    log!("Failed to disable previous app: {:?}", err);
                     anyhow!("{err:?}")
                 })?;
         } else {
-            println!("📥 Installing new app: {}", app_config.app_id);
+            log!("📥 Installing new app: {}", app_config.app_id);
             handle
                 .holochain()?
                 .install_app(
@@ -282,10 +288,10 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
                 .await?;
         }
 
-        println!("✅ App installation/migration completed");
+        log!("✅ App installation/migration completed");
         Ok(())
     } else {
-        println!("🔄 Checking if app needs update...");
+        log!("🔄 Checking if app needs update...");
         handle
             .holochain()?
             .update_app_if_necessary(
@@ -294,7 +300,7 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
             )
             .await?;
 
-        println!("✅ App update check completed");
+        log!("✅ App update check completed");
         Ok(())
     }
 }
@@ -382,7 +388,7 @@ fn holochain_dir() -> PathBuf {
             app_dirs2::app_root(
                 app_dirs2::AppDataType::UserCache,
                 &app_dirs2::AppInfo {
-                    name: APP_ID_FOR_HOLOCHAIN_DIR,
+                    name: FOR_HOLOCHAIN_DIR,
                     author: std::env!("CARGO_PKG_AUTHORS"),
                 },
             )
@@ -390,7 +396,7 @@ fn holochain_dir() -> PathBuf {
         }
         #[cfg(not(target_os = "android"))]
         {
-            let tmp_dir = tempdir::TempDir::new(APP_ID_FOR_HOLOCHAIN_DIR)
+            let tmp_dir = tempdir::TempDir::new(FOR_HOLOCHAIN_DIR)
                 .expect("Could not create temporary directory");
 
             // Convert `tmp_dir` into a `Path`, destroying the `TempDir`
@@ -402,7 +408,7 @@ fn holochain_dir() -> PathBuf {
         app_dirs2::app_root(
             app_dirs2::AppDataType::UserData,
             &app_dirs2::AppInfo {
-                name: APP_ID_FOR_HOLOCHAIN_DIR,
+                name: FOR_HOLOCHAIN_DIR,
                 author: std::env!("CARGO_PKG_AUTHORS"),
             },
         )
