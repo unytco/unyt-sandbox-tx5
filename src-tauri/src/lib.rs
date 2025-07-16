@@ -28,26 +28,36 @@ pub fn happ_bundle() -> AppBundle {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    // std::env::set_var("WASM_LOG", "debug");
-    // Get the config from the generated context
+    // Enhanced environment variables for debugging
+    std::env::set_var("WASM_LOG", "debug");
+    std::env::set_var("RUST_LOG", "debug"); // Add general Rust logging
+    
+    // Log startup information
+    log::info!("🚀 Starting Domino application...");
+    log::info!("App version: {}", env!("CARGO_PKG_VERSION"));
+    log::info!("Build mode: {}", if tauri::is_dev() { "development" } else { "production" });
 
     tauri::Builder::default()
         .plugin(
             tauri_plugin_log::Builder::default()
+            // Enhanced logging levels for production debugging
             .level(if tauri::is_dev() {
-                log::LevelFilter::Info
+                log::LevelFilter::Debug  // More verbose in dev
             } else {
-                log::LevelFilter::Warn
+                log::LevelFilter::Info   // More verbose in production for debugging
             })
+            .level_for("tauri", log::LevelFilter::Debug)  // Add Tauri logs
+            .level_for("domino", log::LevelFilter::Debug) // Enhanced domino logs
             .level_for("tracing::span", log::LevelFilter::Off)
             .level_for("iroh", log::LevelFilter::Warn)
-            .level_for("holochain", log::LevelFilter::Warn)
+            .level_for("holochain", log::LevelFilter::Debug)
             .level_for("kitsune2", log::LevelFilter::Warn)
             .level_for("kitsune2_gossip", log::LevelFilter::Warn)
-            .level_for("holochain_runtime", log::LevelFilter::Warn)
-            .level_for("domino", log::LevelFilter::Warn)
+            .level_for("holochain_runtime", log::LevelFilter::Info) // More verbose
+            // Add rotation to prevent log files from growing too large
+            .rotation_strategy(tauri_plugin_log::RotationStrategy::KeepOne)
             .build(),
-  )
+        )
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_holochain::init(
@@ -56,10 +66,19 @@ pub fn run() {
         ))
         .setup(|app| {
             let handle = app.handle().clone();
+            
+            // Log critical startup information
+            log::info!("🔧 Starting application setup...");
+            log::info!("App config: {:?}", AppConfig::new(handle.clone()));
+            log::info!("Holochain directory: {:?}", holochain_dir());
+            
             let result: anyhow::Result<()> = tauri::async_runtime::block_on(async move {
+                log::info!("📦 Calling setup function...");
                 setup(handle.clone()).await?;
+                log::info!("✅ Setup completed successfully");
 
                 // After set up we can be sure our app is installed and up to date, so we can just open it
+                log::info!("🪟 Creating main window...");
                 let mut window_builder = app.holochain()?
                 .main_window_builder(String::from("main"), false, Some(AppConfig::new(handle.clone()).app_id), None)
                 .await?;
@@ -149,7 +168,9 @@ pub fn run() {
                         });
                 }
 
+                log::info!("🎯 Building window...");
                 window_builder.build()?;
+                log::info!("✅ Window built successfully");
 
                 // // Setup system tray
                 // #[cfg(all(desktop))]
@@ -157,6 +178,11 @@ pub fn run() {
 
                 Ok(())
             });
+
+            match &result {
+                Ok(_) => log::info!("🎉 Application startup completed successfully"),
+                Err(e) => log::error!("❌ Application startup failed: {:?}", e),
+            }
 
             result?;
 
@@ -166,77 +192,95 @@ pub fn run() {
         .expect("error while running tauri application");
 }
 
-// Very simple setup for now:
-// - On app start, check whether the app is already installed:
-//   - If it's not installed, install it
-//   - If it's installed, check if it's necessary to update the coordinators for our hApp,
-//     and do so if it is
-//
-// You can modify this function to suit your needs if they become more complex
+// Enhanced setup function with detailed logging
 async fn setup(handle: AppHandle) -> anyhow::Result<()> {
+    log::info!("🔌 Connecting to Holochain admin websocket...");
     let admin_ws = handle.holochain()?.admin_websocket().await?;
+    
+    log::info!("📋 Listing installed apps...");
     let installed_apps = admin_ws
         .list_apps(None)
         .await
-        .map_err(|err| tauri_plugin_holochain::Error::ConductorApiError(err))?;
+        .map_err(|err| {
+            log::error!("Failed to list apps: {:?}", err);
+            tauri_plugin_holochain::Error::ConductorApiError(err)
+        })?;
+    
+    log::info!("Found {} installed apps", installed_apps.len());
+    for app in &installed_apps {
+        log::debug!("Installed app: {} (status: {:?})", app.installed_app_id, app.status);
+    }
 
+    let app_config = AppConfig::new(handle.clone());
     let app_is_already_installed = installed_apps
         .iter()
         .find(|app| {
             app.installed_app_id
                 .as_str()
-                .eq(&AppConfig::new(handle.clone()).app_id)
+                .eq(&app_config.app_id)
         })
         .is_some();
 
+    log::info!("App '{}' already installed: {}", app_config.app_id, app_is_already_installed);
+
     if !app_is_already_installed {
+        log::info!("🔍 Looking for previous app versions to migrate...");
         let previous_app = installed_apps
             .iter()
             .filter(|app| {
                 app.installed_app_id
                     .as_str()
-                    .starts_with(AppConfig::new(handle.clone()).app_id.as_str())
+                    .starts_with(app_config.identifier.as_str())
             })
             .min_by_key(|app_info| app_info.installed_at);
 
         if let Some(previous_app) = previous_app {
+            log::info!("🔄 Migrating from previous app: {}", previous_app.installed_app_id);
             utils::migrate_app(
                 &handle.holochain()?.holochain_runtime,
                 previous_app.installed_app_id.clone(),
-                AppConfig::new(handle.clone()).app_id,
+                app_config.app_id.clone(),
                 happ_bundle(),
                 None,
-                Some(AppConfig::new(handle.clone()).network_seed),
+                Some(app_config.network_seed.clone()),
             )
             .await?;
 
+            log::info!("🔌 Disabling previous app: {}", previous_app.installed_app_id);
             admin_ws
                 .disable_app(previous_app.installed_app_id.clone())
                 .await
-                .map_err(|err| anyhow!("{err:?}"))?;
+                .map_err(|err| {
+                    log::error!("Failed to disable previous app: {:?}", err);
+                    anyhow!("{err:?}")
+                })?;
         } else {
+            log::info!("📥 Installing new app: {}", app_config.app_id);
             handle
                 .holochain()?
                 .install_app(
-                    String::from(AppConfig::new(handle.clone()).app_id),
+                    app_config.app_id.clone(),
                     happ_bundle(),
                     None,
                     None,
-                    Some(AppConfig::new(handle.clone()).network_seed),
+                    Some(app_config.network_seed.clone()),
                 )
                 .await?;
         }
 
+        log::info!("✅ App installation/migration completed");
         Ok(())
     } else {
+        log::info!("🔄 Checking if app needs update...");
         handle
             .holochain()?
             .update_app_if_necessary(
-                String::from(AppConfig::new(handle.clone()).app_id),
+                app_config.app_id.clone(),
                 happ_bundle(),
             )
             .await?;
 
+        log::info!("✅ App update check completed");
         Ok(())
     }
 }

@@ -4,7 +4,7 @@ use tauri::AppHandle;
 pub struct AppConfig {
     pub _name: String,
     pub _version: String,
-    pub _identifier: String,
+    pub identifier: String,
     pub product_name: String,
     pub app_id: String,
     pub network_seed: String,
@@ -25,7 +25,7 @@ impl AppConfig {
         Self {
             _name: handle.package_info().name.clone(),
             _version: handle.package_info().version.to_string(),
-            _identifier: handle.config().identifier.clone(),
+            identifier: handle.config().identifier.clone(),
             product_name: handle
                 .config()
                 .product_name
