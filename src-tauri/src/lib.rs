@@ -15,6 +15,7 @@ use tauri_plugin_dialog::{DialogExt, MessageDialogButtons};
 mod tauri_config_reader;
 mod utils;
 use tauri_config_reader::AppConfig;
+use holochain_client::AppStatusFilter;
 
 const APP_ID_FOR_HOLOCHAIN_DIR: &'static str = "domino-sandbox";
 
@@ -40,23 +41,30 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(
             tauri_plugin_log::Builder::default()
-            // Enhanced logging levels for production debugging
-            .level(if tauri::is_dev() {
-                log::LevelFilter::Debug  // More verbose in dev
-            } else {
-                log::LevelFilter::Info   // More verbose in production for debugging
-            })
-            .level_for("tauri", log::LevelFilter::Debug)  // Add Tauri logs
-            .level_for("domino", log::LevelFilter::Debug) // Enhanced domino logs
-            .level_for("tracing::span", log::LevelFilter::Off)
-            .level_for("iroh", log::LevelFilter::Warn)
-            .level_for("holochain", log::LevelFilter::Debug)
-            .level_for("kitsune2", log::LevelFilter::Warn)
-            .level_for("kitsune2_gossip", log::LevelFilter::Warn)
-            .level_for("holochain_runtime", log::LevelFilter::Info) // More verbose
-            // Add rotation to prevent log files from growing too large
-            .rotation_strategy(tauri_plugin_log::RotationStrategy::KeepOne)
-            .build(),
+                // Configure explicit targets and higher log levels for production
+                .targets([
+                    tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Stdout),
+                    tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::LogDir { file_name: Some("domino".to_string()) }),
+                    tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Webview),
+                ])
+                .level(if tauri::is_dev() {
+                    log::LevelFilter::Debug  // More verbose in dev
+                } else {
+                    // todo: check to Info when done debugging  
+                    log::LevelFilter::Debug   // More verbose in production for debugging
+                })
+                .level_for("tauri", log::LevelFilter::Debug)
+                .level_for("domino", log::LevelFilter::Debug)
+                .level_for("domino_tauri", log::LevelFilter::Debug)
+                .level_for("tauri_app_lib", log::LevelFilter::Debug)
+                .level_for("tracing::span", log::LevelFilter::Off)
+                .level_for("iroh", log::LevelFilter::Warn)
+                .level_for("holochain", log::LevelFilter::Debug)
+                .level_for("kitsune2", log::LevelFilter::Warn)
+                .level_for("kitsune2_gossip", log::LevelFilter::Warn)
+                .level_for("holochain_runtime", log::LevelFilter::Info)
+                .rotation_strategy(tauri_plugin_log::RotationStrategy::KeepOne)
+                .build(),
         )
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
@@ -67,10 +75,18 @@ pub fn run() {
         .setup(|app| {
             let handle = app.handle().clone();
             
-            // Log critical startup information
+            // NOW we can log - logger is initialized
+            log::info!("🚀 Starting Domino application...");
+            log::info!("App version: {}", env!("CARGO_PKG_VERSION"));
+            log::info!("Build mode: {}", if tauri::is_dev() { "development" } else { "production" });
             log::info!("🔧 Starting application setup...");
             log::info!("App config: {:?}", AppConfig::new(handle.clone()));
             log::info!("Holochain directory: {:?}", holochain_dir());
+            
+            // Log file locations for easy debugging
+            if let Ok(log_dir) = handle.path().app_log_dir() {
+                log::info!("📁 Log files location: {:?}", log_dir);
+            }
             
             let result: anyhow::Result<()> = tauri::async_runtime::block_on(async move {
                 log::info!("📦 Calling setup function...");
@@ -199,7 +215,7 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
     
     log::info!("📋 Listing installed apps...");
     let installed_apps = admin_ws
-        .list_apps(AppStatusFilter::Running)
+        .list_apps(Some(AppStatusFilter::Running))
         .await
         .map_err(|err| {
             log::error!("Failed to list apps: {:?}", err);
