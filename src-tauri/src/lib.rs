@@ -1,4 +1,5 @@
 mod menu;
+mod utils;
 use holochain_types::prelude::AppBundle;
 use std::path::PathBuf;
 use tauri_plugin_holochain::{vec_to_locked, HolochainExt, HolochainPluginConfig, NetworkConfig};
@@ -13,7 +14,6 @@ use tauri::{AppHandle, Manager};
 #[cfg(not(mobile))]
 use tauri_plugin_dialog::{DialogExt, MessageDialogButtons};
 mod tauri_config_reader;
-mod utils;
 use tauri_config_reader::AppConfig;
 use holochain_client::AppStatusFilter;
 
@@ -30,13 +30,13 @@ pub fn happ_bundle() -> AppBundle {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     // Enhanced environment variables for debugging
-    std::env::set_var("WASM_LOG", "debug");
-    std::env::set_var("RUST_LOG", "debug"); // Add general Rust logging
+    // std::env::set_var("WASM_LOG", "debug");
+    // std::env::set_var("RUST_LOG", "debug"); // Add general Rust logging
     
     // Log startup information
-    log::info!("🚀 Starting Domino application...");
-    log::info!("App version: {}", env!("CARGO_PKG_VERSION"));
-    log::info!("Build mode: {}", if tauri::is_dev() { "development" } else { "production" });
+    println!("🚀 Starting Domino application...");
+    println!("App version: {}", env!("CARGO_PKG_VERSION"));
+    println!("Build mode: {}", if tauri::is_dev() { "development" } else { "production" });
 
     tauri::Builder::default()
         .plugin(
@@ -51,7 +51,7 @@ pub fn run() {
                     log::LevelFilter::Debug  // More verbose in dev
                 } else {
                     // todo: check to Info when done debugging  
-                    log::LevelFilter::Debug   // More verbose in production for debugging
+                    log::LevelFilter::Info   // More verbose in production for debugging
                 })
                 .level_for("tauri", log::LevelFilter::Debug)
                 .level_for("domino", log::LevelFilter::Debug)
@@ -73,28 +73,25 @@ pub fn run() {
             HolochainPluginConfig::new(holochain_dir(), network_config())
         ))
         .setup(|app| {
+            println!("🔧 Starting application setup...");
             let handle = app.handle().clone();
             
             // NOW we can log - logger is initialized
-            log::info!("🚀 Starting Domino application...");
-            log::info!("App version: {}", env!("CARGO_PKG_VERSION"));
-            log::info!("Build mode: {}", if tauri::is_dev() { "development" } else { "production" });
-            log::info!("🔧 Starting application setup...");
-            log::info!("App config: {:?}", AppConfig::new(handle.clone()));
-            log::info!("Holochain directory: {:?}", holochain_dir());
+            println!("App config: {:?}", AppConfig::new(handle.clone()));
+            println!("Holochain directory: {:?}", holochain_dir());
             
             // Log file locations for easy debugging
             if let Ok(log_dir) = handle.path().app_log_dir() {
-                log::info!("📁 Log files location: {:?}", log_dir);
+                println!("📁 Log files location: {:?}", log_dir);
             }
             
             let result: anyhow::Result<()> = tauri::async_runtime::block_on(async move {
-                log::info!("📦 Calling setup function...");
+                println!("📦 Calling setup function...");
                 setup(handle.clone()).await?;
-                log::info!("✅ Setup completed successfully");
+                println!("✅ Setup completed successfully");
 
                 // After set up we can be sure our app is installed and up to date, so we can just open it
-                log::info!("🪟 Creating main window...");
+                println!("🪟 Creating main window...");
                 let mut window_builder = app.holochain()?
                 .main_window_builder(String::from("main"), false, Some(AppConfig::new(handle.clone()).app_id), None)
                 .await?;
@@ -151,7 +148,7 @@ pub fn run() {
                                     .app_log_dir()
                                     .expect("Could not get app log dir");
                                 if let Err(err) = tauri_plugin_opener::reveal_item_in_dir(log_folder.clone()) {
-                                    log::error!("Failed to open log dir at {log_folder:?}: {err:?}");
+                                    println!("Failed to open log dir at {log_folder:?}: {err:?}");
                                 }
                             }
                             "factory-reset" => {
@@ -164,13 +161,13 @@ pub fn run() {
                                         .show(move |result| match result {
                                             true => {
                                                 if let Err(err) = std::fs::remove_dir_all(holochain_dir()) {
-                                                    log::error!("Failed to perform factory reset: {err:?}");
+                                                    println!("Failed to perform factory reset: {err:?}");
                                                 } else {
                                                     h.restart();
                                                 }
                                             }
                                             false => {
-                                                log::info!("Factory reset cancelled");
+                                                println!("Factory reset cancelled");
                                             }
                                         });
                             }
@@ -184,9 +181,9 @@ pub fn run() {
                         });
                 }
 
-                log::info!("🎯 Building window...");
+                println!("🎯 Building window...");
                 window_builder.build()?;
-                log::info!("✅ Window built successfully");
+                println!("✅ Window built successfully");
 
                 // // Setup system tray
                 // #[cfg(all(desktop))]
@@ -196,8 +193,8 @@ pub fn run() {
             });
 
             match &result {
-                Ok(_) => log::info!("🎉 Application startup completed successfully"),
-                Err(e) => log::error!("❌ Application startup failed: {:?}", e),
+                Ok(_) => println!("🎉 Application startup completed successfully"),
+                Err(e) => println!("❌ Application startup failed: {:?}", e),
             }
 
             result?;
@@ -210,21 +207,21 @@ pub fn run() {
 
 // Enhanced setup function with detailed logging
 async fn setup(handle: AppHandle) -> anyhow::Result<()> {
-    log::info!("🔌 Connecting to Holochain admin websocket...");
+    println!("🔌 Connecting to Holochain admin websocket...");
     let admin_ws = handle.holochain()?.admin_websocket().await?;
     
-    log::info!("📋 Listing installed apps...");
+    println!("📋 Listing installed apps...");
     let installed_apps = admin_ws
         .list_apps(Some(AppStatusFilter::Running))
         .await
         .map_err(|err| {
-            log::error!("Failed to list apps: {:?}", err);
+            println!("Failed to list apps: {:?}", err);
             tauri_plugin_holochain::Error::ConductorApiError(err)
         })?;
     
-    log::info!("Found {} installed apps", installed_apps.len());
+    println!("Found {} installed apps", installed_apps.len());
     for app in &installed_apps {
-        log::debug!("Installed app: {} (status: {:?})", app.installed_app_id, app.status);
+        println!("Installed app: {} (status: {:?})", app.installed_app_id, app.status);
     }
 
     let app_config = AppConfig::new(handle.clone());
@@ -237,10 +234,10 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
         })
         .is_some();
 
-    log::info!("App '{}' already installed: {}", app_config.app_id, app_is_already_installed);
+    println!("App '{}' already installed: {}", app_config.app_id, app_is_already_installed);
 
     if !app_is_already_installed {
-        log::info!("🔍 Looking for previous app versions to migrate...");
+        println!("🔍 Looking for previous app versions to migrate...");
         let previous_app = installed_apps
             .iter()
             .filter(|app| {
@@ -252,7 +249,7 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
             .min_by_key(|app_info| app_info.installed_at);
 
         if let Some(previous_app) = previous_app {
-            log::info!("🔄 Migrating from previous app: {}", previous_app.installed_app_id);
+            println!("🔄 Migrating from previous app: {}", previous_app.installed_app_id);
             utils::migrate_app(
                 &handle.holochain()?.holochain_runtime,
                 previous_app.installed_app_id.clone(),
@@ -263,16 +260,16 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
             )
             .await?;
 
-            log::info!("🔌 Disabling previous app: {}", previous_app.installed_app_id);
+            println!("🔌 Disabling previous app: {}", previous_app.installed_app_id);
             admin_ws
                 .disable_app(previous_app.installed_app_id.clone())
                 .await
                 .map_err(|err| {
-                    log::error!("Failed to disable previous app: {:?}", err);
+                    println!("Failed to disable previous app: {:?}", err);
                     anyhow!("{err:?}")
                 })?;
         } else {
-            log::info!("📥 Installing new app: {}", app_config.app_id);
+            println!("📥 Installing new app: {}", app_config.app_id);
             handle
                 .holochain()?
                 .install_app(
@@ -285,10 +282,10 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
                 .await?;
         }
 
-        log::info!("✅ App installation/migration completed");
+        println!("✅ App installation/migration completed");
         Ok(())
     } else {
-        log::info!("🔄 Checking if app needs update...");
+        println!("🔄 Checking if app needs update...");
         handle
             .holochain()?
             .update_app_if_necessary(
@@ -297,7 +294,7 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
             )
             .await?;
 
-        log::info!("✅ App update check completed");
+        println!("✅ App update check completed");
         Ok(())
     }
 }
