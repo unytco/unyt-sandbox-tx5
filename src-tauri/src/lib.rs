@@ -1,4 +1,4 @@
-mod menu;
+// mod menu;
 mod utils;
 use holochain_types::prelude::AppBundle;
 use std::path::PathBuf;
@@ -126,18 +126,18 @@ pub fn run() {
                                             &PredefinedMenuItem::close_window(&handle, None)?,
                                         ],
                                     )?,
-                                    &Submenu::with_items(
-                                        &handle,
-                                        "Help",
-                                        true,
-                                        &[&MenuItem::with_id(
-                                            &handle,
-                                            "about",
-                                            "About",
-                                            true,
-                                            None::<&str>,
-                                        )?],
-                                    )?,
+                                    // &Submenu::with_items(
+                                    //     &handle,
+                                    //     "Help",
+                                    //     true,
+                                    //     &[&MenuItem::with_id(
+                                    //         &handle,
+                                    //         "about",
+                                    //         "About",
+                                    //         true,
+                                    //         None::<&str>,
+                                    //     )?],
+                                    // )?,
                                 ],
                             )?
                         )
@@ -171,12 +171,12 @@ pub fn run() {
                                             }
                                         });
                             }
-                            "about" => {
-                                let h = window.app_handle().clone();
-                                tauri::async_runtime::spawn(async move {
-                                    menu::about_menu(&h).await
-                                });
-                            }
+                            // "about" => {
+                            //     let h = window.app_handle().clone();
+                            //     tauri::async_runtime::spawn(async move {
+                            //         menu::about_menu(&h).await
+                            //     });
+                            // }
                             _ => {}
                         });
                 }
@@ -382,7 +382,7 @@ fn holochain_dir() -> PathBuf {
             app_dirs2::app_root(
                 app_dirs2::AppDataType::UserCache,
                 &app_dirs2::AppInfo {
-                    name: "domino",
+                    name: APP_ID_FOR_HOLOCHAIN_DIR,
                     author: std::env!("CARGO_PKG_AUTHORS"),
                 },
             )
