@@ -12706,3 +12706,13 @@ dependencies = [
  "syn 2.0.104",
  "winnow 0.7.12",
 ]
+
+[[patch.unused]]
+name = "wasmer-types"
+version = "6.0.1"
+source = "git+https://github.com/guillemcordoba/wasmer?branch=fix-x86#4231daf3abd3ddc36d7de97a76433fb92d94a9b5"
+
+[[patch.unused]]
+name = "wasmer-vm"
+version = "6.0.1"
+source = "git+https://github.com/guillemcordoba/wasmer?branch=fix-x86#4231daf3abd3ddc36d7de97a76433fb92d94a9b5"
