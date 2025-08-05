@@ -1,6 +1,6 @@
 {
   "name": "domino-shipyard",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "private": true,
   "license": "CAL-1.0",
   "workspaces": [
