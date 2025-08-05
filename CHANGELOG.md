@@ -3,6 +3,31 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.19.0]
+
+### Added
+
+- **Role-Based Input Rules in SmartAgreements:** `SmartAgreement` input rules now reference roles defined in the `CodeTemplate`, ensuring a clear and verifiable link between the two. This change streamlines validation by delegating role expectation management to the `CodeTemplate`. [#169](https://github.com/unytco/domino/pull/169)
+- **Role Definitions in `CodeTemplate`:** The `agreement_definition_input` in `CodeTemplate` now defines roles and their `consumed_link` expectation. This centralizes role management, simplifying `SmartAgreement` validation. [#169](https://github.com/unytco/domino/pull/169)
+- **Validation for `hdi_call` Inputs in SAVED:** `SAVED` now validates that inputs using `hdi_call` collect the correct values, improving data integrity and ensuring that `hdi_call` operations are properly validated.
+- **Enhanced Validation for `unyt_allocation` in SAVED:** `SAVED` now validates that the source of a `unyt_allocation` is not reused, preventing duplicate spending and ensuring that all allocations are unique.[#169](https://github.com/unytco/domino/pull/169)
+- CodeTemplateExt and SmartAgreementExt returns a vec of tags [#171](https://github.com/unytco/domino/pull/171)
+- `ignore_notification` zome call to dismiss transaction notifications [#172](https://github.com/unytco/domino/pull/172)
+- Simple transaction signaling to use `post_commit` hook, providing more reliable and detailed real-time updates to all parties involved in a transaction. [#173](https://github.com/unytco/domino/pull/173)
+- DNA: `get_all_my_smart_agreements` added to get smart_agreements created by this agent itself [#176](https://github.com/unytco/domino/pull/176)
+- `SmartAgreementExt` updated to return version [#176](https://github.com/unytco/domino/pull/176)
+- DNA: added endpoint to get status of a tx or agreement based on hash [#177](https://github.com/unytco/domino/pull/177)
+
+### Changed
+
+- **Breaking Change:** `SmartAgreement` no longer defines its own role expectations and instead relies on the `CodeTemplate` to manage them. This change simplifies the `SmartAgreement` structure and centralizes role management.[#169](https://github.com/unytco/domino/pull/169)
+- **Refined `hdi_call` Support:** `SmartAgreement` input rules now exclusively support `hdi_calls` to ensure all operations can be validated on the DHT. This improves security and data consistency.
+- `create_smart_agreement` and `create_code_template` payloads updated to not expect a separate `tag` parameter. The `tags` are now included in the `SmartAgreement` and `CodeTemplate` structs. [#174](https://github.com/unytco/domino/pull/174)
+- Tags are now returned as `TagFilter` objects instead of strings, providing more structured data. [#174](https://github.com/unytco/domino/pull/174)
+- When updating `CodeTemplate` or `SmartAgreement` tags, old tags are removed and new tags are added, ensuring the entry's tags are always up-to-date. [#174](https://github.com/unytco/domino/pull/174)
+- updated get_code_templates_by_tags to get_code_templates_by_folder
+- updated get_all_agents_code_templates to get_my_code_templates
+
 ## [0.18.0]
 
 ### Changed
@@ -120,7 +145,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Testing: improved tests for credit checks [#125](https://github.com/unytco/domino/pull/125)
 - Added possible_actions to the `Transaction` type [#126](https://github.com/unytco/domino/pull/126)
 - Testing: improved tests for fees dropoff and collections [#127](https://github.com/unytco/domino/pull/127)
-- ui: bug fix on the parked spend form to parse the payload [#128](https://github.com/unytco/domino/pull/127)
+- ui: bug fix on the parked spend form to parse the payload [#127](https://github.com/unytco/domino/pull/127)
 - ui: updated interact as button to show descriptions
 
 ## [0.11.0]
@@ -132,7 +157,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - create link from EA to SAVED to collect all the SAVED's that were executed for a EA [#118](https://github.com/unytco/domino/pull/118)
 - UI: create custom conversion sheets [#119](https://github.com/unytco/domino/pull/119)
 - upgraded UI workspace to maintain multiple UI skins [#121](https://github.com/unytco/domino/pull/121)
-- improved saved_engine with tests [#123](https://github.com/unytco/domino/pull/123)
+- improved rave_engine with tests [#123](https://github.com/unytco/domino/pull/123)
 
 ## [0.10.0]
 
