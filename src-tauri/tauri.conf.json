@@ -5,7 +5,7 @@
   "build": {
     "beforeBuildCommand": "cd ./domino && make ci-build-ui",
     "devUrl": "http://localhost:1420",
-    "frontendDist": "../domino/ui/dev-hub/dist"
+    "frontendDist": "../domino/ui/lit-2/dist"
   },
   "app": {
     "withGlobalTauri": false,

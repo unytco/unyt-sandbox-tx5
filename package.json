@@ -5,7 +5,7 @@
   "license": "CAL-1.0",
   "workspaces": [
     "domino",
-    "domino/ui/dev-hub"
+    "domino/ui/lit-2"
   ],
   "scripts": {
     "network:tauri": "concurrently \"cd domino && yarn network:tauri\" \"yarn launch\"",
