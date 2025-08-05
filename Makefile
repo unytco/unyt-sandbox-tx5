@@ -16,7 +16,7 @@ launch-android: install
 	yarn launch:android
 
 package:
-	cd domino && make package
+	cd domino && APP_VERSION=$$(jq -r '.version' ../src-tauri/tauri.conf.json) make package
 
 build-android: install
 	yarn tauri android build
