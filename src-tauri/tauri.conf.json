@@ -3,7 +3,7 @@
   "productName": "Domino",
   "identifier": "co.unyt.domino.sandbox",
   "build": {
-    "beforeBuildCommand": "cd ./domino && APP_VERSION=$(node -p \"require('../src-tauri/tauri.conf.json').version\") make ci-build-ui",
+    "beforeBuildCommand": "cd ./domino && make ci-build-ui",
     "devUrl": "http://localhost:1420",
     "frontendDist": "../domino/ui/lit-2/dist"
   },
