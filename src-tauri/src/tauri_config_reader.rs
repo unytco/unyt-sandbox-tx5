@@ -32,7 +32,7 @@ impl AppConfig {
                 .clone()
                 .unwrap_or_else(|| "Domino".to_string()),
             app_id: format!("{}-{}", handle.config().identifier, version.to_string()),
-            network_seed: handle.config().identifier.clone(),
+            network_seed: format!("{}-tag", handle.config().identifier),
         }
     }
 }
