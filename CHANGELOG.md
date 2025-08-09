@@ -3,6 +3,17 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.21.0]
+
+### Added
+
+- DNA: new endpoint get_smart_agreement_all_versions and get_code_template_all_versions [#180](https://github.com/unytco/domino/pull/180)
+- Updated role to pass the amount that they provide as <role_id>\_allocation in the smart agreement [#]()
+
+### Updated
+
+- UI updated to handle and mange views depending on the transaction type [#]()
+
 ## [0.20.0]
 
 ### Update
