@@ -17,14 +17,14 @@ mod tauri_config_reader;
 use tauri_config_reader::AppConfig;
 use holochain_client::AppStatusFilter;
 
-const FOR_HOLOCHAIN_DIR: &'static str = "co.unyt.domino.sandbox";
+const FOR_HOLOCHAIN_DIR: &'static str = "co.unyt.unyt.sandbox";
 
-// const DNA_HASH: &'static str = "domino-dna_hashes";
+// const DNA_HASH: &'static str = "unyt-dna_hashes";
 // const DNA_HASH: &'static str = include_str!("../../workdir/dash-chat-dna_hashes");
 
 pub fn happ_bundle() -> AppBundle {
-    let bytes = include_bytes!("../../workdir/domino.happ");
-    AppBundle::decode(bytes).expect(&"Failed to decode domino.happ")
+    let bytes = include_bytes!("../../workdir/unyt.happ");
+    AppBundle::decode(bytes).expect(&"Failed to decode unyt.happ")
 }
 
 macro_rules! log {
@@ -40,7 +40,7 @@ pub fn run() {
     // std::env::set_var("RUST_LOG", "debug"); // Add general Rust logging
     
     // Log startup information
-    log!("🚀 Starting Domino application...");
+    log!("🚀 Starting Unyt application...");
     log!("App version: {}", env!("CARGO_PKG_VERSION"));
     log!("Build mode: {}", if tauri::is_dev() { "development" } else { "production" });
 
@@ -50,7 +50,7 @@ pub fn run() {
                 // Configure explicit targets and higher log levels for production
                 .targets([
                     tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Stdout),
-                    tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::LogDir { file_name: Some("domino".to_string()) }),
+                    tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::LogDir { file_name: Some("unyt".to_string()) }),
                     tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Webview),
                 ])
                 .level(if tauri::is_dev() {
@@ -60,8 +60,8 @@ pub fn run() {
                     log::LevelFilter::Info   // More verbose in production for debugging
                 })
                 .level_for("tauri", log::LevelFilter::Debug)
-                .level_for("domino", log::LevelFilter::Debug)
-                .level_for("domino_tauri", log::LevelFilter::Debug)
+                .level_for("unyt", log::LevelFilter::Debug)
+                .level_for("unyt_tauri", log::LevelFilter::Debug)
                 .level_for("tauri_app_lib", log::LevelFilter::Debug)
                 .level_for("tracing::span", log::LevelFilter::Off)
                 .level_for("iroh", log::LevelFilter::Warn)
@@ -321,7 +321,7 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
 //         .icon(app.default_window_icon().unwrap().clone())
 //         .menu(&tray_menu)
 //         .menu_on_left_click(false)
-//         .tooltip("Domino")
+//         .tooltip("Unyt")
 //         .on_menu_event(move |app, event| match event.id().as_ref() {
 //             "show" => {
 //                 if let Some(window) = app.get_webview_window("main") {

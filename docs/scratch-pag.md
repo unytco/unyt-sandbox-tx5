@@ -24,5 +24,5 @@ Install the app:
 To view logs
 
 ```
- journalctl --user -f | grep -i domino
+ journalctl --user -f | grep -i unyt
 ```

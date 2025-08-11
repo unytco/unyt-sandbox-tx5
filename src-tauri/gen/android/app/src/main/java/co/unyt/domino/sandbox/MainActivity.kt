@@ -1,3 +1,3 @@
-package co.unyt.domino.sandbox
+package co.unyt.unyt.sandbox
 
 class MainActivity : TauriActivity()

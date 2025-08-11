@@ -1,11 +1,11 @@
 {
   "version": "0.22.0",
   "productName": "Unyt",
-  "identifier": "co.unyt.domino.sandbox",
+  "identifier": "co.unyt.unyt.sandbox",
   "build": {
-    "beforeBuildCommand": "cd ./domino && make ci-build-ui",
+    "beforeBuildCommand": "cd ./unyt && make ci-build-ui",
     "devUrl": "http://localhost:1420",
-    "frontendDist": "../domino/ui/lit-2/dist"
+    "frontendDist": "../unyt/ui/lit-2/dist"
   },
   "app": {
     "withGlobalTauri": false,

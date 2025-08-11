@@ -1,7 +1,7 @@
 [package]
-name = "domino-tauri"
+name = "unyt-tauri"
 version = "0.0.0"
-description = "Domino"
+description = "Unyt"
 authors = ["you"]
 license = ""
 repository = ""

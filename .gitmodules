@@ -1,3 +1,3 @@
-[submodule "domino"]
-	path = domino
-	url = git@github.com:unytco/domino.git
+[submodule "unyt"]
+	path = unyt
+	url = git@github.com:unytco/unyt.git

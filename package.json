@@ -1,14 +1,14 @@
 {
-  "name": "domino-shipyard",
+  "name": "unyt-shipyard",
   "version": "0.0.0",
   "private": true,
   "license": "CAL-1.0",
   "workspaces": [
-    "domino",
-    "domino/ui/lit-2"
+    "unyt",
+    "unyt/ui/lit-2"
   ],
   "scripts": {
-    "network:tauri": "concurrently \"cd domino && yarn network:tauri\" \"yarn launch\"",
+    "network:tauri": "concurrently \"cd unyt && yarn network:tauri\" \"yarn launch\"",
     "launch": "concurrently \"yarn tauri dev --no-watch\" \"yarn tauri dev --no-watch\"",
     "launch:android": "yarn tauri android dev",
     "tauri": "tauri"

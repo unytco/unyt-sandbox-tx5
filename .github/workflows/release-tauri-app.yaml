@@ -62,12 +62,12 @@ jobs:
         with:
           allowUpdates: true
           artifacts: |
-            domino/workdir/domino.happ
-            domino/workdir/domino.webhapp
-            domino/dnas/alliance/workdir/alliance.dna
-            domino/dnas/agent_details/workdir/agent_details.dna
+            unyt/workdir/unyt.happ
+            unyt/workdir/unyt.webhapp
+            unyt/dnas/alliance/workdir/alliance.dna
+            unyt/dnas/agent_details/workdir/agent_details.dna
           body: ${{ steps.changelog.outputs.notes }}
-          name: Domino v${{ steps.version.outputs.APP_VERSION }}
+          name: Unyt v${{ steps.version.outputs.APP_VERSION }}
           tag: v${{ steps.version.outputs.APP_VERSION }}
           prerelease: true
           draft: true
@@ -154,7 +154,7 @@ jobs:
         with:
           token: ${{ secrets.GIT_PAT }}
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
-          fileName: "domino.happ"
+          fileName: "unyt.happ"
           out-file-path: "workdir/"
 
       - name: build the app
@@ -222,7 +222,7 @@ jobs:
         with:
           token: ${{ secrets.GIT_PAT }}
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
-          fileName: "domino.happ"
+          fileName: "unyt.happ"
           out-file-path: "workdir/"
 
       - name: setup Android signing
