@@ -30,9 +30,9 @@ impl AppConfig {
                 .config()
                 .product_name
                 .clone()
-                .unwrap_or_else(|| "Domino".to_string()),
+                .unwrap_or_else(|| "Unyt".to_string()),
             app_id: format!("{}-{}", handle.config().identifier, version.to_string()),
-            network_seed: format!("{}-flag1", handle.config().identifier),
+            network_seed: format!("{}-flag2", handle.config().identifier),
         }
     }
 }

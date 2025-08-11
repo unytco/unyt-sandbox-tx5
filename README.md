@@ -1,4 +1,4 @@
-# shipyard-domino
+# shipyard-unyt
 
 Update the tauri.config.json
 

@@ -1,6 +1,6 @@
 {
-  "version": "0.21.0",
-  "productName": "Domino",
+  "version": "0.22.0",
+  "productName": "Unyt",
   "identifier": "co.unyt.domino.sandbox",
   "build": {
     "beforeBuildCommand": "cd ./domino && make ci-build-ui",
