@@ -32,7 +32,7 @@ impl AppConfig {
                 .clone()
                 .unwrap_or_else(|| "Unyt".to_string()),
             app_id: format!("{}-{}", handle.config().identifier, version.to_string()),
-            network_seed: format!("{}-flag3", handle.config().identifier),
+            network_seed: format!("{}-flag4", handle.config().identifier),
         }
     }
 }
