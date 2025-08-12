@@ -17,7 +17,7 @@ mod tauri_config_reader;
 use tauri_config_reader::AppConfig;
 use holochain_client::AppStatusFilter;
 
-const FOR_HOLOCHAIN_DIR: &'static str = "co.unyt.unyt.sandbox";
+const FOR_HOLOCHAIN_DIR: &'static str = "co.unyt.unyt.sandbox-test";
 
 // const DNA_HASH: &'static str = "unyt-dna_hashes";
 // const DNA_HASH: &'static str = include_str!("../../workdir/dash-chat-dna_hashes");
