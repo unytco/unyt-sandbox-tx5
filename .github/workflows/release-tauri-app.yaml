@@ -176,69 +176,69 @@ jobs:
           prerelease: true
           args: ${{ matrix.args }}
 
-  release-tauri-android-app:
-    needs: publish-happ
-    permissions: write-all
+  # release-tauri-android-app:
+  #   needs: publish-happ
+  #   permissions: write-all
 
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Maximize build space
-        uses: AdityaGarg8/remove-unwanted-software@v5
-        with:
-          remove-android: "true"
-          remove-dotnet: "true"
-          remove-haskell: "true"
-          remove-codeql: "true"
-          remove-docker-images: "true"
-          remove-large-packages: "true"
-          remove-cached-tools: "true"
+  #   runs-on: ubuntu-22.04
+  #   steps:
+  #     - name: Maximize build space
+  #       uses: AdityaGarg8/remove-unwanted-software@v5
+  #       with:
+  #         remove-android: "true"
+  #         remove-dotnet: "true"
+  #         remove-haskell: "true"
+  #         remove-codeql: "true"
+  #         remove-docker-images: "true"
+  #         remove-large-packages: "true"
+  #         remove-cached-tools: "true"
 
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      # Checks out a copy of your repository on the ubuntu-latest machine
-      - uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GIT_PAT }}
-          submodules: recursive
-          fetch-depth: 0
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #     # Checks out a copy of your repository on the ubuntu-latest machine
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         token: ${{ secrets.GIT_PAT }}
+  #         submodules: recursive
+  #         fetch-depth: 0
 
-      - name: Install nix
-        uses: cachix/install-nix-action@v27
-        with:
-          github_access_token: ${{ secrets.GIT_PAT }}
-          nix_path: nixpkgs=channel:nixos-24.05
+  #     - name: Install nix
+  #       uses: cachix/install-nix-action@v27
+  #       with:
+  #         github_access_token: ${{ secrets.GIT_PAT }}
+  #         nix_path: nixpkgs=channel:nixos-24.05
 
-      - uses: cachix/cachix-action@v15
-        with:
-          name: holochain-ci
+  #     - uses: cachix/cachix-action@v15
+  #       with:
+  #         name: holochain-ci
 
-      - uses: cachix/cachix-action@v15
-        with:
-          name: darksoil-studio
+  #     - uses: cachix/cachix-action@v15
+  #       with:
+  #         name: darksoil-studio
 
-      - name: Download release of the .happ
-        uses: robinraju/release-downloader@v1.10
-        env:
-          GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
-        with:
-          token: ${{ secrets.GIT_PAT }}
-          releaseId: ${{ needs.publish-happ.outputs.releaseId }}
-          fileName: "unyt.happ"
-          out-file-path: "workdir/"
+  #     - name: Download release of the .happ
+  #       uses: robinraju/release-downloader@v1.10
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
+  #       with:
+  #         token: ${{ secrets.GIT_PAT }}
+  #         releaseId: ${{ needs.publish-happ.outputs.releaseId }}
+  #         fileName: "unyt.happ"
+  #         out-file-path: "workdir/"
 
-      - name: setup Android signing
-        run: |
-          cd src-tauri/gen/android
-          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > keystore.properties
-          echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
-          base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
-          echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
+  #     - name: setup Android signing
+  #       run: |
+  #         cd src-tauri/gen/android
+  #         echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > keystore.properties
+  #         echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> keystore.properties
+  #         base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
+  #         echo "storeFile=$RUNNER_TEMP/keystore.jks" >> keystore.properties
 
-      - name: Install and Build 🔧
-        run: |
-          nix develop --accept-flake-config .#androidDev --command bash -c "make build-android"
+  #     - name: Install and Build 🔧
+  #       run: |
+  #         nix develop --accept-flake-config .#androidDev --command bash -c "make build-android"
 
-      - uses: AButler/upload-release-assets@v3.0
-        with:
-          files: "src-tauri/gen/android/app/build/outputs/bundle/**/*.aab"
-          repo-token: ${{ secrets.GIT_PAT }}
-          release-id: ${{ needs.publish-happ.outputs.releaseId }}
+  #     - uses: AButler/upload-release-assets@v3.0
+  #       with:
+  #         files: "src-tauri/gen/android/app/build/outputs/bundle/**/*.aab"
+  #         repo-token: ${{ secrets.GIT_PAT }}
+  #         release-id: ${{ needs.publish-happ.outputs.releaseId }}
