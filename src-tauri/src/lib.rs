@@ -59,10 +59,10 @@ pub fn run() {
                     // todo: check to Info when done debugging  
                     log::LevelFilter::Info   // More verbose in production for debugging
                 })
-                .level_for("tauri", log::LevelFilter::Debug)
-                .level_for("unyt", log::LevelFilter::Debug)
-                .level_for("unyt_tauri", log::LevelFilter::Debug)
-                .level_for("tauri_app_lib", log::LevelFilter::Debug)
+                .level_for("tauri", log::LevelFilter::Warn)
+                .level_for("unyt", log::LevelFilter::Warn)
+                .level_for("unyt_tauri", log::LevelFilter::Warn)
+                .level_for("tauri_app_lib", log::LevelFilter::Warn)
                 .level_for("tracing::span", log::LevelFilter::Off)
                 .level_for("iroh", log::LevelFilter::Warn)
                 .level_for("holochain", log::LevelFilter::Debug)

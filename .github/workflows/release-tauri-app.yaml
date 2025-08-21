@@ -143,9 +143,14 @@ jobs:
             libsoup-3.0 \
             webkit2gtk-4.1
 
+      - name: Install jq on Windows
+        if: runner.os == 'Windows'
+        run: choco install -y jq
+
       - name: Retrieve version
+        shell: bash
         run: |
-          echo "APP_VERSION=$(cat src-tauri/tauri.conf.json | grep -oP '(?<="version": ")[^"]*')" >> $GITHUB_OUTPUT
+          echo "APP_VERSION=$(jq -r '.package.version' src-tauri/tauri.conf.json)" >> $GITHUB_OUTPUT
         id: version
 
       - name: Install and prepare
