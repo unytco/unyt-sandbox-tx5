@@ -150,7 +150,7 @@ jobs:
       - name: Retrieve version
         shell: bash
         run: |
-          echo "APP_VERSION=$(jq -r '.package.version' src-tauri/tauri.conf.json)" >> $GITHUB_OUTPUT
+          echo "APP_VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)" >> $GITHUB_OUTPUT
         id: version
 
       - name: Install and prepare
