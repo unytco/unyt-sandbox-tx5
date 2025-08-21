@@ -3,20 +3,59 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.26.0]
+
+### Added
+
+- UI uses Sentry to report errors [#189](https://github.com/unytco/unyt/pull/189)
+
+### Updated
+
+- DNA: compatable with holochain v0.5.5 [#190](https://github.com/unytco/unyt/pull/190)
+- UI: replace titles with tooltips [#189](https://github.com/unytco/unyt/pull/189)
+- UI: Handle Error messages [#189](https://github.com/unytco/unyt/pull/189)
+
+## [0.25.0]
+
+### Changed
+
+- validation: updated fee_collection check is not needed when fees is set to 0 [#186](https://github.com/unytco/unyt/pull/186)
+
+## [0.24.0]
+
+### Changed
+
+- hash bump
+
+## [0.23.0]
+
+### Changed
+
+- rename app from domino to unyt [#185](https://github.com/unytco/unyt/pull/185)
+
+## [0.22.0]
+
+### Changed
+
+- Update `get_sorted_requests_to_spend` and `get_requests_to_execute_agreements` to return just a `Vec<Transaction>` and it includes a new tx_state `GroupedParked` [#183](https://github.com/unytco/unyt/pull/183)
+- Fixed the ui's ability to create agreement with authorized roles [#183](https://github.com/unytco/unyt/pull/183)
+- bug fix: accept button shows double [#184](https://github.com/unytco/unyt/pull/184)
+- UI: init script fee trigger updated to `99999999` [#184](https://github.com/unytco/unyt/pull/184)
+
 ## [0.21.0]
 
 ### Added
 
 - DNA: new endpoint get_smart_agreement_all_versions and get_code_template_all_versions [#180](https://github.com/unytco/unyt/pull/180)
-- Updated role to pass the amount that they provide as <role_id>\_allocation in the smart agreement [#]()
+- Changed role to pass the amount that they provide as <role_id>\_allocation in the smart agreement [#182](https://github.com/unytco/unyt/pull/182)
 
-### Updated
+### Changed
 
 - UI updated to handle and mange views depending on the transaction type [#]()
 
 ## [0.20.0]
 
-### Update
+### Changed
 
 - new hash space, with new UI updates based on team testing
 
