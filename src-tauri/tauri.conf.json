@@ -1,7 +1,7 @@
 {
-  "version": "0.25.0",
+  "version": "0.26.0",
   "productName": "Unyt",
-  "identifier": "co.unyt.unyt.sandbox-test",
+  "identifier": "co.unyt.unyt.sandbox",
   "build": {
     "beforeBuildCommand": "cd ./unyt && make ci-build-ui",
     "devUrl": "http://localhost:1420",

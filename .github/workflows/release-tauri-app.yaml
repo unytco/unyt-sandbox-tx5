@@ -143,6 +143,11 @@ jobs:
             libsoup-3.0 \
             webkit2gtk-4.1
 
+      - name: Retrieve version
+        run: |
+          echo "APP_VERSION=$(cat src-tauri/tauri.conf.json | grep -oP '(?<="version": ")[^"]*')" >> $GITHUB_OUTPUT
+        id: version
+
       - name: Install and prepare
         run: |
           yarn install
@@ -168,6 +173,9 @@ jobs:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
+          VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          VITE_COMMIT_SHA: ${{ steps.version.outputs.APP_VERSION }}
+          APP_VERSION: ${{ steps.version.outputs.APP_VERSION }}
         with:
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
           releaseDraft: true
