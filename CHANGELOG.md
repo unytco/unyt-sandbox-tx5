@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.26.0]
+## [0.27.0]
 
 ### Added
 
@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - DNA: compatable with holochain v0.5.5 [#190](https://github.com/unytco/unyt/pull/190)
 - UI: replace titles with tooltips [#189](https://github.com/unytco/unyt/pull/189)
 - UI: Handle Error messages [#189](https://github.com/unytco/unyt/pull/189)
+
+## [0.26.0]
+
+> failed release
 
 ## [0.25.0]
 
