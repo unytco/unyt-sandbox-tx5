@@ -74,11 +74,11 @@ pub fn run() {
         )
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_opener::init())
-        .plugin(tauri_plugin_holochain::init(
+        .plugin(tauri_plugin_holochain::async_init(
             vec_to_locked(vec![]), // TODO: path to add password on startup
             HolochainPluginConfig::new(holochain_dir(), network_config())
         ))
-        .setup(|app| {
+        .setup(move |app| {
             log!("🔧 Starting application setup...");
             let handle = app.handle().clone();
             

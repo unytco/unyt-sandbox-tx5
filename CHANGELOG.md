@@ -3,6 +3,21 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.28.0]
+
+### Updated
+
+- DNA: Update `code_templates` to define `one_time_run` and `aggregate_execution` [#192](https://github.com/unytco/unyt/pull/192)
+- DNA: Added Transformer to the HdiCall [#192](https://github.com/unytco/unyt/pull/192)
+- UI: Sentry reports package version
+- UI: serviceNetworkService uses connectionService to call zomes
+- UI: .env variable VITE_SILENCE_SENTRY silences sentry reporting
+- UI: Change color picker to shoelace default
+- UI: Modify service network wizard according to feedback
+- UI: Get app name from .env variable VITE_APP_NAME https://github.com/unytco/unyt/pull/194
+- UI: Allow code templates to select one_time_run and aggregate_execution https://github.com/unytco/unyt/pull/194
+- UI: .env variable VITE_IS_CIRCULO_RELEASE to hide some components and switch default credit limit to dynamic credit [#195](https://github.com/unytco/unyt/pull/195)
+
 ## [0.27.0]
 
 ### Added
@@ -17,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.26.0]
 
-> failed release
+> broken release
 
 ## [0.25.0]
 
