@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.28.0]
+## [0.29.0]
 
 ### Updated
 
@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UI: Get app name from .env variable VITE_APP_NAME https://github.com/unytco/unyt/pull/194
 - UI: Allow code templates to select one_time_run and aggregate_execution https://github.com/unytco/unyt/pull/194
 - UI: .env variable VITE_IS_CIRCULO_RELEASE to hide some components and switch default credit limit to dynamic credit [#195](https://github.com/unytco/unyt/pull/195)
+
+## [0.28.0]
+
+> test release
 
 ## [0.27.0]
 
