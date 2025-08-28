@@ -3,6 +3,15 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.30.0]
+
+### Updated
+
+- UI: export button for summary page [#197](https://github.com/unytco/unyt/pull/197)
+- SA: fix circulo smart agreement [#197](https://github.com/unytco/unyt/pull/197)
+- UI: export returns accrued fee and sa's title [#197](https://github.com/unytco/unyt/pull/197)
+- UI: update agreement view to show expected inputs per role
+
 ## [0.29.0]
 
 ### Updated
@@ -20,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.28.0]
 
-> test release
+> failed release
 
 ## [0.27.0]
 
