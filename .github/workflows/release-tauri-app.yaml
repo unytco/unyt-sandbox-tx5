@@ -267,6 +267,6 @@ jobs:
         with:
           files: |
             src-tauri/gen/android/app/build/outputs/bundle/**/*.aab
-            src-tauri/gen/android/app/build/outputs/apk/**/*.apk
+            src-tauri/gen/android/app/build/outputs/apk/**/**/*.apk
           repo-token: ${{ secrets.GIT_PAT }}
           release-id: ${{ needs.publish-happ.outputs.releaseId }}
