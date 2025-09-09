@@ -3,6 +3,17 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.31.0]
+
+### Updated
+
+- UI: Smoother data fetching
+- UI: New interaction modal
+- UI: Bug fixes & formatting
+- UI: Move unytStore to connectionService
+- UI: Add sales agent badge to contact-label
+- UI: Add agreement title to interaction note
+
 ## [0.30.0]
 
 ### Updated
@@ -26,6 +37,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UI: Get app name from .env variable VITE_APP_NAME https://github.com/unytco/unyt/pull/194
 - UI: Allow code templates to select one_time_run and aggregate_execution https://github.com/unytco/unyt/pull/194
 - UI: .env variable VITE_IS_CIRCULO_RELEASE to hide some components and switch default credit limit to dynamic credit [#195](https://github.com/unytco/unyt/pull/195)
+- UI: export button for summary page [#]
+- SA: fix circulo smart agreement [#]
+- UI: export returns accrued fee and sa's title [#]
 
 ## [0.28.0]
 
