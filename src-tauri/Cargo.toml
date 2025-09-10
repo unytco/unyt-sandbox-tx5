@@ -15,20 +15,56 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "2.0.0", default-features = false , features = [] }
+tauri-build = { version = "2.4.0", default-features = false , features = [] }
 
 [dependencies]
-tauri = { version = "2.0.0", features = [ "devtools"] }
-tauri-plugin-holochain = { git = "https://github.com/darksoil-studio/tauri-plugin-holochain", branch = "main-0.5" }
-holochain_types = { version = "0.5" }
 holochain_client = { version = "0.7" }
+tauri = { version = "2.8", features = ["devtools"] }
+tauri-plugin-holochain = { git = "https://github.com/darksoil-studio/tauri-plugin-holochain", branch = "main-0.5", default-features = false, features = ["sqlite"] }
+
+service_providers_utils = { git = "https://github.com/darksoil-studio/service-providers", branch = "main-0.5" }
+push_notifications_service_trait = { git = "https://github.com/darksoil-studio/push-notifications-service", branch = "main-0.5" }
+notifications_zome_trait = { git = "https://github.com/darksoil-studio/notifications-zome-trait", branch = "main-0.5" }
+profiles_provider_zome_trait = { git = "https://github.com/darksoil-studio/profiles-zome", branch = "main-0.5" }
+migration_zome_trait = { git = "https://github.com/darksoil-studio/migration-zome-trait", branch = "main-0.5" }
+
+image = "0.25"
+
+tauri-plugin-notification = { git = "https://github.com/guillemcordoba/plugins-workspace", branch = "push-notifications", features = ["push-notifications-fcm"] }
+tauri-plugin-dialog = "2.3"
+tauri-plugin-process = "2.3"
+tauri-plugin-safe-area-insets-css = { git = "https://github.com/guillemcordoba/tauri-plugin-safe-area-insets-css" }
+
+tauri-plugin-single-instance = { version = "2", features = ["deep-link"] }
+tauri-plugin-deep-link = "2"
+
+opener = { version = "0.7", features = ["reveal"] }
 log = "0.4"
-tauri-plugin-log = "2"
-tauri-plugin-dialog = "2"
-tauri-plugin-opener = "2"
+tauri-plugin-log = "2.0.0"
 url2 = "0.0.6"
 app_dirs2 = "2.5.5"
 tempdir = "0.3.7"
 anyhow = "1"
-serde = { version = "1", features = ["derive"] }
+uuid = "1"
+serde = "1"
 serde_json = "1"
+jni = "0.21"
+ndk-context = "0.1"
+
+# Work around "hyper-tls" not found issue in nix build tauri app
+# TODO: remove this dependency
+hyper-tls = "0.6"
+
+# Logging
+libc = "0.2"
+env_logger = "0.11"
+
+[target.'cfg(any(target_os = "android", target_os = "ios"))'.dependencies]
+tauri-plugin-barcode-scanner = "2.4"
+ndk-sys = "0.6"
+
+[target."cfg(not(any(target_os = \"android\", target_os = \"ios\")))".dependencies]
+tauri-plugin-updater = "2.9"
+
+[dev-dependencies]
+tokio = { version = "1", features = [ "full" ] } 

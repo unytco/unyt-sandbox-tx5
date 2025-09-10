@@ -1,5 +1,11 @@
 use tauri::AppHandle;
 
+// this is we are setting it the same as the identifier
+pub const IDENTIFIER_DIR: &'static str = "co.unyt.unyt.sandbox";
+pub const APP_ID_PREFIX: &'static str = "unyt";
+// todo: when we have a way to get the DNA hash we should include this
+// const DNA_HASH: &'static str = include_str!("../../workdir/unyt-dna_hashes");
+
 #[derive(Debug, Clone)]
 pub struct AppConfig {
     pub _name: String,
@@ -11,7 +17,7 @@ pub struct AppConfig {
 }
 
 impl AppConfig {
-    pub fn new(handle: AppHandle) -> Self {
+    pub fn new<R: tauri::Runtime>(handle: &AppHandle<R>) -> Self {
         // the version number is semantic versioning,
         // so I want to brek it down and get the first two numbers
         // and use them as the version number
@@ -31,8 +37,9 @@ impl AppConfig {
                 .product_name
                 .clone()
                 .unwrap_or_else(|| "Unyt".to_string()),
-            app_id: format!("{}-{}", handle.config().identifier, version.to_string()),
-            network_seed: format!("{}-flag2", handle.config().identifier),
+            app_id: format!("{APP_ID_PREFIX}-{}", version.to_string()),
+            // app_id: format!("{APP_ID_PREFIX}-{}", DNA_HASH.trim()),
+            network_seed: format!("{}", handle.config().identifier),
         }
     }
 }

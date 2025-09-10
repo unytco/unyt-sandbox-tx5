@@ -1,11 +1,11 @@
-use crate::{network_config, tauri_config_reader::AppConfig};
+use crate::{app_config::AppConfig, network_config};
 use anyhow::anyhow;
 use holochain_client::{AppInfo, CellInfo};
 use tauri::AppHandle;
 use tauri_plugin_dialog::DialogExt;
 use tauri_plugin_holochain::HolochainExt;
 
-pub async fn about_menu(h: &AppHandle) {
+pub async fn about_menu<R: tauri::Runtime>(h: &AppHandle<R>) {
     let app_version = h.package_info().version.to_string();
 
     let app_info_message = match get_app_info(h.clone()).await {
@@ -94,7 +94,7 @@ pub async fn about_menu(h: &AppHandle) {
 
     let network_config = network_config();
 
-    let product_name = AppConfig::new(h.clone()).product_name;
+    let product_name = AppConfig::new(h).product_name;
     let about_message = format!(
         "{} Version: v{}\n\n---\n\nApp Info:\n{}\n\n---\n\n{:#?}",
         product_name, app_version, app_info_message, network_config,
@@ -106,7 +106,9 @@ pub async fn about_menu(h: &AppHandle) {
         .show(|_| {})
 }
 
-async fn get_app_info(handle: AppHandle) -> anyhow::Result<(Vec<AppInfo>, Option<AppInfo>)> {
+async fn get_app_info<R: tauri::Runtime>(
+    handle: AppHandle<R>,
+) -> anyhow::Result<(Vec<AppInfo>, Option<AppInfo>)> {
     match handle.holochain() {
         Ok(holochain_client) => {
             match holochain_client.admin_websocket().await {
@@ -120,7 +122,7 @@ async fn get_app_info(handle: AppHandle) -> anyhow::Result<(Vec<AppInfo>, Option
                     let expected_app_info = installed_apps.clone().into_iter().find(|app| {
                         app.installed_app_id
                             .as_str()
-                            .eq(&AppConfig::new(handle.clone()).app_id)
+                            .eq(&AppConfig::new(&handle).app_id)
                     });
 
                     // Check if an old version is still installed

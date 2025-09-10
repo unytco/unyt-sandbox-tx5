@@ -263,10 +263,16 @@ jobs:
         run: |
           nix develop --accept-flake-config .#androidDev --command bash -c "make build-android"
 
-      - uses: AButler/upload-release-assets@v3.0
+      - name: Upload release aab
+        uses: AButler/upload-release-assets@v3.0
         with:
-          files: |
-            src-tauri/gen/android/app/build/outputs/bundle/**/*.aab
-            src-tauri/gen/android/app/build/outputs/apk/**/**/*.apk
+          files: src-tauri/gen/android/app/build/outputs/bundle/**/*.aab
+          repo-token: ${{ secrets.GIT_PAT }}
+          release-id: ${{ needs.publish-happ.outputs.releaseId }}
+
+      - name: Upload release apk
+        uses: AButler/upload-release-assets@v3.0
+        with:
+          files: src-tauri/gen/android/app/build/outputs/apk/**/**/*.apk
           repo-token: ${{ secrets.GIT_PAT }}
           release-id: ${{ needs.publish-happ.outputs.releaseId }}

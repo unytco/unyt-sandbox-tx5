@@ -1,5 +1,5 @@
 {
-  "version": "0.31.1",
+  "version": "0.31.2",
   "productName": "Unyt",
   "identifier": "co.unyt.unyt.sandbox",
   "build": {
@@ -10,7 +10,7 @@
   "app": {
     "withGlobalTauri": false,
     "security": {
-      "csp": null
+      "capabilities": ["mobile-capability", "main-capability", "desktop-capability"]
     }
   },
   "bundle": {
@@ -19,6 +19,19 @@
     "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
     "macOS": {
       "entitlements": "entitlements.plist"
+    },
+    "createUpdaterArtifacts": true
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEIyNjA3N0UyNzJBNTk2OEUKUldTT2xxVnk0bmRnc2pCVVhERmxLanFIZEw3NEpmRi9jYitvMCtRWDdLZUEveHkxOXBZbDc5RXQK",
+      "endpoints": ["https://github.com/unytco/shinyyard-unyt/releases/latest/download/latest.json"]
+    },
+    "deep-link": {
+      "mobile": [{ "scheme": ["unyt"] }],
+      "desktop": {
+        "schemes": ["unyt"]
+      }
     }
   }
 }
