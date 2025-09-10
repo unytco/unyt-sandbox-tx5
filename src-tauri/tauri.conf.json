@@ -24,7 +24,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDU0NUIwQjY4QjQ1RkNFNTUKUldSVnpsKzBhQXRiVkpERWlmckcva2ZORzVlSDFTQ3NCS3dDRmhJbW44NkJuRVBVUUN3akZSUmEK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IENBNzQ5Nzc0OENDQzhBRUEKUldUcWlzeU1kSmQweW96Q283MC9Sbis2S24vLzB0bVNTd1U2VzdFcmJGSWs5RWhycE5TY1VVcGIK",
       "endpoints": ["https://github.com/unytco/shinyyard-unyt/releases/latest/download/latest.json"]
     },
     "deep-link": {
