@@ -29,3 +29,8 @@ then
 ## Prep for release
 
 set the network seed `NETWORK_SEED`
+
+## Update
+
+- run `cargo update`
+- `cargo update wasmer-middlewares --precise 6.0.1`

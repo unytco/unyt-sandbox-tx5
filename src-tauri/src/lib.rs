@@ -366,12 +366,12 @@ fn network_config() -> NetworkConfig {
     let mut network_config = NetworkConfig::default();
 
     // Don't use the bootstrap service on tauri dev mode
-    if tauri::is_dev() {
-        network_config.bootstrap_url = url2::Url2::parse("http://0.0.0.0:8888");
-    } else {
+    // if tauri::is_dev() {
+    //     network_config.bootstrap_url = url2::Url2::parse("http://0.0.0.0:8888");
+    // } else {
         network_config.bootstrap_url =
             url2::Url2::parse("https://dev-test-bootstrap2.holochain.org/");
-    }
+    // }
 
     // Don't hold any slice of the DHT in mobile
     if cfg!(mobile) {
