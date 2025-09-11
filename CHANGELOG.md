@@ -3,19 +3,14 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.31.2]
+## [0.32.0]
 
 ### Added
 
-- Tauri: Testing a windows release
+- Tauri: Fixed the windows release
 - Tauri: updater plugin
-
-## [0.31.1]
-
-### Added
-
-- Tauri: Testing a windows release
 - Tauri: `iroh` networking stats
+- UI: added a loading page for the asyn implementation of the new pkg that fixed windows
 
 ## [0.31.0]
 
