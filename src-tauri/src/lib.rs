@@ -12,8 +12,9 @@ pub use utils::migrate_app;
 
 #[cfg(not(mobile))]
 mod menu;
-#[cfg(mobile)]
-mod push_notifications;
+// todo:
+// #[cfg(mobile)]
+// mod push_notifications;
 
 pub fn happ_bundle() -> AppBundle {
     let bytes = include_bytes!("../../workdir/unyt.happ");
@@ -79,12 +80,13 @@ pub fn run() {
                             return;
                         }
 
-                        #[cfg(mobile)]
-                        if let Err(err) =
-                            push_notifications::setup_push_notifications(handle2.clone())
-                        {
-                            log::error!("Failed to setup push notifications: {err:?}");
-                        }
+                        // todo
+                        // #[cfg(mobile)]
+                        // if let Err(err) =
+                        //     push_notifications::setup_push_notifications(handle2.clone())
+                        // {
+                        //     log::error!("Failed to setup push notifications: {err:?}");
+                        // }
                     });
                     let handle = handle.clone();
                     tauri::async_runtime::spawn(async move {

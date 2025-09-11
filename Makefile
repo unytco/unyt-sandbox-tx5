@@ -19,4 +19,8 @@ package:
 	cd unyt && APP_VERSION=$(jq -r '.version' ./src-tauri/tauri.conf.json) make package
 
 build-android: install
+	yarn tauri android build --debug
+
+
+build-android-release: install
 	yarn tauri android build

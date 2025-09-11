@@ -7,7 +7,7 @@ use tauri::{AppHandle, Listener, Manager};
 use tauri_plugin_holochain::*;
 use tauri_plugin_notification::*;
 
-use crate::{app_id, holochain_dir, network_config, utils::with_retries};
+use crate::{holochain_dir, network_config, utils::with_retries, AppConfig};
 
 mod android_logs;
 
@@ -31,7 +31,8 @@ pub fn setup_push_notifications(handle: AppHandle) -> anyhow::Result<()> {
 }
 
 async fn register_fcm_token(handle: AppHandle, token: String) -> anyhow::Result<()> {
-    let app_ws = handle.holochain()?.app_websocket(app_id()).await?;
+    let app_id = AppConfig::new(&handle).app_id;
+    let app_ws = handle.holochain()?.app_websocket(app_id).await?;
     let fcm_project_id = handle.notification().fcm_project_id()?;
 
     with_retries(
@@ -59,6 +60,7 @@ async fn register_fcm_token(handle: AppHandle, token: String) -> anyhow::Result<
 // Entry point to receive notifications
 #[tauri_plugin_notification::receive_push_notification]
 pub fn receive_push_notification(
+    app_id: String,
     notification: NotificationData,
     context: ReceivePushNotificationContext,
 ) -> Option<NotificationData> {
@@ -86,8 +88,13 @@ pub fn receive_push_notification(
         };
         let zome_name = ZomeName::from(title);
         let notification_id = body;
-        let Ok(notification) =
-            get_notification(context.data_dir, zome_name.clone(), notification_id.clone()).await
+        let Ok(notification) = get_notification(
+            app_id,
+            context.data_dir,
+            zome_name.clone(),
+            notification_id.clone(),
+        )
+        .await
         else {
             log::error!("Failed to get notifications.");
             return None;
@@ -102,6 +109,7 @@ pub fn receive_push_notification(
 }
 
 async fn get_notification(
+    app_id: String,
     data_dir: std::path::PathBuf,
     zome_name: ZomeName,
     notification_id: String,
@@ -120,7 +128,7 @@ async fn get_notification(
     )
     .await?;
 
-    let app_ws = runtime.app_websocket(app_id(), AllowedOrigins::Any).await?;
+    let app_ws = runtime.app_websocket(app_id, AllowedOrigins::Any).await?;
 
     log::info!("Holochain runtime launched.");
 
