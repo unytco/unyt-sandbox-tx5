@@ -1,32 +1,35 @@
 use anyhow::anyhow;
-use std::{collections::HashMap, time::Duration};
+use std::{
+    collections::HashMap,
+    // time::Duration
+};
 use tauri_plugin_holochain::*;
 
-pub async fn with_retries<T>(
-    condition: impl AsyncFn() -> anyhow::Result<T>,
-    retries: usize,
-    sleep_ms: u64,
-) -> anyhow::Result<T> {
-    let mut retry_count = 0;
-    loop {
-        let response = condition().await;
+// pub async fn with_retries<T>(
+//     condition: impl AsyncFn() -> anyhow::Result<T>,
+//     retries: usize,
+//     sleep_ms: u64,
+// ) -> anyhow::Result<T> {
+//     let mut retry_count = 0;
+//     loop {
+//         let response = condition().await;
 
-        match response {
-            Ok(r) => {
-                return Ok(r);
-            }
-            Err(err) => {
-                log::warn!("Condition not met yet: {err:?} Retrying in {}ms.", sleep_ms);
-                std::thread::sleep(Duration::from_millis(sleep_ms));
+//         match response {
+//             Ok(r) => {
+//                 return Ok(r);
+//             }
+//             Err(err) => {
+//                 log::warn!("Condition not met yet: {err:?} Retrying in {}ms.", sleep_ms);
+//                 std::thread::sleep(Duration::from_millis(sleep_ms));
 
-                retry_count += 1;
-                if retry_count == retries {
-                    return Err(anyhow!("Timeout. Last error: {err:?}"));
-                }
-            }
-        }
-    }
-}
+//                 retry_count += 1;
+//                 if retry_count == retries {
+//                     return Err(anyhow!("Timeout. Last error: {err:?}"));
+//                 }
+//             }
+//         }
+//     }
+// }
 
 pub async fn migrate_app(
     holochain_runtime: &HolochainRuntime,

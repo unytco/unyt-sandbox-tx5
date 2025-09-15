@@ -24,3 +24,6 @@ build-android: install
 
 build-android-release: install
 	yarn tauri android build
+
+build-linux: install
+	TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git_repo/unyt/shipyard-unyt/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build --bundles deb

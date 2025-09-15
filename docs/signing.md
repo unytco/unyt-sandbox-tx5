@@ -6,11 +6,11 @@ https://hackmd.io/@zo-el/SkARhyw9ke
 
 ## 🔐 Generating `TAURI_SIGNING_PRIVATE_KEY` for Tauri
 
-https://hackmd.io/@zo-el/B1sHELKHxe
+https://hackmd.io/@zo-el/S1vu7IFrxx
 
 ## 🔐 Android Signing Setup for Tauri
 
-https://hackmd.io/@zo-el/S1vu7IFrxx
+https://hackmd.io/@zo-el/B1sHELKHxe
 
 ## When Going to the Apple App Store
 
