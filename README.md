@@ -1,4 +1,4 @@
-# shipyard-unyt
+# Unyt Sandbox
 
 Update the tauri.config.json
 
