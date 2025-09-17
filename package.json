@@ -5,7 +5,7 @@
   "license": "CAL-1.0",
   "workspaces": [
     "unyt",
-    "unyt/ui/lit-2"
+    "unyt/ui/white-label"
   ],
   "scripts": {
     "network:tauri": "concurrently \"cd unyt && yarn network:tauri\" \"yarn launch\"",

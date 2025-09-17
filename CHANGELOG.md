@@ -3,6 +3,26 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.34.0]
+
+### Updated
+
+- added workflow for depositor
+  - Oracle can create parked invoice
+  - bridge agent can credit adjust
+  - added carry forwards
+  - bridge agreement bridge agent create a spend link, and original client can collect
+- fix json validation of schema to appropriately validation required fields, and felids that can be multiple types
+- resurrect the Dev UI to be ready to continue prototyping building on
+- SAVED output updated to include rejected and redacted links [#]
+- Updated endpoint to create ServiceNetworks
+- remove the need for sales agent and purchase and redemption agreements
+- UI: renamed lit-2 to white-label
+- UI: updates for v0.33
+- DNA: Check that the base unit cannot be negative on a transaction [#203](https://github.com/unytco/unyt/pull/203)
+- Lib: added new tags that will be used in the UI [#205](https://github.com/unytco/unyt/pull/205)
+- Update holochain to v0.5.6 [#206](https://github.com/unytco/unyt/pull/206)
+
 ## [0.33.0]
 
 ### Added

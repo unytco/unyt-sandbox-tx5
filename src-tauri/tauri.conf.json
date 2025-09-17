@@ -1,11 +1,11 @@
 {
-  "version": "0.33.0",
+  "version": "0.34.0",
   "productName": "Unyt",
   "identifier": "co.unyt.unyt.sandbox",
   "build": {
     "beforeBuildCommand": "cd ./unyt && make ci-build-ui",
     "devUrl": "http://localhost:1420",
-    "frontendDist": "../unyt/ui/lit-2/dist"
+    "frontendDist": "../unyt/ui/white-label/dist"
   },
   "app": {
     "withGlobalTauri": false,
