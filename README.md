@@ -19,7 +19,7 @@ To generate your own unyt alliance, you can either clone this repo and generate 
   - `deep-link`: scheme to your app name
 - Update the [Cargo.toml](./src-tauri/Cargo.toml)
   - `package.version`: the same version as above
-  - `package.name`:
+  - `package.name`: This would be the app name
 - Update Icon
   - Delete the icon folder
   - you need to run `yarn tauri icon <PATH_TO_THE_ICON_PNG_FILE>` before running those commands
