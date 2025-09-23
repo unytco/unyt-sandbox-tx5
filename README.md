@@ -5,7 +5,7 @@
 
 ## Related docs
 
-- [Test Plan](./1_0_testing_plan.md)
+- [Test Plan](./testing_docs/1_0_testing_plan.md)
 - [Unyt Setup](./README.md)
 - [Testing Documentation, Phase 4](./testing_docs/4_0_phase_4_testing_details.md)
 - [Unyt Dictionary](./testing_docs/4_2_unyt-dictionary.md)
