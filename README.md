@@ -1,11 +1,11 @@
 # Unyt Releases
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/unytco/release-unyt?style=for-the-badge)
-![GitHub All Releases](https://img.shields.io/github/downloads/unytco/release-unyt/total?style=for-the-badge)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/unytco/unyt-sandbox?style=for-the-badge)
+![GitHub All Releases](https://img.shields.io/github/downloads/unytco/unyt-sandbox/total?style=for-the-badge)
 
 
 ## Related docs
 
-- [Test Plan](./testing_docs/1_0_testing_plan.md)
+- [Test Plan](./1_0_testing_plan.md)
 - [Unyt Setup](./README.md)
 - [Testing Documentation, Phase 4](./testing_docs/4_0_phase_4_testing_details.md)
 - [Unyt Dictionary](./testing_docs/4_2_unyt-dictionary.md)
@@ -19,7 +19,7 @@ Unyt is a Holochain based application for creating agent-centric, peer-to-peer, 
 We are working with potential partner projects like yours as we build out this software to ensure that it meets the needs of your team as well as your community of users.
 
 ## Overview
-This [Test Plan](./testing_docs/1_0_testing_plan.md) document gives a bit of a overview of the sorts of UX / UI feedback that we are seeking at present.
+This [Test Plan](./1_0_testing_plan.md) document gives a bit of a overview of the sorts of UX / UI feedback that we are seeking at present.
 
 ## Installation
 
@@ -81,7 +81,7 @@ That co.unyt.unyt file had your local data in it. The second command should dele
 
 Now that it is deleted, you can again install Unyt and start fresh with a new account.
 
-Next, dive into the [Test Plan](./testing_docs/1_0_testing_plan.md).
+Next, dive into the [Test Plan](./1_0_testing_plan.md).
 
 ## License
 

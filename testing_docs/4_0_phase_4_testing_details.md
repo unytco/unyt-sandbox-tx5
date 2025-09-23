@@ -2,7 +2,7 @@
 
 #### links to related docs
 
-- [Test Plan](./testing_docs/1_0_testing_plan.md)
+- [Test Plan](./1_0_testing_plan.md)
 - [Unyt Setup](../README.md)
 - [Testing Documentation, Phase 4](./4_0_phase_4_testing_details.md)
 - [Unyt Dictionary](./4_2_unyt-dictionary.md)
@@ -14,7 +14,7 @@
 
 Feel free to use the outline view available in the upper right to get an overview of the different content covered.
 
-For older versions, see [Phase 1 Testing Details](https://github.com/unytco/hfvz-releases/blob/develop/testing_docs/1_1_phase_testing_details.md), [Phase 2 Testing Details](https://github.com/unytco/hfvz-releases/blob/develop/testing_docs/2_0_phase_2_testing_details.md), and [Phase 3 Testing Details](https://github.com/unytco/hfvz-releases/blob/develop/testing_docs/3_1_phase_3_testing_details.md).
+For older versions, see [Phase 1 Testing Details](./1_2_phase_1_testing_details.md), [Phase 2 Testing Details](./2_0_phase_2_testing_details.md), and [Phase 3 Testing Details](./3_0_phase_3_testing_details.md).
 
 ## Phase 4 Testing Orientation
 
@@ -764,7 +764,7 @@ Once a Smart Agreement has been published, it will appear in the Agreement Code 
 
 #### Examples and Guidance for Creating Custom Smart Agreements
 
-We want to help you create custom Agreement Code Templates and Smart Agreements that you believe might be useful in your context. To that end, we have created a Templates and Agreements Library as a Github Repository. It has some additional examples and guidance and we would love to have you create new Templates and Agreements, try them out in Unyt and add them to the [Templates and Agreements Library](https://github.com/unytco/rave_library). This is a Repo that will enable sharing across Unyt Accounting Alliances enabling a wider community of projects to view, play with, and gain inspiration from one anothers' Smart Agreement efforts.
+We want to help you create custom Agreement Code Templates and Smart Agreements that you believe might be useful in your context. To that end, we have created a Templates and Agreements Library as a Github Repository. It has some additional examples and guidance and we would love to have you create new Templates and Agreements, try them out in Unyt and add them to the [Smart Agreement Library](https://github.com/unytco/smart_agreement_library). This is a Repo that will enable sharing across Unyt Accounting Alliances enabling a wider community of projects to view, play with, and gain inspiration from one anothers' Smart Agreement efforts.
 
 For a summary and guidance, start by looking at the comments at the top of the execution_code.rhai file in any particular Template. Any example Smart Agreements should be stored in an Agreements directory within each particular Agreement Code Template directory.
 
