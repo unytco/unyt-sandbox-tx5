@@ -78,14 +78,40 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Default Arc versions (use Holochain default)
           - platform: "macos-latest" # for Arm based macs (M1 and above).
             args: "--target aarch64-apple-darwin"
+            arc_mode: "default"
+            arc_factor: "default"
           - platform: "macos-latest" # for Intel based macs.
             args: "--target x86_64-apple-darwin"
+            arc_mode: "default"
+            arc_factor: "default"
           - platform: "ubuntu-22.04" # for Tauri v1 you could replace this with ubuntu-20.04.
             args: "--bundles deb,appimage"
+            arc_mode: "default"
+            arc_factor: "default"
           - platform: "windows-latest"
             args: ""
+            arc_mode: "default"
+            arc_factor: "default"
+          # Zero Arc versions
+          - platform: "macos-latest" # for Arm based macs (M1 and above).
+            args: "--target aarch64-apple-darwin"
+            arc_mode: "zero"
+            arc_factor: "0"
+          - platform: "macos-latest" # for Intel based macs.
+            args: "--target x86_64-apple-darwin"
+            arc_mode: "zero"
+            arc_factor: "0"
+          - platform: "ubuntu-22.04" # for Tauri v1 you could replace this with ubuntu-20.04.
+            args: "--bundles deb,appimage"
+            arc_mode: "zero"
+            arc_factor: "0"
+          - platform: "windows-latest"
+            args: ""
+            arc_mode: "zero"
+            arc_factor: "0"
     env:
       MACOSX_DEPLOYMENT_TARGET: 10.13
     permissions: write-all
@@ -167,7 +193,7 @@ jobs:
           fileName: "unyt.happ"
           out-file-path: "workdir/"
 
-      - name: build the app
+      - name: build the app (${{ matrix.arc_mode }} arc)
         uses: tauri-apps/tauri-action@v0
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
@@ -181,6 +207,7 @@ jobs:
           VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           VITE_COMMIT_SHA: ${{ steps.version.outputs.APP_VERSION }}
           APP_VERSION: ${{ steps.version.outputs.APP_VERSION }}
+          HOLOCHAIN_ARC_FACTOR: ${{ matrix.arc_factor != 'default' && matrix.arc_factor || '' }}
           # VITE_APP_NAME: "Circulo"
           # VITE_IS_CIRCULO_RELEASE: "true"
         with:
@@ -190,6 +217,7 @@ jobs:
           updaterJsonPreferNsis: true
           prerelease: true
           args: ${{ matrix.args }}
+          assetNamePattern: ${{ matrix.arc_mode == 'default' && '[name]_[version]_[arch]_[platform][ext]' || format('[name]_{0}-arc_[version]_[arch]_[platform][ext]', matrix.arc_mode) }}
 
   release-tauri-android-app:
     needs: publish-happ
@@ -253,11 +281,12 @@ jobs:
           base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
           echo "storeFile=$RUNNER_TEMP/keystore.jks" >> key.properties
 
-      - name: Install and Build 🔧
+      - name: Install and Build 🔧 (zero arc)
         env:
           VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           VITE_COMMIT_SHA: ${{ steps.version.outputs.APP_VERSION }}
           APP_VERSION: ${{ steps.version.outputs.APP_VERSION }}
+          HOLOCHAIN_ARC_FACTOR: "0"
           # VITE_APP_NAME: "Circulo"
           # VITE_IS_CIRCULO_RELEASE: "true"
         run: |
