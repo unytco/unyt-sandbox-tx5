@@ -1,5 +1,5 @@
 {
-  "version": "0.36.4",
+  "version": "0.36.5",
   "productName": "Unyt",
   "identifier": "co.unyt.unyt.sandbox",
   "build": {
@@ -25,7 +25,10 @@
   "plugins": {
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDU2NEE4MDE2OERCREQ3M0EKUldRNjE3Mk5Gb0JLVmlRNzdlVGlQdkNPdG5KWVQyWkhldUdvdXNMbzh0TTlnSG5CdjB5cWVubWUK",
-      "endpoints": ["https://github.com/unytco/shinyyard-unyt/releases/latest/download/latest.json"]
+      "endpoints": [
+        "https://github.com/unytco/shipyard-domino/releases/latest/download/latest.json",
+        "https://github.com/unytco/shipyard-domino/releases/latest/download/latest-zero-arc.json"
+      ]
     },
     "deep-link": {
       "mobile": [{ "scheme": ["unyt"] }],

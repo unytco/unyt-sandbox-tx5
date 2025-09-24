@@ -4,6 +4,11 @@ on:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
 
+env:
+  PRODUCT_NAME: "Unyt"
+  REPO_OWNER: ${{ github.repository_owner }}
+  REPO_NAME: ${{ github.event.repository.name }}
+
 jobs:
   publish-happ:
     permissions:
@@ -67,7 +72,7 @@ jobs:
             unyt/dnas/alliance/workdir/alliance.dna
             unyt/dnas/agent_details/workdir/agent_details.dna
           body: ${{ steps.changelog.outputs.notes }}
-          name: Unyt v${{ steps.version.outputs.APP_VERSION }}
+          name: ${{ env.PRODUCT_NAME }} v${{ steps.version.outputs.APP_VERSION }}
           tag: v${{ steps.version.outputs.APP_VERSION }}
           prerelease: true
           draft: true
@@ -213,11 +218,127 @@ jobs:
         with:
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
           releaseDraft: true
-          includeUpdaterJson: true
-          updaterJsonPreferNsis: true
+          includeUpdaterJson: false
           prerelease: true
           args: ${{ matrix.args }}
           assetNamePattern: ${{ matrix.arc_mode == 'default' && '[name]_[version]_[arch]_[platform][ext]' || format('[name]_{0}-arc_[version]_[arch]_[platform][ext]', matrix.arc_mode) }}
+
+  generate-updater-json:
+    needs: [publish-happ, release-tauri-app]
+    permissions:
+      contents: write
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GIT_PAT }}
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Retrieve version
+        run: |
+          echo "APP_VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)" >> $GITHUB_OUTPUT
+        id: version
+
+      - name: Download release of the .happ
+        uses: robinraju/release-downloader@v1.10
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
+        with:
+          token: ${{ secrets.GIT_PAT }}
+          releaseId: ${{ needs.publish-happ.outputs.releaseId }}
+          fileName: "unyt.happ"
+          out-file-path: "workdir/"
+
+      - name: Generate latest.json for default arc
+        run: |
+          # Create a temporary directory for the updater JSON
+          mkdir -p temp_updater
+
+          # Generate the latest.json file with all platform information for default arc
+          cat > temp_updater/latest.json << EOF
+          {
+            "version": "${{ steps.version.outputs.APP_VERSION }}",
+            "notes": "Release ${{ steps.version.outputs.APP_VERSION }} (Default Arc)",
+            "pub_date": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "platforms": {
+              "darwin-aarch64": {
+                "signature": "",
+                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_${{ steps.version.outputs.APP_VERSION }}_aarch64_macos.zip"
+              },
+              "darwin-x86_64": {
+                "signature": "",
+                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_${{ steps.version.outputs.APP_VERSION }}_x64_macos.zip"
+              },
+              "linux-x86_64": {
+                "signature": "",
+                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_${{ steps.version.outputs.APP_VERSION }}_x64_linux.AppImage"
+              },
+              "windows-x86_64": {
+                "signature": "",
+                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_${{ steps.version.outputs.APP_VERSION }}_x64_windows.msi"
+              }
+            }
+          }
+          EOF
+
+      - name: Generate latest.json for zero arc
+        run: |
+          # Generate the latest.json file with all platform information for zero arc
+          cat > temp_updater/latest-zero-arc.json << EOF
+          {
+            "version": "${{ steps.version.outputs.APP_VERSION }}",
+            "notes": "Release ${{ steps.version.outputs.APP_VERSION }} (Zero Arc)",
+            "pub_date": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "platforms": {
+              "darwin-aarch64": {
+                "signature": "",
+                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_zero-arc_${{ steps.version.outputs.APP_VERSION }}_aarch64_macos.zip"
+              },
+              "darwin-x86_64": {
+                "signature": "",
+                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_zero-arc_${{ steps.version.outputs.APP_VERSION }}_x64_macos.zip"
+              },
+              "linux-x86_64": {
+                "signature": "",
+                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_zero-arc_${{ steps.version.outputs.APP_VERSION }}_x64_linux.AppImage"
+              },
+              "windows-x86_64": {
+                "signature": "",
+                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_zero-arc_${{ steps.version.outputs.APP_VERSION }}_x64_windows.msi"
+              }
+            }
+          }
+          EOF
+
+      - name: Sign the updater JSON files
+        run: |
+          # Install Tauri CLI for signing
+          npm install -g @tauri-apps/cli
+
+          # Sign the default arc latest.json
+          tauri signer sign -k "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" -w temp_updater/latest.json
+
+          # Sign the zero arc latest.json
+          tauri signer sign -k "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" -w temp_updater/latest-zero-arc.json
+
+      - name: Upload latest.json files to release
+        uses: AButler/upload-release-assets@v3.0
+        with:
+          files: |
+            temp_updater/latest.json
+            temp_updater/latest-zero-arc.json
+          repo-token: ${{ secrets.GIT_PAT }}
+          release-id: ${{ needs.publish-happ.outputs.releaseId }}
 
   release-tauri-android-app:
     needs: publish-happ
