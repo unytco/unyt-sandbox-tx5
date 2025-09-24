@@ -1,6 +1,7 @@
 name: Bug Report v1
 description: Report a bug so we can fix it
 labels: [bug]
+title: "[BUG]"
 body:
   - type: input
     id: summary
