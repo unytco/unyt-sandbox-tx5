@@ -1,10 +1,8 @@
 ---
 name: Feature request
-about: Create a report to help us improve
+description: Suggest an idea for this project
 title: "[FEATURE]"
 labels: [feature]
-assignees: ''
-
 ---
 
 **Describe the feature**
