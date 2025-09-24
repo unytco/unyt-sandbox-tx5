@@ -43,7 +43,6 @@ body:
       label: App Version
       description: What version are you running?
       placeholder: v0.1.0
-      default: v0.1.0
     validations:
       required: true
 
@@ -64,7 +63,7 @@ body:
       required: true
 
   - type: textarea
-    id: Additional information
+    id: additional_information
     attributes:
       label: Additional Information
       description: Go to the help menu and click "About". Please copy and paste the full text that shows up.
