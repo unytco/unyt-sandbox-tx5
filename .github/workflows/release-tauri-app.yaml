@@ -331,10 +331,10 @@ jobs:
           npm install -g @tauri-apps/cli
 
           # Sign the default arc latest.json
-          tauri signer sign -k "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" temp_updater/latest.json
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD="${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}" tauri signer sign -k "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" temp_updater/latest.json
 
           # Sign the zero arc latest.json
-          tauri signer sign -k "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" temp_updater/latest-zero-arc.json
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD="${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}" tauri signer sign -k "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" temp_updater/latest-zero-arc.json
 
       - name: Upload latest.json files to release
         uses: AButler/upload-release-assets@v3.0
