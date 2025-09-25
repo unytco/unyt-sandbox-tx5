@@ -331,6 +331,10 @@ fn network_config() -> NetworkConfig {
     );
 
     // Configure arc factor: only set to 0 for zero arc mode, otherwise use Holochain default
+    println!(
+        "[unyt_tauri] network_config: HOLOCHAIN_ARC_FACTOR: {:?}",
+        std::env::var("HOLOCHAIN_ARC_FACTOR")
+    );
     match std::env::var("HOLOCHAIN_ARC_FACTOR") {
         Ok(val) if val == "0" => {
             println!("[unyt_tauri] network_config: Zero arc mode enabled (HOLOCHAIN_ARC_FACTOR=0)");

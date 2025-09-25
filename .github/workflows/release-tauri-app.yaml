@@ -119,6 +119,7 @@ jobs:
             arc_factor: "0"
     env:
       MACOSX_DEPLOYMENT_TARGET: 10.13
+      HOLOCHAIN_ARC_FACTOR: ${{ matrix.arc_factor != 'default' && matrix.arc_factor || '' }}
     permissions: write-all
 
     runs-on: ${{ matrix.platform }}
@@ -212,7 +213,6 @@ jobs:
           VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           VITE_COMMIT_SHA: ${{ steps.version.outputs.APP_VERSION }}
           APP_VERSION: ${{ steps.version.outputs.APP_VERSION }}
-          HOLOCHAIN_ARC_FACTOR: ${{ matrix.arc_factor != 'default' && matrix.arc_factor || '' }}
           # VITE_APP_NAME: "Circulo"
           # VITE_IS_CIRCULO_RELEASE: "true"
         with:
@@ -260,6 +260,8 @@ jobs:
           out-file-path: "workdir/"
 
       - name: Generate latest.json for default arc
+        env:
+          HOLOCHAIN_ARC_FACTOR: ""
         run: |
           # Create a temporary directory for the updater JSON
           mkdir -p temp_updater
@@ -292,6 +294,8 @@ jobs:
           EOF
 
       - name: Generate latest.json for zero arc
+        env:
+          HOLOCHAIN_ARC_FACTOR: "0"
         run: |
           # Generate the latest.json file with all platform information for zero arc
           cat > temp_updater/latest-zero-arc.json << EOF
@@ -326,10 +330,10 @@ jobs:
           npm install -g @tauri-apps/cli
 
           # Sign the default arc latest.json
-          tauri signer sign -k "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" -w temp_updater/latest.json
+          tauri signer sign -k "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" temp_updater/latest.json
 
           # Sign the zero arc latest.json
-          tauri signer sign -k "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" -w temp_updater/latest-zero-arc.json
+          tauri signer sign -k "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" temp_updater/latest-zero-arc.json
 
       - name: Upload latest.json files to release
         uses: AButler/upload-release-assets@v3.0
