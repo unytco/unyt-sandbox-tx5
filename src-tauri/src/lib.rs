@@ -332,7 +332,7 @@ fn network_config() -> NetworkConfig {
     );
 
     network_config.webrtc_config = Some(serde_json::Value::Array(vec![serde_json::json!({
-        iceServers: [
+        "iceServers": [
             "stun:stun.cloudflare.com:3478",
             "stun:stun.l.google.com:19302"
         ]

@@ -1,3 +1,1 @@
-
-        pub const HOLOCHAIN_ARC_FACTOR: &str = "";
-        
+pub const HOLOCHAIN_ARC_FACTOR: &str = "";
