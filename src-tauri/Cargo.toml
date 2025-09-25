@@ -1,12 +1,13 @@
 [package]
 name = "unyt-tauri"
-version = "0.36.6"
+version = "0.36.7"
 description = "Unyt"
 authors = ["zo-el <joelulahanna@gmail.com>"]
 license = ""
 repository = ""
 edition = "2021"
 rust-version = "1.70"
+build = "build.rs"
 
 [lib]
 name = "tauri_app_lib"

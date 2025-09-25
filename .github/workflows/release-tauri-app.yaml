@@ -213,6 +213,7 @@ jobs:
           VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
           VITE_COMMIT_SHA: ${{ steps.version.outputs.APP_VERSION }}
           APP_VERSION: ${{ steps.version.outputs.APP_VERSION }}
+          HOLOCHAIN_ARC_FACTOR: ${{ matrix.arc_factor != 'default' && matrix.arc_factor || '' }}
           # VITE_APP_NAME: "Circulo"
           # VITE_IS_CIRCULO_RELEASE: "true"
         with:

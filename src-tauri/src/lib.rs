@@ -1,4 +1,5 @@
 mod app_config;
+mod generated_arc_factor;
 mod utils;
 use anyhow::anyhow;
 pub use app_config::{AppConfig, APP_ID_PREFIX, IDENTIFIER_DIR};
@@ -333,33 +334,25 @@ fn network_config() -> NetworkConfig {
     // Configure arc factor: only set to 0 for zero arc mode, otherwise use Holochain default
     println!(
         "[unyt_tauri] network_config: HOLOCHAIN_ARC_FACTOR: {:?}",
-        std::env::var("HOLOCHAIN_ARC_FACTOR")
+        generated_arc_factor::HOLOCHAIN_ARC_FACTOR
     );
-    match std::env::var("HOLOCHAIN_ARC_FACTOR") {
-        Ok(val) if val == "0" => {
+    match generated_arc_factor::HOLOCHAIN_ARC_FACTOR {
+        "0" => {
             println!("[unyt_tauri] network_config: Zero arc mode enabled (HOLOCHAIN_ARC_FACTOR=0)");
             network_config.target_arc_factor = 0;
         }
-        Ok(val) => {
+        "" => {
+            println!(
+                "[unyt_tauri] network_config: HOLOCHAIN_ARC_FACTOR='' - using Holochain default arc factor"
+            );
+            // Don't set target_arc_factor, let Holochain use its default
+        }
+        val => {
             println!(
                 "[unyt_tauri] network_config: HOLOCHAIN_ARC_FACTOR='{}' - using Holochain default arc factor",
                 val
             );
             // Don't set target_arc_factor, let Holochain use its default
-        }
-        Err(_) => {
-            // Default behavior based on platform
-            if cfg!(mobile) {
-                println!(
-                    "[unyt_tauri] network_config: Mobile platform detected, setting target_arc_factor to 0"
-                );
-                network_config.target_arc_factor = 0;
-            } else {
-                println!(
-                    "[unyt_tauri] network_config: Desktop platform detected, using Holochain default arc factor"
-                );
-                // Don't set target_arc_factor, let Holochain use its default
-            }
         }
     }
 

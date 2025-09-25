@@ -25,5 +25,33 @@ build-android: install
 build-android-release: install
 	yarn tauri android build
 
-build-linux: install
-	TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git_repo/unyt/shipyard-unyt/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build --bundles deb
+build-linux-default: install
+	HOLOCHAIN_ARC_FACTOR="" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build --bundles deb
+
+build-linux-zero: install
+	HOLOCHAIN_ARC_FACTOR="0" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build --bundles deb
+
+test-arc-factor: install
+	@echo "Testing default arc factor (empty string):"
+	HOLOCHAIN_ARC_FACTOR="" yarn tauri build --bundles deb
+	@echo "Testing zero arc factor:"
+	HOLOCHAIN_ARC_FACTOR="0" yarn tauri build --bundles deb
+
+test-original-approach: install
+	@echo "Testing original approach with environment variable at runtime:"
+	HOLOCHAIN_ARC_FACTOR="0" yarn tauri build --bundles deb
+	@echo "Built app should show arc factor in logs when run"
+
+build-linux: build-linux-zero
+
+build-macos-default: install
+	HOLOCHAIN_ARC_FACTOR="" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build
+
+build-macos-zero: install
+	HOLOCHAIN_ARC_FACTOR="0" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build
+
+build-windows-default: install
+	HOLOCHAIN_ARC_FACTOR="" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build
+
+build-windows-zero: install
+	HOLOCHAIN_ARC_FACTOR="0" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build
