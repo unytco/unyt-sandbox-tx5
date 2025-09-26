@@ -84,39 +84,39 @@ jobs:
       matrix:
         include:
           # Default Arc versions (use Holochain default)
-          # - platform: "macos-latest" # for Arm based macs (M1 and above).
-          #   args: "--target aarch64-apple-darwin"
-          #   arc_mode: "default"
-          #   arc_factor: "default"
-          # - platform: "macos-latest" # for Intel based macs.
-          #   args: "--target x86_64-apple-darwin"
-          #   arc_mode: "default"
-          #   arc_factor: "default"
+          - platform: "macos-latest" # for Arm based macs (M1 and above).
+            args: "--target aarch64-apple-darwin"
+            arc_mode: "default"
+            arc_factor: "default"
+          - platform: "macos-latest" # for Intel based macs.
+            args: "--target x86_64-apple-darwin"
+            arc_mode: "default"
+            arc_factor: "default"
           - platform: "ubuntu-22.04" # for Tauri v1 you could replace this with ubuntu-20.04.
             args: "--bundles deb,appimage"
             arc_mode: "default"
             arc_factor: "default"
-          # - platform: "windows-latest"
-          #   args: ""
-          #   arc_mode: "default"
-          #   arc_factor: "default"
-          # # Zero Arc versions
-          # - platform: "macos-latest" # for Arm based macs (M1 and above).
-          #   args: "--target aarch64-apple-darwin"
-          #   arc_mode: "zero"
-          #   arc_factor: "0"
-          # - platform: "macos-latest" # for Intel based macs.
-          #   args: "--target x86_64-apple-darwin"
-          #   arc_mode: "zero"
-          #   arc_factor: "0"
-          # - platform: "ubuntu-22.04" # for Tauri v1 you could replace this with ubuntu-20.04.
-          #   args: "--bundles deb,appimage"
-          #   arc_mode: "zero"
-          #   arc_factor: "0"
-          # - platform: "windows-latest"
-          #   args: ""
-          #   arc_mode: "zero"
-          #   arc_factor: "0"
+          - platform: "windows-latest"
+            args: ""
+            arc_mode: "default"
+            arc_factor: "default"
+          # Zero Arc versions
+          - platform: "macos-latest" # for Arm based macs (M1 and above).
+            args: "--target aarch64-apple-darwin"
+            arc_mode: "zero"
+            arc_factor: "0"
+          - platform: "macos-latest" # for Intel based macs.
+            args: "--target x86_64-apple-darwin"
+            arc_mode: "zero"
+            arc_factor: "0"
+          - platform: "ubuntu-22.04" # for Tauri v1 you could replace this with ubuntu-20.04.
+            args: "--bundles deb,appimage"
+            arc_mode: "zero"
+            arc_factor: "0"
+          - platform: "windows-latest"
+            args: ""
+            arc_mode: "zero"
+            arc_factor: "0"
     env:
       MACOSX_DEPLOYMENT_TARGET: 10.13
       HOLOCHAIN_ARC_FACTOR: ${{ matrix.arc_factor != 'default' && matrix.arc_factor || '' }}
@@ -214,41 +214,53 @@ jobs:
           VITE_COMMIT_SHA: ${{ steps.version.outputs.APP_VERSION }}
           APP_VERSION: ${{ steps.version.outputs.APP_VERSION }}
           HOLOCHAIN_ARC_FACTOR: ${{ matrix.arc_factor != 'default' && matrix.arc_factor || '' }}
-          # VITE_APP_NAME: "Circulo"
-          # VITE_IS_CIRCULO_RELEASE: "true"
         with:
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
           releaseDraft: true
-          includeUpdaterJson: false
+          includeUpdaterJson: ${{ matrix.arc_mode == 'default' && false || true }} # Upload updater JSON for zero arc
+          updaterJsonPreferNsis: true
           prerelease: true
           args: ${{ matrix.args }}
           assetNamePattern: ${{ matrix.arc_mode == 'default' && '[name]_[version]_[arch]_[platform][ext]' || format('[name]_{0}-arc_[version]_[arch]_[platform][ext]', matrix.arc_mode) }}
 
-  generate-updater-json:
-    needs: [publish-happ, release-tauri-app]
-    permissions:
-      contents: write
+  release-tauri-android-app:
+    needs: publish-happ
+    permissions: write-all
+
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Maximize build space
+        uses: AdityaGarg8/remove-unwanted-software@v5
+        with:
+          remove-android: "true"
+          remove-dotnet: "true"
+          remove-haskell: "true"
+          remove-codeql: "true"
+          remove-docker-images: "true"
+          remove-large-packages: "true"
+          remove-cached-tools: "true"
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks out a copy of your repository on the ubuntu-latest machine
+      - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GIT_PAT }}
           submodules: recursive
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
+      - name: Install nix
+        uses: cachix/install-nix-action@v27
         with:
-          node-version: 20
+          github_access_token: ${{ secrets.GIT_PAT }}
+          nix_path: nixpkgs=channel:nixos-24.05
 
-      - name: Install dependencies
-        run: yarn install
+      - uses: cachix/cachix-action@v15
+        with:
+          name: holochain-ci
 
-      - name: Retrieve version
-        run: |
-          echo "APP_VERSION=$(jq -r '.version' src-tauri/tauri.conf.json)" >> $GITHUB_OUTPUT
-        id: version
+      - uses: cachix/cachix-action@v15
+        with:
+          name: darksoil-studio
 
       - name: Download release of the .happ
         uses: robinraju/release-downloader@v1.10
@@ -260,174 +272,40 @@ jobs:
           fileName: "unyt.happ"
           out-file-path: "workdir/"
 
-      - name: Generate latest.json for default arc
-        env:
-          HOLOCHAIN_ARC_FACTOR: ""
+      - name: Retrieve version
         run: |
-          # Create a temporary directory for the updater JSON
-          mkdir -p temp_updater
+          echo "APP_VERSION=$(cat src-tauri/tauri.conf.json | grep -oP '(?<="version": ")[^"]*')" >> $GITHUB_OUTPUT
+        id: version
 
-          # Generate the latest.json file with all platform information for default arc
-          cat > temp_updater/latest.json << EOF
-          {
-            "version": "${{ steps.version.outputs.APP_VERSION }}",
-            "notes": "Release ${{ steps.version.outputs.APP_VERSION }} (Default Arc)",
-            "pub_date": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "platforms": {
-              "darwin-aarch64": {
-                "signature": "",
-                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_${{ steps.version.outputs.APP_VERSION }}_aarch64_macos.zip"
-              },
-              "darwin-x86_64": {
-                "signature": "",
-                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_${{ steps.version.outputs.APP_VERSION }}_x64_macos.zip"
-              },
-              "linux-x86_64": {
-                "signature": "",
-                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_${{ steps.version.outputs.APP_VERSION }}_x64_linux.AppImage"
-              },
-              "windows-x86_64": {
-                "signature": "",
-                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_${{ steps.version.outputs.APP_VERSION }}_x64_windows.msi"
-              }
-            }
-          }
-          EOF
+      - name: setup Android signing
+        run: |
+          cd src-tauri/gen/android
+          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > key.properties
+          echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> key.properties
+          base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
+          echo "storeFile=$RUNNER_TEMP/keystore.jks" >> key.properties
 
-      - name: Generate latest.json for zero arc
+      - name: Install and Build 🔧 (zero arc)
         env:
+          VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          VITE_COMMIT_SHA: ${{ steps.version.outputs.APP_VERSION }}
+          APP_VERSION: ${{ steps.version.outputs.APP_VERSION }}
           HOLOCHAIN_ARC_FACTOR: "0"
+          # VITE_APP_NAME: "Circulo"
+          # VITE_IS_CIRCULO_RELEASE: "true"
         run: |
-          # Generate the latest.json file with all platform information for zero arc
-          cat > temp_updater/latest-zero-arc.json << EOF
-          {
-            "version": "${{ steps.version.outputs.APP_VERSION }}",
-            "notes": "Release ${{ steps.version.outputs.APP_VERSION }} (Zero Arc)",
-            "pub_date": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-            "platforms": {
-              "darwin-aarch64": {
-                "signature": "",
-                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_zero-arc_${{ steps.version.outputs.APP_VERSION }}_aarch64_macos.zip"
-              },
-              "darwin-x86_64": {
-                "signature": "",
-                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_zero-arc_${{ steps.version.outputs.APP_VERSION }}_x64_macos.zip"
-              },
-              "linux-x86_64": {
-                "signature": "",
-                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_zero-arc_${{ steps.version.outputs.APP_VERSION }}_x64_linux.AppImage"
-              },
-              "windows-x86_64": {
-                "signature": "",
-                "url": "https://github.com/${{ env.REPO_OWNER }}/${{ env.REPO_NAME }}/releases/download/v${{ steps.version.outputs.APP_VERSION }}/${{ env.PRODUCT_NAME }}_zero-arc_${{ steps.version.outputs.APP_VERSION }}_x64_windows.msi"
-              }
-            }
-          }
-          EOF
+          nix develop --accept-flake-config .#androidDev --command bash -c "make build-android-release"
 
-      - name: Sign the updater JSON files
-        run: |
-          # Install Tauri CLI for signing
-          npm install -g @tauri-apps/cli
-
-          # Sign the default arc latest.json
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" tauri signer sign -k "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" temp_updater/latest.json
-
-          # Sign the zero arc latest.json
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" tauri signer sign -k "${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}" temp_updater/latest-zero-arc.json
-
-      - name: Upload latest.json files to release
+      - name: Upload release aab
         uses: AButler/upload-release-assets@v3.0
         with:
-          files: |
-            temp_updater/latest.json
-            temp_updater/latest-zero-arc.json
+          files: src-tauri/gen/android/app/build/outputs/bundle/**/*.aab
           repo-token: ${{ secrets.GIT_PAT }}
           release-id: ${{ needs.publish-happ.outputs.releaseId }}
 
-  # release-tauri-android-app:
-  #   needs: publish-happ
-  #   permissions: write-all
-
-  #   runs-on: ubuntu-22.04
-  #   steps:
-  #     - name: Maximize build space
-  #       uses: AdityaGarg8/remove-unwanted-software@v5
-  #       with:
-  #         remove-android: "true"
-  #         remove-dotnet: "true"
-  #         remove-haskell: "true"
-  #         remove-codeql: "true"
-  #         remove-docker-images: "true"
-  #         remove-large-packages: "true"
-  #         remove-cached-tools: "true"
-
-  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-  #     # Checks out a copy of your repository on the ubuntu-latest machine
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         token: ${{ secrets.GIT_PAT }}
-  #         submodules: recursive
-  #         fetch-depth: 0
-
-  #     - name: Install nix
-  #       uses: cachix/install-nix-action@v27
-  #       with:
-  #         github_access_token: ${{ secrets.GIT_PAT }}
-  #         nix_path: nixpkgs=channel:nixos-24.05
-
-  #     - uses: cachix/cachix-action@v15
-  #       with:
-  #         name: holochain-ci
-
-  #     - uses: cachix/cachix-action@v15
-  #       with:
-  #         name: darksoil-studio
-
-  #     - name: Download release of the .happ
-  #       uses: robinraju/release-downloader@v1.10
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
-  #       with:
-  #         token: ${{ secrets.GIT_PAT }}
-  #         releaseId: ${{ needs.publish-happ.outputs.releaseId }}
-  #         fileName: "unyt.happ"
-  #         out-file-path: "workdir/"
-
-  #     - name: Retrieve version
-  #       run: |
-  #         echo "APP_VERSION=$(cat src-tauri/tauri.conf.json | grep -oP '(?<="version": ")[^"]*')" >> $GITHUB_OUTPUT
-  #       id: version
-
-  #     - name: setup Android signing
-  #       run: |
-  #         cd src-tauri/gen/android
-  #         echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" > key.properties
-  #         echo "password=${{ secrets.ANDROID_KEY_PASSWORD }}" >> key.properties
-  #         base64 -d <<< "${{ secrets.ANDROID_KEY_BASE64 }}" > $RUNNER_TEMP/keystore.jks
-  #         echo "storeFile=$RUNNER_TEMP/keystore.jks" >> key.properties
-
-  #     - name: Install and Build 🔧 (zero arc)
-  #       env:
-  #         VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-  #         VITE_COMMIT_SHA: ${{ steps.version.outputs.APP_VERSION }}
-  #         APP_VERSION: ${{ steps.version.outputs.APP_VERSION }}
-  #         HOLOCHAIN_ARC_FACTOR: "0"
-  #         # VITE_APP_NAME: "Circulo"
-  #         # VITE_IS_CIRCULO_RELEASE: "true"
-  #       run: |
-  #         nix develop --accept-flake-config .#androidDev --command bash -c "make build-android-release"
-
-  #     - name: Upload release aab
-  #       uses: AButler/upload-release-assets@v3.0
-  #       with:
-  #         files: src-tauri/gen/android/app/build/outputs/bundle/**/*.aab
-  #         repo-token: ${{ secrets.GIT_PAT }}
-  #         release-id: ${{ needs.publish-happ.outputs.releaseId }}
-
-  #     - name: Upload release apk
-  #       uses: AButler/upload-release-assets@v3.0
-  #       with:
-  #         files: src-tauri/gen/android/app/build/outputs/apk/**/**/*.apk
-  #         repo-token: ${{ secrets.GIT_PAT }}
-  #         release-id: ${{ needs.publish-happ.outputs.releaseId }}
+      - name: Upload release apk
+        uses: AButler/upload-release-assets@v3.0
+        with:
+          files: src-tauri/gen/android/app/build/outputs/apk/**/**/*.apk
+          repo-token: ${{ secrets.GIT_PAT }}
+          release-id: ${{ needs.publish-happ.outputs.releaseId }}
