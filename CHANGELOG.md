@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - get_requests_to_execute_agreements
   - get_all_service_network
 - UI: Add initial local-first fetch to applicable signal stores and use VITE_ZERO_ARC=true to disable [#209](https://github.com/unytco/unyt-app/pull/209)
+- UI: TroubleShooting tools
 
 ### Updated
 
