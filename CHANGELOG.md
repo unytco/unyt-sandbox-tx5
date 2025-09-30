@@ -3,11 +3,38 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.38.0]
+
+### Added
+
+- Add local-first fetch options via ZomeFnInput wrapper to the following functions: [#209](https://github.com/unytco/unyt-app/pull/209)
+  - get_code_templates_by_folder
+  - search_code_template
+  - search_smart_agreement
+  - get_all_smart_agreements
+- Add local-first fetch options via strategy: Option<GetStrategy> field to the following functions:
+  - get_actionable_transactions
+  - get_pending_transactions
+  - get_incoming_saveds
+  - get_sorted_requests_to_spend
+  - get_requests_to_execute_agreements
+  - get_all_service_network
+- UI: Add initial local-first fetch to applicable signal stores and use VITE_ZERO_ARC=true to disable [#209](https://github.com/unytco/unyt-app/pull/209)
+
+### Updated
+
+- UI: loading screen centers any logo
+- intergate ui-switcher with the white-lable UI [#211](https://github.com/unytco/unyt-app/pull/211)
+- removed agent_details from happ bundle [#213](https://github.com/unytco/unyt-app/pull/213)
+- DNA: Allocation needs to return a vec of sources, Now the allocated amounts to the receiver can be from multiple sources(i.e multiple ParkedLinks) [#214](https://github.com/unytco/unyt-app/pull/214)
+- Bug: fixed notes not transferring between transaction causing users to not see the initial note that was sent
+- App Update to work run on holochain `v0.6.0-dev.23`
+
 ## [0.37.0]
 
 ### Added
 
-- zero arc releases
+- update pkg to include zero arc release
 
 ## [0.36.0]
 

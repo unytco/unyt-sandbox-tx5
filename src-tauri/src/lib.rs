@@ -24,7 +24,7 @@ pub fn happ_bundle() -> AppBundle {
         "[unyt_tauri] Happ bundle bytes loaded, size: {} bytes",
         bytes.len()
     );
-    let bundle = AppBundle::decode(bytes).expect("Failed to decode unyt happ");
+    let bundle = AppBundle::unpack(&bytes[..]).expect("Failed to decode unyt happ");
     println!("[unyt_tauri] Happ bundle decoded successfully");
     bundle
 }
@@ -208,7 +208,7 @@ async fn setup(handle: AppHandle) -> anyhow::Result<()> {
     );
 
     let installed_apps = admin_ws
-        .list_apps(Some(AppStatusFilter::Running))
+        .list_apps(Some(AppStatusFilter::Enabled))
         .await
         .map_err(|err| tauri_plugin_holochain::Error::ConductorApiError(err))?;
     println!(
@@ -331,12 +331,11 @@ fn network_config() -> NetworkConfig {
         network_config.bootstrap_url
     );
 
-    network_config.webrtc_config = Some(serde_json::Value::Array(vec![serde_json::json!({
+    network_config.webrtc_config = Some(serde_json::json!({
         "iceServers": [
-            "stun:stun.cloudflare.com:3478",
-            "stun:stun.l.google.com:19302"
+            { "urls": ["stun:stun.cloudflare.com:3478", "stun:stun.l.google.com:19302"]}
         ]
-    })]));
+    }));
 
     // Configure arc factor: only set to 0 for zero arc mode, otherwise use Holochain default
     println!(
