@@ -27,15 +27,15 @@ This [Test Plan](./1_0_testing_plan.md) document gives a bit of a overview of th
 
 Download the appropriate version for your system.
 
-| Releases                                                                                                                        |
-| ------------------------------------------------------------------------------------------------------------------------------- |
-| [macOS x64 (Intel)](https://github.com/unytco/unyt-sandbox/releases/download/v0.36.0/Unyt_0.36.0_x64.dmg)                       |
-| [macOS arm64 (Silicon)](https://github.com/unytco/unyt-sandbox/releases/download/v0.36.0/Unyt_0.36.0_aarch64.dmg)               |
-| [Linux Debian](https://github.com/unytco/unyt-sandbox/releases/download/v0.36.0/Unyt_0.36.0_amd64.deb) (recommended)            |
-| [Linux AppImage](https://github.com/unytco/unyt-sandbox/releases/download/v0.36.0/Unyt_0.36.0_amd64.AppImage) (read note below) |
-| [Windows](https://github.com/unytco/unyt-sandbox/releases/download/v0.36.0/Unyt_0.36.0_x64-setup.exe)                           |
-| [Android](#) (no release available)                                                                                             |
-| [iOS](#) (no release available)                                                                                                 |
+| Releases                                                                                                                            |
+| ----------------------------------------------------------------------------------------------------------------------------------- |
+| [macOS x64 (Intel)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.36.0/Unyt_0.36.0_x64.dmg)                       |
+| [macOS arm64 (Silicon)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.36.0/Unyt_0.36.0_aarch64.dmg)               |
+| [Linux Debian](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.36.0/Unyt_0.36.0_amd64.deb) (recommended)            |
+| [Linux AppImage](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.36.0/Unyt_0.36.0_amd64.AppImage) (read note below) |
+| [Windows](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.36.0/Unyt_0.36.0_x64-setup.exe)                           |
+| [Android](#) (no release available)                                                                                                 |
+| [iOS](#) (no release available)                                                                                                     |
 
 > [!IMPORTANT]
 > If you encounter sandbox-related issues, you can try running the AppImage with:
@@ -46,7 +46,7 @@ Download the appropriate version for your system.
 >
 > This is automatically configured in the latest version, but might be needed for manual execution in some cases.
 
-All available versions can be found in the [Releases](https://github.com/unytco/unyt-sandbox/releases/)
+All available versions can be found in the [Releases](https://github.com/unytco/unyt-sandbox-tx5/releases/)
 
 Once installed, the Unyt software will run locally on your device and connect with others also running the software to operate as a peer-to-peer application.
 
@@ -122,11 +122,10 @@ To generate your own unyt alliance, you can either clone this repo and generate 
 - Update the crates [app-config.rs](./src-tauri/src/app_config.rs)
   - Update the `IDENTIFIER_DIR` and `APP_ID_PREFIX`
 - Update the release workflow
-  - assetNamePattern: change the file name to the app name you'd like it to be
-  - under `create-release`: change the name to the app name you'd like it to be
+  - PRODUCT_NAME: change the file name to the app name you'd like it to be
 - Update Android release:
   - delete [this folder](./src-tauri/gen/android/)
-  - enter nix: `nix develop .#andriodDev`
+  - enter nix: `nix develop .#androidDev`
   - Follow these steps [in the darksoil docs here](https://darksoil.studio/p2p-shipyard/guides/android/project-setup.html)
 
 ## Test development

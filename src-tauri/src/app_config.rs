@@ -1,8 +1,8 @@
 use tauri::AppHandle;
 
 // this is we are setting it the same as the identifier
-pub const IDENTIFIER_DIR: &'static str = "co.unyt.unyt.sandbox";
-pub const APP_ID_PREFIX: &'static str = "unyt";
+pub const IDENTIFIER_DIR: &'static str = "co.unyt.tx5.sandbox";
+pub const APP_ID_PREFIX: &'static str = "unyt-tx5";
 // todo: when we have a way to get the DNA hash we should include this
 // const DNA_HASH: &'static str = include_str!("../../workdir/unyt-dna_hashes");
 
@@ -39,7 +39,7 @@ impl AppConfig {
                 .unwrap_or_else(|| "Unyt".to_string()),
             app_id: format!("{APP_ID_PREFIX}-{}", version.to_string()),
             // app_id: format!("{APP_ID_PREFIX}-{}", DNA_HASH.trim()),
-            network_seed: format!("{}-v0.36", handle.config().identifier),
+            network_seed: format!("{}-webrtc", handle.config().identifier),
         }
     }
 }
