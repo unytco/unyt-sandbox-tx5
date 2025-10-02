@@ -3,6 +3,16 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.39.0]
+
+### Added
+
+- UI: Sentry logging updated to only log zome_calls and track specific sucess calls [#216](https://github.com/unytco/unyt-app/pull/216)
+- UI updates: [#217](https://github.com/unytco/unyt-app/pull/217)
+  - improved error messages
+  - watched items do not carry over between versions
+- DNA: register agent that joins network for the BlockExplore to find and get_agent_status that will return `AgentStatus`[#218](https://github.com/unytco/unyt-app/pull/219)
+
 ## [0.38.0]
 
 ### Added
