@@ -211,7 +211,7 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           GITHUB_TOKEN: ${{ secrets.GIT_PAT }}
           VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-          VITE_COMMIT_SHA: ${{ steps.version.outputs.APP_VERSION }}
+          VITE_COMMIT_SHA: ${{ steps.version.outputs.APP_VERSION }}-iroh # this is the tag that will be added to sentry
           APP_VERSION: ${{ steps.version.outputs.APP_VERSION }}
           HOLOCHAIN_ARC_FACTOR: ${{ matrix.arc_factor != 'default' && matrix.arc_factor || '' }}
         with:
@@ -288,7 +288,7 @@ jobs:
       - name: Install and Build 🔧 (zero arc)
         env:
           VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-          VITE_COMMIT_SHA: ${{ steps.version.outputs.APP_VERSION }}
+          VITE_COMMIT_SHA: ${{ steps.version.outputs.APP_VERSION }}-iroh # this is the tag that will be added to sentry
           APP_VERSION: ${{ steps.version.outputs.APP_VERSION }}
           HOLOCHAIN_ARC_FACTOR: "0"
           # VITE_APP_NAME: "Circulo"
