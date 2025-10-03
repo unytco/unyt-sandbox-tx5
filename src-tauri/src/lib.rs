@@ -41,7 +41,7 @@ pub fn run() {
             .level(log::LevelFilter::Warn)
             .level_for("tracing::span", log::LevelFilter::Off)
             .level_for("iroh", log::LevelFilter::Warn)
-            .level_for("holochain", log::LevelFilter::Warn)
+            .level_for("holochain", log::LevelFilter::Error)
             .level_for("kitsune2", log::LevelFilter::Warn)
             .level_for("kitsune2_gossip", log::LevelFilter::Warn)
             .level_for("kitsune2_transport_iroh", log::LevelFilter::Info)
@@ -72,7 +72,7 @@ pub fn run() {
 
     builder = builder.plugin(tauri_plugin_holochain::async_init(
         vec_to_locked(vec![]),
-        HolochainPluginConfig::new(holochain_dir, network_config).enable_mdns_discovery(),
+        HolochainPluginConfig::new(holochain_dir, network_config),
     ));
     println!("[unyt_tauri] Added holochain plugin with MDNS discovery enabled");
 
