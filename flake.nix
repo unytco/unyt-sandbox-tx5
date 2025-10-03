@@ -36,6 +36,7 @@
           binaryen
           inputs'.playground.packages.hc-playground
           yarn
+          go_1_24
           
         ]);
 
@@ -52,6 +53,7 @@
           binaryen
           inputs'.playground.packages.hc-playground
           yarn
+          go_1_24
           
         ]);
 

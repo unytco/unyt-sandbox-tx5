@@ -25,6 +25,8 @@ build-android: install
 build-android-release: install
 	yarn tauri android build
 
+build-linux: build-linux-default
+
 build-linux-default: install
 	HOLOCHAIN_ARC_FACTOR="" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build --bundles deb
 
@@ -42,7 +44,6 @@ test-original-approach: install
 	HOLOCHAIN_ARC_FACTOR="0" yarn tauri build --bundles deb
 	@echo "Built app should show arc factor in logs when run"
 
-build-linux: build-linux-zero
 
 build-macos-default: install
 	HOLOCHAIN_ARC_FACTOR="" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build
