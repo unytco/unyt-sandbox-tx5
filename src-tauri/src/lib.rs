@@ -331,11 +331,11 @@ fn network_config() -> NetworkConfig {
         network_config.bootstrap_url
     );
 
-    network_config.webrtc_config = Some(serde_json::json!({
-        "iceServers": [
-            { "urls": ["stun:stun.cloudflare.com:3478", "stun:stun.l.google.com:19302"]}
-        ]
-    }));
+    // network_config.webrtc_config = Some(serde_json::json!({
+    //     "iceServers": [
+    //         { "urls": ["stun:stun.cloudflare.com:3478", "stun:stun.l.google.com:19302"]}
+    //     ]
+    // }));
 
     // Configure arc factor: only set to 0 for zero arc mode, otherwise use Holochain default
     println!(
