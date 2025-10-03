@@ -3,16 +3,22 @@
 
   inputs = {
     tauri-plugin-holochain.url = "github:darksoil-studio/tauri-plugin-holochain/main-0.6";
-    holonix.url = "github:holochain/holonix?ref=main";
-
+    holonix.url = "github:holochain/holonix/main";
+    
     nixpkgs.follows = "holonix/nixpkgs";
+    rust-overlay.follows = "holonix/rust-overlay";
+    crane.follows = "holonix/crane";
+
     flake-parts.follows = "holonix/flake-parts";
     playground.url = "github:darksoil-studio/holochain-playground?ref=main-0.5";
   };
 
   outputs = inputs@{ flake-parts, ... }: flake-parts.lib.mkFlake { inherit inputs; } {
     systems = builtins.attrNames inputs.holonix.devShells;
-    perSystem = { inputs', pkgs, ... }: {
+    perSystem = { inputs', pkgs, system, ... }: {
+        # Use upstream rust version
+        packages.rust = inputs.holonix.packages.${system}.rust;
+
       formatter = pkgs.nixpkgs-fmt;
 
       devShells.default = pkgs.mkShell {

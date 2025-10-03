@@ -738,6 +738,10 @@
     },
     "root": {
       "inputs": {
+        "crane": [
+          "holonix",
+          "crane"
+        ],
         "flake-parts": [
           "holonix",
           "flake-parts"
@@ -748,6 +752,10 @@
           "nixpkgs"
         ],
         "playground": "playground_2",
+        "rust-overlay": [
+          "holonix",
+          "rust-overlay"
+        ],
         "tauri-plugin-holochain": "tauri-plugin-holochain_2"
       }
     },
