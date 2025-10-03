@@ -978,11 +978,11 @@
         "webkitnixpkgs": "webkitnixpkgs_2"
       },
       "locked": {
-        "lastModified": 1759469130,
-        "narHash": "sha256-Smw80fHsb38jrY1vZUu/GVRS58kfesqdcQ+CSlA9nks=",
+        "lastModified": 1759530159,
+        "narHash": "sha256-85ps821WWq+hfYDocBvF6H/CY0UPgGPzhmHqlmTu3F8=",
         "owner": "zo-el",
         "repo": "tauri-plugin-holochain",
-        "rev": "e3c703ee71d9ed2f6c58cf234f66ec6b9132a4a0",
+        "rev": "9418eb62b96b7ca669e01a4d2dd315cf6d505979",
         "type": "github"
       },
       "original": {
