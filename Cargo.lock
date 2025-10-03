@@ -3182,7 +3182,7 @@ dependencies = [
  "holochain_serialized_bytes",
  "holochain_util",
  "holochain_wasmer_common",
- "kitsune2_api 0.3.0-dev.3",
+ "kitsune2_api",
  "must_future",
  "rand 0.9.2",
  "rusqlite",
@@ -3227,7 +3227,6 @@ dependencies = [
  "holochain_trace",
  "holochain_types",
  "holochain_util",
- "holochain_wasm_test_utils",
  "holochain_wasmer_host",
  "holochain_websocket",
  "holochain_zome_types",
@@ -3235,8 +3234,8 @@ dependencies = [
  "human-panic",
  "indexmap 2.11.1",
  "itertools 0.14.0",
- "kitsune2_api 0.3.0-dev.3",
- "kitsune2_core 0.3.0-dev.3",
+ "kitsune2_api",
+ "kitsune2_core",
  "lair_keystore",
  "lair_keystore_api",
  "mockall",
@@ -3297,7 +3296,7 @@ dependencies = [
  "holochain_types",
  "holochain_util",
  "holochain_zome_types",
- "kitsune2_api 0.3.0-dev.3",
+ "kitsune2_api",
  "opentelemetry_api",
  "parking_lot",
  "thiserror 2.0.17",
@@ -3347,7 +3346,7 @@ dependencies = [
  "holochain_types",
  "holochain_websocket",
  "holochain_zome_types",
- "kitsune2_api 0.3.0-dev.3",
+ "kitsune2_api",
  "lair_keystore_api",
  "parking_lot",
  "rand 0.8.5",
@@ -3371,8 +3370,8 @@ dependencies = [
  "holochain_util",
  "holochain_zome_types",
  "indexmap 2.11.1",
- "kitsune2_api 0.3.0-dev.3",
- "kitsune2_core 0.3.0-dev.3",
+ "kitsune2_api",
+ "kitsune2_core",
  "schemars 0.9.0",
  "serde",
  "serde_json",
@@ -3495,8 +3494,8 @@ dependencies = [
  "holochain_types",
  "holochain_zome_types",
  "kitsune2",
- "kitsune2_api 0.3.0-dev.3",
- "kitsune2_core 0.3.0-dev.3",
+ "kitsune2_api",
+ "kitsune2_core",
  "kitsune2_gossip",
  "lair_keystore_api",
  "mockall",
@@ -3515,7 +3514,7 @@ dependencies = [
 [[package]]
 name = "holochain_runtime"
 version = "0.1.0"
-source = "git+https://github.com/zo-el/tauri-plugin-holochain/?branch=main-0.6-go-pion#41776ba92c307762a350f617d5654abbdf3ec321"
+source = "git+https://github.com/zo-el/tauri-plugin-holochain/?branch=main-0.6-go-pion#e3c703ee71d9ed2f6c58cf234f66ec6b9132a4a0"
 dependencies = [
  "anyhow",
  "arbitrary",
@@ -3529,8 +3528,8 @@ dependencies = [
  "holochain_keystore",
  "holochain_types",
  "holochain_util",
- "kitsune2_api 0.2.17",
- "kitsune2_core 0.2.17",
+ "kitsune2_api",
+ "kitsune2_core",
  "kitsune_p2p_mdns",
  "lair_keystore",
  "lair_keystore_api",
@@ -3605,7 +3604,7 @@ dependencies = [
  "holochain_timestamp",
  "holochain_util",
  "holochain_zome_types",
- "kitsune2_api 0.3.0-dev.3",
+ "kitsune2_api",
  "nanoid",
  "num_cpus",
  "once_cell",
@@ -3648,7 +3647,7 @@ dependencies = [
  "holochain_state_types",
  "holochain_types",
  "holochain_zome_types",
- "kitsune2_api 0.3.0-dev.3",
+ "kitsune2_api",
  "one_err",
  "serde",
  "serde_json",
@@ -3722,7 +3721,7 @@ dependencies = [
  "holochain_zome_types",
  "indexmap 2.11.1",
  "itertools 0.14.0",
- "kitsune2_api 0.3.0-dev.3",
+ "kitsune2_api",
  "mr_bundle",
  "must_future",
  "nanoid",
@@ -3761,19 +3760,6 @@ dependencies = [
  "schemars 0.9.0",
  "sodoken",
  "tokio",
-]
-
-[[package]]
-name = "holochain_wasm_test_utils"
-version = "0.6.0-dev.25"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a3af0b2cbfcb85b241cf23335594da04d753ac7f4407edae11b7f5539834f135"
-dependencies = [
- "holochain_types",
- "strum",
- "strum_macros",
- "toml 0.8.2",
- "walkdir",
 ]
 
 [[package]]
@@ -4561,28 +4547,11 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7914a4e8d048ffba9762ace3e58fef73b0a68b5e4b2c3c57100ec549402dfd1e"
 dependencies = [
  "bytes",
- "kitsune2_api 0.3.0-dev.3",
- "kitsune2_core 0.3.0-dev.3",
+ "kitsune2_api",
+ "kitsune2_core",
  "kitsune2_gossip",
  "kitsune2_transport_tx5",
  "serde",
-]
-
-[[package]]
-name = "kitsune2_api"
-version = "0.2.17"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c73cb5e344991b11c61352a66958394a167d6a6c1a82fcdd74a46bf3214933ab"
-dependencies = [
- "base64 0.22.1",
- "bytes",
- "futures",
- "prost",
- "serde",
- "serde_json",
- "thiserror 2.0.17",
- "tracing",
- "url",
 ]
 
 [[package]]
@@ -4604,51 +4573,16 @@ dependencies = [
 
 [[package]]
 name = "kitsune2_bootstrap_client"
-version = "0.2.17"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d44b6c847ef3617269041ffbf5c093e2a9ccca99e1e1f1ea8119f5f529f1d923"
-dependencies = [
- "base64 0.22.1",
- "kitsune2_api 0.2.17",
- "serde",
- "serde_json",
- "tracing",
- "ureq 3.1.2",
- "url",
-]
-
-[[package]]
-name = "kitsune2_bootstrap_client"
 version = "0.3.0-dev.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "654e72d9cef55e8cc31600022b0dad0ef86b73cf98d5fe60a4285fb503cd0028"
 dependencies = [
  "base64 0.22.1",
- "kitsune2_api 0.3.0-dev.3",
+ "kitsune2_api",
  "serde",
  "serde_json",
  "tracing",
  "ureq 3.1.2",
- "url",
-]
-
-[[package]]
-name = "kitsune2_core"
-version = "0.2.17"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c7374b9ab13edb058398628702e1bdd34ab5a16d204c34873f235966768160ac"
-dependencies = [
- "bytes",
- "ed25519-dalek",
- "futures",
- "kitsune2_api 0.2.17",
- "kitsune2_bootstrap_client 0.2.17",
- "prost",
- "rand 0.8.5",
- "serde",
- "serde_json",
- "tokio",
- "tracing",
  "url",
 ]
 
@@ -4661,8 +4595,8 @@ dependencies = [
  "bytes",
  "ed25519-dalek",
  "futures",
- "kitsune2_api 0.3.0-dev.3",
- "kitsune2_bootstrap_client 0.3.0-dev.3",
+ "kitsune2_api",
+ "kitsune2_bootstrap_client",
  "prost",
  "rand 0.8.5",
  "serde",
@@ -4679,7 +4613,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0d34b306be3d032d065d416e2c7bb73f2c8cd1e3f7649036c3f5d337e1183af9"
 dependencies = [
  "bytes",
- "kitsune2_api 0.3.0-dev.3",
+ "kitsune2_api",
  "tracing",
 ]
 
@@ -4691,8 +4625,8 @@ checksum = "0cb237747bed25f36d57e5b4ee6bb7d411c71737540757e87b86ccaef4013dd0"
 dependencies = [
  "bytes",
  "futures",
- "kitsune2_api 0.3.0-dev.3",
- "kitsune2_core 0.3.0-dev.3",
+ "kitsune2_api",
+ "kitsune2_core",
  "kitsune2_dht",
  "prost",
  "rand 0.8.5",
@@ -4711,7 +4645,7 @@ checksum = "8b94be75d7317a4c8019b2130bbde6e83d026a20ee093951533a321de316684a"
 dependencies = [
  "base64 0.22.1",
  "bytes",
- "kitsune2_api 0.3.0-dev.3",
+ "kitsune2_api",
  "serde",
  "tokio",
  "tracing",
@@ -4723,7 +4657,7 @@ dependencies = [
 [[package]]
 name = "kitsune_p2p_mdns"
 version = "0.4.4"
-source = "git+https://github.com/zo-el/tauri-plugin-holochain/?branch=main-0.6-go-pion#41776ba92c307762a350f617d5654abbdf3ec321"
+source = "git+https://github.com/zo-el/tauri-plugin-holochain/?branch=main-0.6-go-pion#e3c703ee71d9ed2f6c58cf234f66ec6b9132a4a0"
 dependencies = [
  "base64 0.22.1",
  "libmdns",
@@ -9002,7 +8936,7 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-holochain"
 version = "0.0.0"
-source = "git+https://github.com/zo-el/tauri-plugin-holochain/?branch=main-0.6-go-pion#41776ba92c307762a350f617d5654abbdf3ec321"
+source = "git+https://github.com/zo-el/tauri-plugin-holochain/?branch=main-0.6-go-pion#e3c703ee71d9ed2f6c58cf234f66ec6b9132a4a0"
 dependencies = [
  "anyhow",
  "bzip2",

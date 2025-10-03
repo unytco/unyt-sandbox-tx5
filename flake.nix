@@ -17,13 +17,13 @@
     systems = builtins.attrNames inputs.holonix.devShells;
     perSystem = { inputs', pkgs, system, ... }: {
       # Use upstream rust version
-      # packages.rust = inputs.holonix.packages.${system}.rust;
+      packages.rust = inputs.holonix.packages.${system}.rust;
 
       # Custom rust version
-      packages.rust = let
-        overlays = [ (import inputs.rust-overlay) ];
-        pkgs = import inputs.nixpkgs { inherit system overlays; };
-      in pkgs.rust-bin.stable."1.88.0".minimal;
+      # packages.rust = let
+      #   overlays = [ (import inputs.rust-overlay) ];
+      #   pkgs = import inputs.nixpkgs { inherit system overlays; };
+      # in pkgs.rust-bin.stable."1.88.0".minimal;
 
       formatter = pkgs.nixpkgs-fmt;
 

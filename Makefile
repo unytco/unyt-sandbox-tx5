@@ -28,10 +28,10 @@ build-android-release: install
 build-linux: build-linux-default
 
 build-linux-default: install
-	HOLOCHAIN_ARC_FACTOR="" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build --bundles deb
+	HOLOCHAIN_ARC_FACTOR="" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/release/unyt-sandbox-tx5/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build --bundles deb
 
 build-linux-zero: install
-	HOLOCHAIN_ARC_FACTOR="0" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build --bundles deb
+	HOLOCHAIN_ARC_FACTOR="0" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/release/unyt-sandbox-tx5/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build --bundles deb
 
 test-arc-factor: install
 	@echo "Testing default arc factor (empty string):"
@@ -46,13 +46,13 @@ test-original-approach: install
 
 
 build-macos-default: install
-	HOLOCHAIN_ARC_FACTOR="" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build
+	HOLOCHAIN_ARC_FACTOR="" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/release/unyt-sandbox-tx5/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build
 
 build-macos-zero: install
-	HOLOCHAIN_ARC_FACTOR="0" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build
+	HOLOCHAIN_ARC_FACTOR="0" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/release/unyt-sandbox-tx5/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build
 
 build-windows-default: install
-	HOLOCHAIN_ARC_FACTOR="" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build
+	HOLOCHAIN_ARC_FACTOR="" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/release/unyt-sandbox-tx5/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build
 
 build-windows-zero: install
-	HOLOCHAIN_ARC_FACTOR="0" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/shipyard-domino/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build
+	HOLOCHAIN_ARC_FACTOR="0" TAURI_SIGNING_PRIVATE_KEY="/home/zo-el/Documents/git-repo/unyt/release/unyt-sandbox-tx5/.tauri/test.key" TAURI_SIGNING_PRIVATE_KEY_PASSWORD="" yarn tauri build

@@ -7,7 +7,7 @@ use tauri_plugin_holochain::HolochainExt;
 
 pub async fn about_menu<R: tauri::Runtime>(h: &AppHandle<R>) {
     let app_version = h.package_info().version.to_string();
-
+    let backend = get_network_dump(h.clone()).await.unwrap_or_default();
     let app_info_message = match get_app_info(h.clone()).await {
         Ok((_all_apps, expected_app_info)) => {
             // // create a pretty list of installed apps
@@ -96,8 +96,8 @@ pub async fn about_menu<R: tauri::Runtime>(h: &AppHandle<R>) {
 
     let product_name = AppConfig::new(h).product_name;
     let about_message = format!(
-        "{} Version: v{}\n\n---\n\nApp Info:\n{}\n\n---\n\n{:#?}",
-        product_name, app_version, app_info_message, network_config,
+        "{} Version: v{}\n\n---\n\nApp Info:\n{}\n\n---\n\n{:#?}\n\n---\n\nNetwork Dump:\n{}",
+        product_name, app_version, app_info_message, network_config, backend,
     );
 
     h.dialog()
@@ -127,6 +127,33 @@ async fn get_app_info<R: tauri::Runtime>(
 
                     // Check if an old version is still installed
                     return Ok((installed_apps.clone(), expected_app_info));
+                }
+                Err(e) => return Err(anyhow!("Error getting Holochain client: {:?}", e)),
+            }
+        }
+        Err(e) => return Err(anyhow!("Error getting Holochain client: {:?}", e)),
+    }
+}
+
+async fn get_network_dump<R: tauri::Runtime>(handle: AppHandle<R>) -> anyhow::Result<String> {
+    match handle.holochain() {
+        Ok(holochain_client) => {
+            match holochain_client.admin_websocket().await {
+                Ok(admin_ws) => {
+                    // Check if the expected app is installed
+                    let data = admin_ws
+                        .dump_network_stats()
+                        .await
+                        .map_err(|err| tauri_plugin_holochain::Error::ConductorApiError(err))?;
+                    let handle = handle.clone();
+                    // let expected_app_info = installed_apps.clone().into_iter().find(|app| {
+                    //     app.installed_app_id
+                    //         .as_str()
+                    //         .eq(&AppConfig::new(&handle).app_id)
+                    // });
+
+                    // Check if an old version is still installed
+                    return Ok(data.backend.clone());
                 }
                 Err(e) => return Err(anyhow!("Error getting Holochain client: {:?}", e)),
             }
