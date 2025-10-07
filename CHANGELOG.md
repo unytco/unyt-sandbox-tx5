@@ -3,6 +3,20 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.40.0]
+
+### Added
+
+- UI: Act as executor shows up only when your the executor [#220](https://github.com/unytco/unyt-app/pull/220)
+- SmartAgreements lib: clean up naming to prep for release [#220](https://github.com/unytco/unyt-app/pull/220)
+- UI: able to handle inputs required for aggregate executable agreements [#220](https://github.com/unytco/unyt-app/pull/220)
+- UI: updated error handling from smart agreement executions [#220](https://github.com/unytco/unyt-app/pull/220)
+- SmartAgreement lib: Updated logic for aggregate request [#220](https://github.com/unytco/unyt-app/pull/220)
+- DNA: Update to holochain v0.6.0-dev.27 [#220](https://github.com/unytco/unyt-app/pull/220)
+- UI: Smart Agreement search bar find by ID [#220](https://github.com/unytco/unyt-app/pull/220)
+- DNA: get_all_smart_agreement returns status fulfilled [#220](https://github.com/unytco/unyt-app/pull/220)
+- UI: Agrement Actions show separate list of fulfilled agrements [#220](https://github.com/unytco/unyt-app/pull/220)
+
 ## [0.39.0]
 
 ### Added
