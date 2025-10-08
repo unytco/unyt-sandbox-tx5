@@ -147,11 +147,11 @@ Though they sound similar to Blockchain Smart Contracts, Unyt's Smart Agreements
 Smart Agreements are flexible, lightweight, and are anchored in the agency of each participant.
 
 To dive into more details on Smart Agreements, check out:
-[Arthur Brock's Blog Post]()
-[The Smart Agreement Overview](./testing_docs/5_0_Smart_Agreement_Release.md)
-[Intro to Creating Smart Agreements](./testing_docs/4_1_intro_to_smart_agreements.md)
-[Smart Agreements Library](https://github.com/unytco/smart_agreement_library)
-[Unyt Dictionary](./testing_docs/4_2_unyt-dictionary.md)
+- [Arthur Brock's Blog Post]()
+- [The Smart Agreement Overview](./testing_docs/5_0_Smart_Agreement_Release.md)
+- [Intro to Creating Smart Agreements](./testing_docs/4_1_intro_to_smart_agreements.md)
+- [Smart Agreements Library](https://github.com/unytco/smart_agreement_library)
+- [Unyt Dictionary](./testing_docs/4_2_unyt-dictionary.md)
 
 When you open Unyt on your operating system for the first time, it will create a set of public and private keys for you that you can use to interact with others. These are stored in a private keystore (Lair) on your own machine and are used during future uses. In Unyt we often refer to this public key as "your address" as it is how others can refer to you when sending, receiving or authorizing you to perform particular roles.
 
