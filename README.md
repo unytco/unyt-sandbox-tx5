@@ -9,7 +9,7 @@
 - [Unyt Setup](./README.md)
 - [Detailed Documentation](./testing_docs/5_0_phase_5_testing_details.md)
 - [Unyt Dictionary](./testing_docs/4_2_unyt-dictionary.md)
-[The Smart Agreement Overview](./testing_docs/5_0_Smart_Agreement_Release.md)
+- [The Smart Agreement Overview](./testing_docs/5_0_Smart_Agreement_Release.md)
 - [Intro to Smart Agreements (Three Layers)](./testing_docs/4_1_intro_to_smart_agreements.md)
 - [Templates and Smart Agreements Library Repo](https://github.com/unytco/smart_agreement_library)
 - [Feedback](https://github.com/orgs/unytco/projects/5/views/1)
