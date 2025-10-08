@@ -141,7 +141,7 @@ When you open Unyt on your operating system for the first time, it will create a
 
 [Share your address](https://forms.gle/sbCFUuv8sGyYhnc97) with others and find theirs as well in the [Address Spreadsheet](https://docs.google.com/spreadsheets/d/1gusOPtLVpT2RCDP7DRhVX39OEE-XAv26pnkPrwZbqzM/edit?gid=2043153663#gid=2043153663).
 
-We [invite you to play](./testing_docs/1_0_testing_plan.md) alongside others.
+We [invite you to play](./testing_docs/1_0_invite.md) alongside others.
 
 ## Intro
 Unyt is a Holochain based application for creating p2p credit and payment systems with Smart Agreement functionality.
