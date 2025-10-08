@@ -5,7 +5,7 @@
 
 ## Related docs
 
-- [Invite to Play](./testing_docs/1_0_testing_plan.md)
+- [Invite to Play](./testing_docs/1_0_invite.md)
 - [Unyt Setup](./README.md)
 - [Detailed Documentation](./testing_docs/5_0_phase_5_testing_details.md)
 - [Unyt Dictionary](./testing_docs/4_2_unyt-dictionary.md)
