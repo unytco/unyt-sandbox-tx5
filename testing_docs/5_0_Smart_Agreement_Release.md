@@ -30,7 +30,7 @@ And while much of this storytelling has focused on Smart Agreements that have to
 
 But lets also open up some of the interesting things that arise out of making agents central to the operation of a decentralized network.
 
-1) Lightweight Transactions and Interactions
+#### Lightweight Transactions and Interactions
 
 Unyt, like Holochain apps more generally, does not rely upon a centralized server for validating, storing and serving transactions. It also does not need a group of validators coming to consensus about the total order of all events. Instead, each agent is the authority about the order of the actions that they have taken and each action is subsequently validated, stored and served by a portion of the participating peers.
 
@@ -38,10 +38,10 @@ This approach makes it possible to handle high volumes of participants, and high
 
 Layering on top of this foundation, different communities can structure things in a variety of ways to support different priorities. For instance, some may want to enable a portion of their community to use lightweight nodes that don't have any responsibility for validating, storing and serving content from peers. 
 
-2) Asynchronous Transactions
+#### Asynchronous Transactions
 Whether Alice is sending directly to Bob, or is paying for a service using a Smart Agreement, as soon as she hits send, her account get's debited. If she was offline when she prepared the transaction, it will go through when she comes online. If she then goes offline again, it doesn't matter. That content has been shared with others and the rest of the network will recognize that Alice has chosen to take that action. Assuming she sent them to a Smart Agreement, when the Executor of that agreement next executes it (some agreements can be executed repeatedly), they will include Alice's payment as one of the inputs. And if one of the results of that execution is that some units got allocated to Bob, those will get allocated right away. If Bob is offline, he'll get notified when he comes back online, and at that time can choose whether or not to accept the units. If accepts them, his balance will change. If he doesn't, they will remain available for him to accept. Nobody else can claim them. 
 
-3) Bulk transactions
+#### Bulk transactions
 Agent-centric Smart Agreements also support many people interacting with an agreement, perhaps thousands adding invoices, and just as many interacting with it by making payments. After an execution of that agreement there might be thousands of people notified that they can accept units that have been allocated to them. Again, as each of them accept the payments, their account will be credited.
 
 ### Time is Weird
@@ -59,6 +59,6 @@ There is also a Service Network Config Window that operates similarly, but for a
 
 Other (nonsystem level) agreements can be updated at any time.
 
-This approach isn't as flexible as being able to change all agreements at any time, but given some of the earlier points that we've mentioned about time in distributed systems, it is an approach that enables iteration, while delivering consistent agreement on which rules are in force and enables the enforcement of those rules. The duration of a config window could be set to last for a very short period of time (an hour, or a day) or for something longer (a month, perhaps).
+This approach isn't as flexible as being able to change all agreements at any time, but given some of the earlier points that we've mentioned about time in distributed systems, it is an approach that enables iteration, while delivering consistent aligment on which rules are in force and enables the enforcement of those rules. The duration of a config window could be set to last for a very short period of time (an hour, or a day) or for something longer (a month, perhaps).
 
 If you want to dive into how Smart Agreements are structured, check out our [Intro to Smart Agreements (Three Layers)](./4_1_intro_to_smart_agreements.md). And if you want to see some guidance and examples and possibly even create your own, see our [Templates and Smart Agreements Library](https://github.com/unytco/smart_agreement_library).

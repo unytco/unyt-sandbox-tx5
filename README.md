@@ -137,6 +137,12 @@ Note: In Mac, because you downloaded the software directly and not through Apple
 If you want to delete everything and start over with a new account, check out [Starting Fresh](./testing_docs/starting_fresh.md)
 
 
+When you open Unyt on your operating system for the first time, it will create a set of public and private keys for you that you can use to interact with others. These are stored in a private keystore (Lair) on your own machine and are used during future uses. In Unyt we often refer to this public key as "your address" as it is how others can refer to you when sending, receiving or authorizing you to perform particular roles.
+
+[Share your address](https://forms.gle/sbCFUuv8sGyYhnc97) with others and find theirs as well in the [Address Spreadsheet](https://docs.google.com/spreadsheets/d/1gusOPtLVpT2RCDP7DRhVX39OEE-XAv26pnkPrwZbqzM/edit?gid=2043153663#gid=2043153663).
+
+We [invite you to play](./testing_docs/1_0_testing_plan.md) alongside others.
+
 ## Intro
 Unyt is a Holochain based application for creating p2p credit and payment systems with Smart Agreement functionality.
 
@@ -153,11 +159,7 @@ To dive into more details on Smart Agreements, check out:
 - [Smart Agreements Library](https://github.com/unytco/smart_agreement_library)
 - [Unyt Dictionary](./testing_docs/4_2_unyt-dictionary.md)
 
-When you open Unyt on your operating system for the first time, it will create a set of public and private keys for you that you can use to interact with others. These are stored in a private keystore (Lair) on your own machine and are used during future uses. In Unyt we often refer to this public key as "your address" as it is how others can refer to you when sending, receiving or authorizing you to perform particular roles.
 
-[Share your address](https://forms.gle/sbCFUuv8sGyYhnc97) with others and find theirs as well in the [Address Spreadsheet](https://docs.google.com/spreadsheets/d/1gusOPtLVpT2RCDP7DRhVX39OEE-XAv26pnkPrwZbqzM/edit?gid=2043153663#gid=2043153663).
-
-We [invite you to play](./testing_docs/1_0_testing_plan.md) alongside others.
 
 ## License
 
