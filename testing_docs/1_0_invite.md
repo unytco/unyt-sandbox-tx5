@@ -6,24 +6,16 @@ Version: 0.40.0
 
 # An Invitation to Play
 
-#### Playing with Smart Agreements
-
-- Start: October 8, 2025
-- Duration: 2 weeks
-- Version: 0.40.0
-
-
 ## Materials Have Moved
 
 > The content of this page has now been moved to the [README](/README.md) page
 
 ---
 
-Please use the README page for info on how to test Smart Agreements
+Please use the [README](/README.md) page for info on how to test Smart Agreements
 
 #### Other Supporting Docs
 
-- [README](/README.md)
 - [Invitation to Play](./1_0_invite.md)
 - [Unyt Setup](../README.md)
 - [Detailed Documentation](./5_0_phase_5_testing_details.md)

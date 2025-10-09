@@ -46,7 +46,7 @@ For those that want to go a bit deeper, we'd like you to test the usability of c
 
 Select from two versions of apps to download. 
 1. The **Full-Arc** verson holds a full copy of the DHT locally, synchronizing all data being published. 
-2. The **Zero-Arc** version is lighter weight to run (good for mobile phones for example) because only holds your own history, and caches some other network data, but some actions will be slower because you'll need to fetch data from peers on the network.
+2. The **Zero-Arc** version is lighter weight to run (which will be good for mobile phones, for example) because only holds your own history, and caches some other network data, but some actions will be slower because you'll need to fetch data from peers on the network.
 
 ### Zero-Arc Releases
 
