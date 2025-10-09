@@ -3,39 +3,60 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/unytco/unyt-sandbox-tx5?style=for-the-badge)
 ![GitHub All Releases](https://img.shields.io/github/downloads/unytco/unyt-sandbox-tx5/total?style=for-the-badge)
 
-## Related docs
-
-- [Invite to Play](./testing_docs/1_0_invite.md)
-- [Unyt Setup](./README.md)
-- [Detailed Documentation](./testing_docs/5_0_phase_5_testing_details.md)
-- [Unyt Dictionary](./testing_docs/4_2_unyt-dictionary.md)
-- [The Smart Agreement Overview](./testing_docs/5_0_Smart_Agreement_Release.md)
-- [Intro to Smart Agreements (Three Layers)](./testing_docs/4_1_intro_to_smart_agreements.md)
-- [Templates and Smart Agreements Library Repo](https://github.com/unytco/smart_agreement_library)
-- [Feedback](https://github.com/orgs/unytco/projects/5/views/1)
-
 
 ## Intro
 
-Unyt is a Holochain based application for creating agent-centric, peer-to-peer, Mutual Credit accounting systems with smart contract like functionality.
+Unyt is a Holochain based application for creating p2p credit and payment systems with Smart Agreement functionality.
 
-We are working with potential partner projects like yours as we build out this software to ensure that it meets the needs of your team as well as your community of users.
+This release is focused on highlighting Unyt's approach to Smart Agreements.
 
-## Invite to Play
+Though they sound similar to Blockchain Smart Contracts, Unyt's Smart Agreements work a little differently and therefore open up some different possibilities.
 
-We [invite you to play](./testing_docs/1_0_testing_plan.md) alongside others in kicking the tires on Unyt and playing with Smart Agreements.
+To dive into more details on Smart Agreements, check out:
+- [The Smart Agreement Overview](./testing_docs/5_0_Smart_Agreement_Release.md)
+- [Intro to Creating Smart Agreements](./testing_docs/4_1_intro_to_smart_agreements.md)
+- [Smart Agreements Library](https://github.com/unytco/smart_agreement_library)
+- [Unyt Dictionary](./testing_docs/4_2_unyt-dictionary.md)
 
-Details on how to join the conversation about Unyt in the Holochain DEV.HC Discord is also in that invite page.
 
-## Downloads Zero Arc releases
+## Invitation to Play
+
+Welcome to Unyt. We invite you to kick the tires a bit, try out a Smart Agreement or two and maybe even try creating your own.
+
+[Share your address](https://forms.gle/sbCFUuv8sGyYhnc97) with others and find theirs as well in the [Address Spreadsheet](https://docs.google.com/spreadsheets/d/1gusOPtLVpT2RCDP7DRhVX39OEE-XAv26pnkPrwZbqzM/edit?gid=2043153663#gid=2043153663).
+
+Feel free to join the conversation in the Unyt Thread on the [Holochain DEV.HC Discord](https://discord.com/invite/k55DS5dmPH).
+
+The Unyt Channel is here:
+https://discordapp.com/channels/919686143581253632/1425157240972902430
+
+How to give yourself access? 
+1. Go to the '#👤・5・select-a-role'' Channel
+2. Assign yourself the ''Access to: Projects'' role 
+3. In the category ''Projects'' go to the channel called ''Unyt"
+
+For those that want to go a bit deeper, we'd like you to test the usability of custom Smart Agreement configurations and system features.
+
+* create and test service units relevant to your network.
+* aggregate receives via a Smart Agreement RAVE (e.g. process bulk invoices via a log collector with a single payment)
+* aggregate sends via a Smart Agreement RAVE (e.g. collection of transaction fees)
+
+
+## Downloads 
+
+Select from two versions of apps to download. 
+1. The **Full-Arc** verson holds a full copy of the DHT locally, synchronizing all data being published. 
+2. The **Zero-Arc** version is lighter weight to run (good for mobile phones for example) because only holds your own history, and caches some other network data, but some actions will be slower because you'll need to fetch data from peers on the network.
+
+### Zero-Arc Releases
 
 <div align="center">
 
 <table>
 <tr>
-<td width="25%" align="center">
+<td width="33%" align="center">
 
-### **Windows**
+#### **Windows**
 
 ---
 
@@ -46,7 +67,7 @@ Details on how to join the conversation about Unyt in the Holochain DEV.HC Disco
 </td>
 <td width="25%" align="center">
 
-### **MacOS**
+#### **MacOS**
 
 ---
 
@@ -57,7 +78,7 @@ Details on how to join the conversation about Unyt in the Holochain DEV.HC Disco
 </td>
 <td width="25%" align="center">
 
-### **Linux**
+#### **Linux**
 
 ---
 
@@ -69,7 +90,7 @@ Details on how to join the conversation about Unyt in the Holochain DEV.HC Disco
 <!-- 
 <td width="25%" align="center">
 
-### **Android**
+#### **Android**
 
 ---
 
@@ -84,15 +105,15 @@ Details on how to join the conversation about Unyt in the Holochain DEV.HC Disco
 
 </div>
 
-## Download Full Arc releases
+### Full-Arc Releases
 
 <div align="center">
 
 <table>
 <tr>
-<td width="25%" align="center">
+<td width="33%" align="center">
 
-### **Windows**
+#### **Windows**
 
 ---
 
@@ -103,7 +124,7 @@ Details on how to join the conversation about Unyt in the Holochain DEV.HC Disco
 </td>
 <td width="25%" align="center">
 
-### **MacOS**
+#### **MacOS**
 
 ---
 
@@ -114,7 +135,7 @@ Details on how to join the conversation about Unyt in the Holochain DEV.HC Disco
 </td>
 <td width="25%" align="center">
 
-### **Linux**
+#### **Linux**
 
 ---
 
@@ -139,26 +160,16 @@ If you want to delete everything and start over with a new account, check out [S
 
 When you open Unyt on your operating system for the first time, it will create a set of public and private keys for you that you can use to interact with others. These are stored in a private keystore (Lair) on your own machine and are used during future uses. In Unyt we often refer to this public key as "your address" as it is how others can refer to you when sending, receiving or authorizing you to perform particular roles.
 
-[Share your address](https://forms.gle/sbCFUuv8sGyYhnc97) with others and find theirs as well in the [Address Spreadsheet](https://docs.google.com/spreadsheets/d/1gusOPtLVpT2RCDP7DRhVX39OEE-XAv26pnkPrwZbqzM/edit?gid=2043153663#gid=2043153663).
+## Related Resources
 
-We [invite you to play](./testing_docs/1_0_invite.md) alongside others.
-
-## Intro
-Unyt is a Holochain based application for creating p2p credit and payment systems with Smart Agreement functionality.
-
-This release is focused on highlighting Unyt's approach to Smart Agreements.
-
-Though they sound similar to Blockchain Smart Contracts, Unyt's Smart Agreements work a little differently and open up some new possibilities.
-
-Smart Agreements are flexible, lightweight, and are anchored in the agency of each participant.
-
-To dive into more details on Smart Agreements, check out:
-- [Arthur Brock's Blog Post]()
-- [The Smart Agreement Overview](./testing_docs/5_0_Smart_Agreement_Release.md)
-- [Intro to Creating Smart Agreements](./testing_docs/4_1_intro_to_smart_agreements.md)
-- [Smart Agreements Library](https://github.com/unytco/smart_agreement_library)
+- [Invite to Play](./testing_docs/1_0_invite.md)
+- [Unyt Setup](./README.md)
+- [Detailed Documentation](./testing_docs/5_0_phase_5_testing_details.md)
 - [Unyt Dictionary](./testing_docs/4_2_unyt-dictionary.md)
-
+- [The Smart Agreement Overview](./testing_docs/5_0_Smart_Agreement_Release.md)
+- [Intro to Smart Agreements (Three Layers)](./testing_docs/4_1_intro_to_smart_agreements.md)
+- [Templates and Smart Agreements Library Repo](https://github.com/unytco/smart_agreement_library)
+- [Feedback](https://github.com/orgs/unytco/projects/5/views/1)
 
 
 ## License
