@@ -219,6 +219,7 @@ jobs:
           VITE_COMMIT_SHA: ${{ steps.version.outputs.APP_VERSION }}-tx5 # this is the tag that will be added to sentry
           APP_VERSION: ${{ steps.version.outputs.APP_VERSION }}
           HOLOCHAIN_ARC_FACTOR: ${{ matrix.arc_factor != 'default' && matrix.arc_factor || '' }}
+          VITE_IS_RIDESHARE_RELEASE: "true"
         with:
           releaseId: ${{ needs.publish-happ.outputs.releaseId }}
           releaseDraft: true
@@ -309,6 +310,7 @@ jobs:
           HOLOCHAIN_ARC_FACTOR: "0"
           # VITE_APP_NAME: "Circulo"
           # VITE_IS_CIRCULO_RELEASE: "true"
+          VITE_IS_RIDESHARE_RELEASE: "true"
         run: |
           nix develop --accept-flake-config .#androidDev --command bash -c "make build-android-release"
 
