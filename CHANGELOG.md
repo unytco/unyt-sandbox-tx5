@@ -3,6 +3,29 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.41.0]
+
+### Added
+
+- UI: incorporated the domino pips back with colors based on the unit type
+- UI: Example agreements that users cannot edit or interact with
+- DNA: validation check to not double spend on the same invoice and checks that the spend timestamp is after the invoice [#224](https://github.com/unytco/unyt-app/pull/224)
+- UI: Agreements fetch from store
+- UI: Contacts modal has unified search and address entry
+- UI: Change fetch timers
+- DNA: Parked and ParkedSpend now include role_display_name
+- UI: Hide notes and action buttons on transactions view if screen is too small
+- UI: Use 'ago' for transactions view and history view instead of timestamp
+- UI: VITE_IS_RIDESHARE_RELEASE that enables a new modal that helps interaction with a custom rideshare agreements [#231](https://github.com/unytco/unyt-app/pull/231)
+- UI: ability to select specific transaction when execute_saved or accept_paying_parked_invoice [#232](https://github.com/unytco/unyt-app/pull/232)
+
+### Updated
+
+- UI: Agent Overview balance and credit modal updated to be appropriately alined
+- UI: Agreement and CodeTemplate Copy to create a new modal adds a prefix to title to have it be unique and suggest a change
+- DNA: updated GlobalDefinition to have everything that the ServiceNetworkDefinition contains [#230](https://github.com/unytco/unyt-app/pull/230)
+- DNA: get_my_current_applied_credit_limit can be run with GetStrategy [#230](https://github.com/unytco/unyt-app/pull/230)
+
 ## [0.40.0]
 
 ### Added
@@ -268,8 +291,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - rave_lib > smart_agreement_library
   - executable_agreement > smart_agreement
   - ExecutableAgreement > SmartAgreement
-  - SLSpecialAgents > SNSpecialAgents
-  - SLSAVEDAgreements > SNSAVEDAgreements
+  - SLSpecialAgents > CommonSpecialAgents
+  - SLSAVEDAgreements > CommonSAVEDAgreements
 - code-templates tagged [#166](https://github.com/unytco/unyt/pull/166)
 - prep for shipyard releases [#167](https://github.com/unytco/unyt/pull/167)
 - compatible with holochain v0.5.4 [#168](https://github.com/unytco/unyt/pull/168)
@@ -389,7 +412,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- removed service_fees SAVED from SNSAVEDAgreements [#114](https://github.com/unytco/unyt/pull/114)
+- removed service_fees SAVED from CommonSAVEDAgreements [#114](https://github.com/unytco/unyt/pull/114)
 
 ## [0.9.1]
 
