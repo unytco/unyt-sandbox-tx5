@@ -10,10 +10,6 @@
   "app": {
     "withGlobalTauri": false,
     "security": {
-      "csp": {
-        "default-src": "'self'",
-        "connect-src": "'self' https://nominatim.openstreetmap.org https://router.project-osrm.org https://*.tile.openstreetmap.org"
-      },
       "capabilities": ["mobile-capability", "main-capability", "desktop-capability"]
     }
   },
