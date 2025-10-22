@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.41.0]
+## [0.42.0]
 
 ### Added
 
@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - UI: Agreement and CodeTemplate Copy to create a new modal adds a prefix to title to have it be unique and suggest a change
 - DNA: updated GlobalDefinition to have everything that the ServiceNetworkDefinition contains [#230](https://github.com/unytco/unyt-app/pull/230)
 - DNA: get_my_current_applied_credit_limit can be run with GetStrategy [#230](https://github.com/unytco/unyt-app/pull/230)
+- UI: rideshare tauri fetching
+- UI: rideshare increase auto zoom and added clear button on rideshare-modal
 
 ## [0.40.0]
 
