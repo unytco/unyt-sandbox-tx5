@@ -1,5 +1,5 @@
 {
-  "version": "0.41.0",
+  "version": "0.42.0",
   "productName": "Unyt-tx5",
   "identifier": "co.unyt.tx5.sandbox",
   "build": {
@@ -10,6 +10,10 @@
   "app": {
     "withGlobalTauri": false,
     "security": {
+      "csp": {
+        "default-src": "'self'",
+        "connect-src": "'self' https://nominatim.openstreetmap.org https://router.project-osrm.org https://*.tile.openstreetmap.org"
+      },
       "capabilities": ["mobile-capability", "main-capability", "desktop-capability"]
     }
   },

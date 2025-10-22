@@ -1,14 +1,23 @@
 {
-	"$schema": "../gen/schemas/desktop-schema.json",
-	"identifier": "main-capability",
-	"description": "Capability for the main window",
-	"windows": ["main"],
-	"permissions": [
-		"core:default",
-		"core:window:allow-set-title",
-		"log:default",
-		"notification:default",
-		"notification:allow-is-permission-granted",
-		"deep-link:default"
-	]
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "main-capability",
+  "description": "Capability for the main window",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "core:window:allow-set-title",
+    "log:default",
+    "notification:default",
+    "notification:allow-is-permission-granted",
+    "deep-link:default",
+    "http:default",
+    {
+      "identifier": "http:default",
+      "allow": [
+        { "url": "https://nominatim.openstreetmap.org/**" },
+        { "url": "https://router.project-osrm.org/**" },
+        { "url": "https://*.tile.openstreetmap.org/**" }
+      ]
+    }
+  ]
 }

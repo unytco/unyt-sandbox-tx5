@@ -62,6 +62,9 @@ pub fn run() {
     builder = builder.plugin(tauri_plugin_dialog::init());
     println!("[unyt_tauri] Added dialog plugin");
 
+    builder = builder.plugin(tauri_plugin_http::init());
+    println!("[unyt_tauri] Added HTTP plugin");
+
     let holochain_dir = holochain_dir();
     let network_config = network_config();
     println!("[unyt_tauri] Holochain directory: {:?}", holochain_dir);

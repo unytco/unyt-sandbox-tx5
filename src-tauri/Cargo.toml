@@ -1,6 +1,6 @@
 [package]
 name = "unyt-tx5-tauri"
-version = "0.41.0"
+version = "0.42.0"
 description = "Unyt tx5"
 authors = ["zo-el"]
 license = ""
@@ -35,6 +35,7 @@ image = "0.25"
 tauri-plugin-notification = { git = "https://github.com/guillemcordoba/plugins-workspace", branch = "push-notifications", features = ["push-notifications-fcm"] }
 tauri-plugin-dialog = "2.3"
 tauri-plugin-process = "2.3"
+tauri-plugin-http = "2.3"
 tauri-plugin-safe-area-insets-css = { git = "https://github.com/guillemcordoba/tauri-plugin-safe-area-insets-css" }
 
 tauri-plugin-single-instance = { version = "2", features = ["deep-link"] }
