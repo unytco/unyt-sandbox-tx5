@@ -3,27 +3,25 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/unytco/unyt-sandbox-tx5?style=for-the-badge)
 ![GitHub All Releases](https://img.shields.io/github/downloads/unytco/unyt-sandbox-tx5/total?style=for-the-badge)
 
-
 ## Intro
 
 Unyt is a Holochain based application for creating p2p credit and payment systems with Smart Agreement functionality.
 
-This release is focused on highlighting Unyt's approach to Smart Agreements.
+This release is focused on demonstrating how Unyt could be used to enable multiple regional rideshare groups to operate a single application for managing the pricing and payments for rides across their different cities.
 
-Though they sound similar to Blockchain Smart Contracts, Unyt's Smart Agreements work a little differently and therefore open up some different possibilities.
+The core of the story is the way in which Unyt's decentralized accounting engine enables different groups, running shared infrastructure to take different inputs like Kilometers and Minutes and transform those into prices according to their own custom price sheets.
 
-To dive into more details on Smart Agreements, check out:
-- [The Smart Agreement Overview](./testing_docs/5_0_Smart_Agreement_Release.md)
-- [Intro to Creating Smart Agreements](./testing_docs/4_1_intro_to_smart_agreements.md)
-- [Smart Agreements Library](https://github.com/unytco/smart_agreement_library)
-- [Unyt Dictionary](./testing_docs/4_2_unyt-dictionary.md)
+We refer to this as multi-unit accounting, as all of these things, the Service Units (KM, Min etc) as well as the Payment (or Base) Units interact in accordance with the Smart Agreements that each group has put in place.
 
+The rideshare side of this demo is just a quick interface that our team whipped together to show what is possible on the payments side. We haven't wired up anything sophisticated in terms of algorithms for logistics and dispatch. In fact, you select your own driver. In a production version of this app, that driver selection -- or perhaps some driver options with pricing and timing and reputation info -- would be shared from the coordination layer. But for this demo version the selection is manual.
 
 ## Invitation to Play
 
-Welcome to Unyt. We invite you to kick the tires a bit, try out a Smart Agreement or two and maybe even try creating your own.
+Help others book you as a driver by sharing your address with our [riders and drivers signup form](https://forms.gle/KfsN3GzM3Z7V7tbj7). And find others in the [riders and drivers sheet](https://docs.google.com/spreadsheets/d/1aZ_7baIEhOT0jGXRYE9lFje-2hmOL2b62pjzfsPaKiY/edit?usp=sharing).
 
-[Share your address](https://forms.gle/sbCFUuv8sGyYhnc97) with others and find theirs as well in the [Address Spreadsheet](https://docs.google.com/spreadsheets/d/1gusOPtLVpT2RCDP7DRhVX39OEE-XAv26pnkPrwZbqzM/edit?gid=2043153663#gid=2043153663).
+Note: this is the sign up for Unyt Sandbox Tx5 v.0.42.0. If you are using another app (like a newer or older version, or Circulo), your address won't work here.
+
+For a bit more detail check out the [Pays Well With Others](https://unyt.co/blog/pays-well-with-others/) blog post as well as this [video demo](https://www.youtube.com/watch?v=BezY8h4GZto).
 
 Feel free to join the conversation in the Unyt Thread on the [Holochain DEV.HC Discord](https://discord.com/invite/k55DS5dmPH).
 
@@ -60,9 +58,9 @@ Select from two versions of apps to download.
 
 ---
 
-[MSI Installer (x64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.40.0/Unyt-tx5_zero-arc_0.40.0_x64_windows.msi)
+[MSI Installer (x64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.42.0/Unyt-tx5_zero-arc_0.42.0_x64_windows.msi)
 
-[EXE Setup (x64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.40.0/Unyt-tx5_zero-arc_0.40.0_x64_windows.exe)
+[EXE Setup (x64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.42.0/Unyt-tx5_zero-arc_0.42.0_x64_windows.exe)
 
 </td>
 <td width="25%" align="center">
@@ -71,9 +69,9 @@ Select from two versions of apps to download.
 
 ---
 
-[Silicon (arm64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.40.0/Unyt-tx5_zero-arc_0.40.0_aarch64_darwin.dmg)
+[Silicon (arm64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.42.0/Unyt-tx5_zero-arc_0.42.0_aarch64_darwin.dmg)
 
-[Intel (x64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.40.0/Unyt-tx5_zero-arc_0.40.0_x64_darwin.dmg)
+[Intel (x64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.42.0/Unyt-tx5_zero-arc_0.42.0_x64_darwin.dmg)
 
 </td>
 <td width="25%" align="center">
@@ -82,9 +80,9 @@ Select from two versions of apps to download.
 
 ---
 
-[AppImage](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.40.0/Unyt-tx5_zero-arc_0.40.0_amd64_linux.AppImage)
+[AppImage](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.42.0/Unyt-tx5_zero-arc_0.42.0_amd64_linux.AppImage)
 
-[Debian (.deb)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.40.0/Unyt-tx5_zero-arc_0.40.0_amd64_linux.deb)
+[Debian (.deb)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.42.0/Unyt-tx5_zero-arc_0.42.0_amd64_linux.deb)
 
 </td>
 <!-- 
@@ -117,9 +115,9 @@ Select from two versions of apps to download.
 
 ---
 
-[MSI Installer (x64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.40.0/Unyt-tx5_0.40.0_x64_windows.msi)
+[MSI Installer (x64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.42.0/Unyt-tx5_0.42.0_x64_windows.msi)
 
-[EXE Setup (x64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.40.0/Unyt-tx5_0.40.0_x64_windows.exe)
+[EXE Setup (x64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.42.0/Unyt-tx5_0.42.0_x64_windows.exe)
 
 </td>
 <td width="25%" align="center">
@@ -128,9 +126,9 @@ Select from two versions of apps to download.
 
 ---
 
-[Silicon (arm64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.40.0/Unyt-tx5_0.40.0_aarch64_darwin.dmg)
+[Silicon (arm64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.42.0/Unyt-tx5_0.42.0_aarch64_darwin.dmg)
 
-[Intel (x64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.40.0/Unyt-tx5_0.40.0_x64_darwin.dmg)
+[Intel (x64)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.42.0/Unyt-tx5_0.42.0_x64_darwin.dmg)
 
 </td>
 <td width="25%" align="center">
@@ -139,9 +137,9 @@ Select from two versions of apps to download.
 
 ---
 
-[AppImage](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.40.0/Unyt-tx5_0.40.0_amd64_linux.AppImage)
+[AppImage](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.42.0/Unyt-tx5_0.42.0_amd64_linux.AppImage)
 
-[Debian (.deb)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.40.0/Unyt-tx5_0.40.0_amd64_linux.deb)
+[Debian (.deb)](https://github.com/unytco/unyt-sandbox-tx5/releases/download/v0.42.0/Unyt-tx5_0.42.0_amd64_linux.deb)
 
 </tr>
 </table>
@@ -162,13 +160,13 @@ When you open Unyt on your operating system for the first time, it will create a
 
 ## Related Resources
 
-- [Invite to Play](./testing_docs/1_0_invite.md)
 - [Unyt Setup](./README.md)
 - [Detailed Documentation](./testing_docs/5_0_phase_5_testing_details.md)
 - [Unyt Dictionary](./testing_docs/4_2_unyt-dictionary.md)
 - [The Smart Agreement Overview](./testing_docs/5_0_Smart_Agreement_Release.md)
 - [Intro to Smart Agreements (Three Layers)](./testing_docs/4_1_intro_to_smart_agreements.md)
 - [Templates and Smart Agreements Library Repo](https://github.com/unytco/smart_agreement_library)
+- [Smart Agreement Release v.40 README](./testing_docs/5_0_Smart_Agreements_README.md)
 - [Feedback](https://github.com/orgs/unytco/projects/5/views/1)
 
 
