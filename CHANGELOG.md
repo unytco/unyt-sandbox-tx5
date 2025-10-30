@@ -3,6 +3,24 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.43.0]
+
+### Added
+
+- UI: rideshare tauri fetching
+- UI: move dna hash from footer to agent settings
+- UI: zome calls are sequenced
+- DNA: get_all_notification_links that lets you just get links and updated other endpoints to support just loading records [#]
+- DNA: Transaction return_type for Accepts returns source [#237](https://github.com/unytco/unyt-app/pull/237)
+- DNA: ea_id included in parked link notification links
+- UI: code templates and service networks primarily use signal store
+- UI: code templates, agreements and service networks never auto-refresh; add user manual refresh
+- UI: disable interactions during accept and reject
+- UI: add accept all button
+- UI: include relevant agreement details in collected history item
+- UI: display exclamation mark on credit limit if last call returned error
+- UI: handle accept transaction timeout by notifying user and checking twice for illusive success
+
 ## [0.42.0]
 
 ### Added
